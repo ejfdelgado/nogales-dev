@@ -71,3 +71,27 @@ services:
       retries: 20
       start_period: 1s
     command: sh /tmp/app/rundev.sh
+
+  mongodb:
+    profiles: [ "all" ]
+    image: mongodb/mongodb-atlas-local
+    command: sh /tmp/mongo/run.sh
+    #user: "systemd-coredump"
+    environment:
+      - MONGODB_INITDB_ROOT_USERNAME=${MONGO_USR}
+      - MONGODB_INITDB_ROOT_PASSWORD=${MONGO_PASS}
+    ports:
+      - 27017:27017
+    volumes:
+      - ${WORKSPACE}/workspace/mongo/run.sh:/tmp/mongo/run.sh
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      network_develop:
+        aliases:
+          - mongodb
+    healthcheck:
+      test: test $$(mongosh --port 30001 --quiet --eval "try {rs.initiate({_id:'my-replica-set',members:[{_id:0,host:\"mongo:30001\"}]})} catch(e) {rs.status().ok}") -eq 1
+      interval: 10s
+      start_period: 30s
+      retries: 20
