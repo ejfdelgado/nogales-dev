@@ -1,0 +1,11 @@
+docker build -t ejfdelgado/nodeserverdev:v0.0.0 .
+
+docker run -p 2219:22 -dt --rm ejfdelgado/nodeserverdev:v0.0.0
+ssh root@localhost -p 2219
+
+Create credential for widesight
+cd ~/
+cd .ssh
+ssh-keygen -t ed25519 -C "edgar.jose.fernando.delgado@gmail.com"
+cd /tmp/
+git clone git@github.com:apps-widesight/widesight-core.git
