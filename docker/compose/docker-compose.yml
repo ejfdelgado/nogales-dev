@@ -59,7 +59,7 @@ services:
       - "${FOLDER_CODE_CORE}/flowcharts:/tmp/app/flowcharts"
       - "${FOLDER_CODE_CORE}/srcJs:/tmp/app/srcJs"
       - "${FOLDER_CODE_CORE}/srv:/tmp/app/srv"
-    #  - "${FOLDER_CODE_CORE}/app.mjs:/tmp/app/app.mjs"
+      - "${FOLDER_CODE_CORE}/app.mjs:/tmp/app/app.mjs"
     networks:
       network_develop:
         aliases:
