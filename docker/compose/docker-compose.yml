@@ -55,10 +55,10 @@ services:
     ports:
       - "2219:22"
       - "8080:8081"
-    #volumes:
-    #  - "${FOLDER_CODE_CORE}/workspace/flowcharts:/tmp/app/flowcharts"
-    #  - "${FOLDER_CODE_CORE}/srcJs:/tmp/app/srcJs"
-    #  - "${FOLDER_CODE_CORE}/srv:/tmp/app/srv"
+    volumes:
+      - "${FOLDER_CODE_CORE}/flowcharts:/tmp/app/flowcharts"
+      - "${FOLDER_CODE_CORE}/srcJs:/tmp/app/srcJs"
+      - "${FOLDER_CODE_CORE}/srv:/tmp/app/srv"
     #  - "${FOLDER_CODE_CORE}/app.mjs:/tmp/app/app.mjs"
     networks:
       network_develop:
@@ -70,4 +70,4 @@ services:
       timeout: 3s
       retries: 20
       start_period: 1s
-    command: sh /tmp/app/run.sh
+    command: sh /tmp/app/rundev.sh

@@ -10,4 +10,5 @@ ssh-keygen -t ed25519 -C "edgar.jose.fernando.delgado@gmail.com"
 cd /tmp/
 git clone git@github.com:apps-widesight/widesight-core.git
 
-docker commit -m "backend ok" 20bb5f45e4d1  ejfdelgado/nodeserverdev:v0.1.0
+docker commit -m "easy rundev.sh" 6f5d9ad23769  ejfdelgado/nodeserverdev:v0.1.0
+docker stop 6f5d9ad23769
