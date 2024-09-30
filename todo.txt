@@ -1,4 +1,3 @@
-Usar puerto para validar 4200
 Create module tutorial
 Use ssh in nginx
 Create sample app2 and map it into nginx
