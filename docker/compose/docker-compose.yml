@@ -1,7 +1,9 @@
 version: "3"
 # docker-compose --profile all down --remove-orphans
 # docker-compose --profile all up -d
+# docker-compose --profile nodeserver up -d
 # docker-compose logs -f nodeserver
+# docker-compose logs -f nginx
 
 # docker-compose ps
 
@@ -33,7 +35,7 @@ services:
           - nginx
 
   nodeserver:
-    profiles: [ "all" ]
+    profiles: [ "all", "nodeserver" ]
     image: ${IMAGE_FLOWCHART_SERVER}
     environment:
       PORT: "8081"
@@ -54,22 +56,25 @@ services:
       MINIO_URI: ${MINIO_URI}
     ports:
       - "2219:22"
-      - "8080:8081"
+      - "8081:8081"
+      - "4200:4200"
     volumes:
-      - "${FOLDER_CODE_CORE}/credentials:/tmp/app/credentials2"
       - "${FOLDER_CODE_CORE}/flowcharts:/tmp/app/flowcharts"
       - "${FOLDER_CODE_CORE}/srcJs:/tmp/app/srcJs"
       - "${FOLDER_CODE_CORE}/srv:/tmp/app/srv"
       - "${FOLDER_CODE_CORE}/app.mjs:/tmp/app/app.mjs"
+      - "${FOLDER_CODE_CORE}/rundev.sh:/tmp/app/rundev.sh"
+      - "${FOLDER_CODE_CORE}/package.json:/tmp/app/package.json"
+      - "${FOLDER_CODE_CORE}/package-lock.json:/tmp/app/package-lock.json"
     networks:
       network_develop:
         aliases:
           - nodeserver
     healthcheck:
-      test: curl --fail http://localhost:8081/srv/shell/ls || exit 1
+      test: curl --fail http://nodeserver:4200/assets/json/topApps.json || exit 1
       interval: 1s
-      timeout: 3s
-      retries: 20
+      timeout: 1s
+      retries: 30
       start_period: 1s
     command: sh /tmp/app/rundev.sh
 
