@@ -1,0 +1,5 @@
+Create module tutorial
+Create sample app2 and map it into nginx
+Use ssh in nginx
+Include relational database into docker compose
+Erase /call after stable videocall

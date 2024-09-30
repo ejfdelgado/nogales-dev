@@ -56,6 +56,7 @@ services:
       - "2219:22"
       - "8080:8081"
     volumes:
+      - "${FOLDER_CODE_CORE}/credentials:/tmp/app/credentials2"
       - "${FOLDER_CODE_CORE}/flowcharts:/tmp/app/flowcharts"
       - "${FOLDER_CODE_CORE}/srcJs:/tmp/app/srcJs"
       - "${FOLDER_CODE_CORE}/srv:/tmp/app/srv"
