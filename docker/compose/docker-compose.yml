@@ -9,6 +9,8 @@ version: "3"
 
 # ssh root@localhost -p 2219
 
+# Go to http://localhost:4200/
+
 networks:
   network_develop:
     name: network_develop
@@ -57,6 +59,7 @@ services:
       MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
       MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
       MINIO_URI: ${MINIO_URI}
+      NODE_SERVER_PATH: /
     ports:
       - "2219:22"
       #- "8081:8081"

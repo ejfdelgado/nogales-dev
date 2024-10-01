@@ -10,8 +10,11 @@ ssh-keygen -t ed25519 -C "edgar.jose.fernando.delgado@gmail.com"
 cd /tmp/
 git clone git@github.com:apps-widesight/widesight-core.git
 
-docker commit -m "build with app1" b9d55399724b  ejfdelgado/nodeserverdev:v0.7.0
-docker stop b9d55399724b
+docker commit -m "multer" 929f84acadf9  ejfdelgado/nodeserverdev:v0.8.0
+docker stop 929f84acadf9
+
+docker tag ejfdelgado/nodeserverdev:v0.8.0 us-docker.pkg.dev/ejfexperiments/us.gcr.io/nodeserverdev:v0.8.0
+docker push us-docker.pkg.dev/ejfexperiments/us.gcr.io/nodeserverdev:v0.8.0
 
 cd /tmp/app
 git pull
