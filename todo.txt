@@ -1,5 +1,19 @@
+
+Use path /app1 when building
+Remove from infraestructure the high cost infra
+
+Replace docker image in docker compose & test
+Replace docker image in terraform & test
+Erase docker images from old version of node server
+
+Add postgres to docker compose
+Develop generic node client making CRUD
+
 Create module tutorial
 Use ssh in nginx
 Create sample app2 and map it into nginx
 Include relational database into docker compose
 Erase /call after stable videocall
+
+Pasar a la nube de Nogales
+Borrar la infraestructura que cobra dinero
