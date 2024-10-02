@@ -1,9 +1,6 @@
 
-Use path /app1 when building
-Remove from infraestructure the high cost infra
-
-Replace docker image in docker compose & test
 Replace docker image in terraform & test
+Remove from infraestructure the high cost infra
 Erase docker images from old version of node server
 
 Add postgres to docker compose
