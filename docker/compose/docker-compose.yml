@@ -79,10 +79,10 @@ services:
           - nodeserver
     healthcheck:
       test: curl --fail http://nodeserver:4200/assets/json/topApps.json || exit 1
-      interval: 1s
-      timeout: 1s
-      retries: 30
-      start_period: 1s
+      interval: 2s
+      timeout: 2s
+      retries: 60
+      start_period: 10s
     command: sh /tmp/app/rundev.sh
 
   mongodb:
