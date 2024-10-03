@@ -1,4 +1,7 @@
 
+Erase local unused images!
+How to pass custom version to scripts of package.json
+
 Replace docker image in terraform & test
 Remove from infraestructure the high cost infra
 Erase docker images from old version of node server
