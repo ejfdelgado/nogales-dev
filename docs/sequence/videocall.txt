@@ -1,0 +1,95 @@
+title Video Call
+
+participant NogalesComponent
+participant WaitingroomComponent
+participant VideoCallComponent
+participant VideoWebStream
+participant RTCCom
+participant Signaling Server
+participant Peer NogalesComponent
+participant Peer WaitingroomComponent
+participant Peer VideoCallComponent
+participant Peer VideoWebStream
+participant Peer RTCCom
+
+critical Connect to public room
+Peer NogalesComponent->Peer NogalesComponent:connectToRoomName("public")
+NogalesComponent->NogalesComponent:connectToRoomName("public")
+end
+critical Connect to video room
+WaitingroomComponent->WaitingroomComponent:configureWaitingRoom()
+activate WaitingroomComponent
+WaitingroomComponent->VideoCallComponent:videoCallConnect(provider room)
+activate VideoCallComponent
+VideoCallComponent->VideoCallComponent:socketIoConnect()
+deactivate VideoCallComponent
+deactivate WaitingroomComponent
+end
+critical Tell the server it wants to invite some peer to the room
+WaitingroomComponent->WaitingroomComponent:startCall(peer)
+activate WaitingroomComponent
+WaitingroomComponent->VideoWebStream:stream:MultiScaleMediaStream = getUserMedia()
+opt If first peer
+WaitingroomComponent->VideoCallComponent:destroyModelSimple()
+end
+WaitingroomComponent->RTCCom:setMediaStream(stream)
+WaitingroomComponent->VideoCallComponent:openVideoCallDisplay()
+activate VideoCallComponent
+VideoCallComponent->VideoCallComponent:displayVideoCall = true
+WaitingroomComponent<--VideoCallComponent:Event isInCall()
+deactivate VideoCallComponent
+activate WaitingroomComponent
+WaitingroomComponent->WaitingroomComponent:isShowingVideoCall = true
+deactivate WaitingroomComponent
+NogalesComponent<--WaitingroomComponent:openVideoChat(peer Cx1)
+deactivate WaitingroomComponent
+end
+activate NogalesComponent
+NogalesComponent-->Signaling Server:emitEvent('openVideoChat', UUID, provider room)
+
+deactivate NogalesComponent
+critical Connect to video room
+activate Signaling Server
+Signaling Server-->Peer NogalesComponent:on.openVideoChat
+activate Peer NogalesComponent
+deactivate Signaling Server
+Peer NogalesComponent->Peer WaitingroomComponent:openVideoCallDisplay()
+activate Peer WaitingroomComponent
+Peer WaitingroomComponent->Peer VideoCallComponent:connectToRoomName(provider room)
+activate Peer VideoCallComponent
+Peer WaitingroomComponent->Peer VideoCallComponent:openVideoCallDisplay()
+deactivate Peer WaitingroomComponent
+Peer VideoCallComponent->Peer VideoCallComponent:displayVideoCall = true
+deactivate Peer NogalesComponent
+Peer WaitingroomComponent<--Peer VideoCallComponent:isInCall()
+deactivate Peer VideoCallComponent
+activate Peer WaitingroomComponent
+Peer WaitingroomComponent->Peer WaitingroomComponent:isShowingVideoCall = true
+deactivate Peer WaitingroomComponent
+end
+
+critical Introduce self peer to previous peers in the room
+VideoCallComponent<--Signaling Server:on.connect
+activate VideoCallComponent
+VideoCallComponent->RTCCom:init(instance)
+VideoCallComponent->VideoCallComponent:startCall()
+activate VideoCallComponent
+loop this.userList
+VideoCallComponent->VideoCallComponent:reloadConnection(peer Cx2)
+activate VideoCallComponent
+VideoCallComponent->RTCCom:closeChannelWith(peer Cx2)
+VideoCallComponent->RTCCom:openChannelWith(peer Cx2)
+end
+deactivate VideoCallComponent
+deactivate VideoCallComponent
+deactivate VideoCallComponent
+
+
+VideoCallComponent<--Signaling Server:setModel()
+activate VideoCallComponent
+VideoCallComponent->VideoCallComponent:updateMyLiveModel()
+activate VideoCallComponent
+VideoCallComponent-->Signaling Server:Track Model Changes!
+deactivate VideoCallComponent
+deactivate VideoCallComponent
+end
