@@ -5,11 +5,38 @@ version: "3"
 # docker-compose logs -f nodeserver
 # docker-compose logs -f nginx
 
+# docker-compose down --volumes
 # docker-compose ps
 
 # ssh root@localhost -p 2219
 
 # Go to http://localhost:4200/
+
+volumes:
+  flowcharts:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: "${FOLDER_CODE_CORE}/flowcharts"
+  src:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: "${FOLDER_CODE_CORE}/src"
+  srcJs:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: "${FOLDER_CODE_CORE}/srcJs"
+  srv:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: "${FOLDER_CODE_CORE}/srv"
 
 networks:
   network_develop:
@@ -39,6 +66,7 @@ services:
         aliases:
           - nginx
 
+  # docker run -it us-docker.pkg.dev/ejfexperiments/us.gcr.io/nodeserverdev:v0.8.0 /bin/bash
   nodeserver:
     profiles: [ "all", "nodeserver" ]
     image: ${IMAGE_FLOWCHART_SERVER}
@@ -65,14 +93,13 @@ services:
       #- "8081:8081"
       #- "4200:4200"
     volumes:
-      - "${FOLDER_CODE_CORE}/flowcharts:/tmp/app/flowcharts"
-      - "${FOLDER_CODE_CORE}/src:/tmp/app/src"
-      - "${FOLDER_CODE_CORE}/srcJs:/tmp/app/srcJs"
-      - "${FOLDER_CODE_CORE}/srv:/tmp/app/srv"
+      - "flowcharts:/tmp/app/flowcharts"
+      - "src:/tmp/app/src"
+      - "srcJs:/tmp/app/srcJs"
+      - "srv:/tmp/app/srv"
       - "${FOLDER_CODE_CORE}/app.mjs:/tmp/app/app.mjs"
       - "${FOLDER_CODE_CORE}/rundev.sh:/tmp/app/rundev.sh"
       - "${FOLDER_CODE_CORE}/package.json:/tmp/app/package.json"
-      - "${FOLDER_CODE_CORE}/package-lock.json:/tmp/app/package-lock.json"
     networks:
       network_develop:
         aliases:
