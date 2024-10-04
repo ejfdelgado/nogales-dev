@@ -1,4 +1,4 @@
-version: "3"
+# version: "3"
 # docker-compose --profile all down --remove-orphans
 # docker-compose --profile all up -d
 # docker-compose --profile nodeserver up -d
@@ -112,7 +112,7 @@ services:
         aliases:
           - nodeserver
     healthcheck:
-      test: curl --fail http://nodeserver:4200/assets/json/topApps.json || exit 1
+      test: curl --fail http://localhost:8081/assets/json/topApps.json || exit 1
       interval: 2s
       timeout: 2s
       retries: 60
