@@ -17,3 +17,7 @@ Erase /call after stable videocall
 
 Pasar a la nube de Nogales
 Borrar la infraestructura que cobra dinero
+
+Switch from remote on screen/on screen administration
+Switch english/spanish
+Progress bar for the provider
