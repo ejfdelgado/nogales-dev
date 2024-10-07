@@ -95,6 +95,11 @@ services:
       MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
       MINIO_URI: ${MINIO_URI}
       NODE_SERVER_PATH: /
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: nogales
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
     ports:
       - "2219:22"
       #- "8081:8081"
