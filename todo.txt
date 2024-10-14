@@ -1,4 +1,7 @@
 
+Destroy terraform from my account
+Deploy in nogales account using prefix test prod
+
 Erase local unused images!
 How to pass custom version to scripts of package.json
 
