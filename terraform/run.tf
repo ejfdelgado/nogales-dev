@@ -29,7 +29,7 @@ resource "google_cloud_run_v2_service" "assessment" {
       }
       env {
         name  = "SEND_GRID_VARIABLE"
-        value = var.sendgrid_apikey
+        value = ""
       }
       env {
         name  = "WORKSPACE"

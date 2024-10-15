@@ -59,9 +59,3 @@ variable "credentials_path" {
   type        = string
   default     = "/tmp/app/credentials/rosy-valor-429621-b6-841682b6208d.json"
 }
-
-variable "sendgrid_apikey" {
-  description = "sendgrid_apikey"
-  type        = string
-  default     = ""
-}
