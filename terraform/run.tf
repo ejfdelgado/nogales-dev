@@ -1,4 +1,4 @@
-/*
+
 resource "google_cloud_run_v2_service" "assessment" {
   name     = "${var.environment}-assessment"
   location = var.region
@@ -44,14 +44,9 @@ resource "google_cloud_run_v2_service" "assessment" {
         }
       }
     }
-    vpc_access {
-      connector = google_vpc_access_connector.connector.id
-      egress    = "ALL_TRAFFIC"
-    }
     scaling {
       min_instance_count = 0
       max_instance_count = 1
     }
   }
 }
-*/
