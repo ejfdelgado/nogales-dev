@@ -63,5 +63,5 @@ variable "credentials_path" {
 variable "sendgrid_apikey" {
   description = "sendgrid_apikey"
   type        = string
-  default     = "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"
+  default     = ""
 }
