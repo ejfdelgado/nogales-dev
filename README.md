@@ -19,3 +19,12 @@ Host nogales
   IdentityFile ~/.ssh/id_ed25519
 ```
 ## Run
+
+## Terraform
+```
+cd /home/ejfdelgado/desarrollo/yolo/imageia/terraform
+export GOOGLE_APPLICATION_CREDENTIALS=/home/ejfdelgado/desarrollo/widesight-core/credentials/rosy-valor-429621-b6-841682b6208d.json
+terraform init
+terraform plan
+terraform apply -auto-approve && play /sound/finish.mp3
+```

@@ -1,21 +1,15 @@
 
-Destroy terraform from my account
 Deploy in nogales account using prefix test prod
 
-Erase local unused images!
 How to pass custom version to scripts of package.json
 
 Replace docker image in terraform & test
 Erase docker images from old version of node server
 
-Create module tutorial
 Use ssh in nginx
 Create sample app2 and map it into nginx
 Include relational database into docker compose
 Erase /call after stable videocall
-
-Pasar a la nube de Nogales
-Borrar la infraestructura que cobra dinero
 
 Switch from remote on screen/on screen administration
 Switch english/spanish

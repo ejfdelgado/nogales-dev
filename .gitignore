@@ -1,2 +1,7 @@
 .env
 workspace/postgres/data/
+
+**/.terraform/*
+
+node_modules
+cert/
