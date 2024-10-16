@@ -26,12 +26,6 @@ volumes:
       o: bind
       type: none
       device: "${FOLDER_CODE_CORE}/src"
-  srcJs:
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: "${FOLDER_CODE_CORE}/srcJs"
   srv:
     driver: local
     driver_opts:
@@ -76,7 +70,7 @@ services:
   # docker run -it us-docker.pkg.dev/ejfexperiments/us.gcr.io/nodeserverdev:v0.8.0 /bin/bash
   nodeserver:
     profiles: [ "all", "nodeserver" ]
-    image: ${IMAGE_FLOWCHART_SERVER}
+    image: ${IMAGE_NODE_SERVER}
     environment:
       PORT: "8081"
       ENV: "pro"
@@ -107,7 +101,6 @@ services:
     volumes:
       - "flowcharts:/tmp/app/flowcharts"
       - "src:/tmp/app/src"
-      - "srcJs:/tmp/app/srcJs"
       - "srv:/tmp/app/srv"
       - "${FOLDER_CODE_CORE}/app.mjs:/tmp/app/app.mjs"
       - "${FOLDER_CODE_CORE}/rundev.sh:/tmp/app/rundev.sh"
@@ -117,7 +110,7 @@ services:
         aliases:
           - nodeserver
     healthcheck:
-      test: curl --fail http://localhost:8081/assets/json/topApps.json || exit 1
+      test: curl --fail http://localhost:8081/srv/shell?cmd=ls || exit 1
       interval: 2s
       timeout: 2s
       retries: 60

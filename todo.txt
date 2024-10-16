@@ -14,3 +14,6 @@ Erase /call after stable videocall
 Switch from remote on screen/on screen administration
 Switch english/spanish
 Progress bar for the provider
+
+develop service nogales
+serve static content
