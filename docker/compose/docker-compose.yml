@@ -1,12 +1,11 @@
-# version: "3"
-# docker-compose --profile all down --remove-orphans
-# docker-compose --profile all up -d
-# docker-compose --profile nodeserver up -d
-# docker-compose logs -f nodeserver
-# docker-compose logs -f nginx
+# docker compose --profile all down --remove-orphans
+# docker compose --profile all up -d
+# docker compose --profile nodeserver up -d
+# docker compose logs -f nodeserver
+# docker compose logs -f nginx
 
-# docker-compose down --volumes
-# docker-compose ps
+# docker compose down --volumes
+# docker compose ps
 
 # ssh root@localhost -p 2219
 
