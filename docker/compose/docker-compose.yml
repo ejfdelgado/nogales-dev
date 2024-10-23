@@ -1,5 +1,6 @@
 # docker compose --profile all down --remove-orphans
 # docker compose --profile all up -d
+# docker compose --profile nginx up -d
 # docker compose --profile nodeserver up -d
 # docker compose logs -f nodeserver
 # docker compose logs -f nginx
@@ -37,6 +38,12 @@ volumes:
       o: bind
       type: none
       device: "${WORKSPACE}/postgres/data"
+  bucket:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: "${BUCKET_FOLDER}"
 
 networks:
   network_develop:
@@ -48,7 +55,7 @@ networks:
 
 services:
   nginx:
-    profiles: [ "all" ]
+    profiles: [ "all", "nginx" ]
     image: ${IMAGE_NGINX}
     ports:
       - "80:80"
@@ -57,10 +64,11 @@ services:
       - "4200:4200"
     volumes:
       - ${WORKSPACE}/nginx/reverse_proxy.conf:/etc/nginx/conf.d/default.conf
+      - bucket:/etc/nginx/html
     restart: always
-    depends_on:
-      nodeserver:
-        condition: service_healthy
+    #depends_on:
+    #  nodeserver:
+    #    condition: service_healthy
     networks:
       network_develop:
         aliases:
