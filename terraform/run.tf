@@ -34,6 +34,10 @@ resource "google_cloud_run_v2_service" "assessment" {
         name  = "WORKSPACE"
         value = "/tmp/app"
       }
+      env {
+        name  = "NODE_SERVER_PATH"
+        value = "/"
+      }
       resources {
         limits = {
           # 512Mi

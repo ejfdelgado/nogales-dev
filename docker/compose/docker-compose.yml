@@ -1,8 +1,10 @@
 # docker compose --profile all down --remove-orphans
 # docker compose --profile all up -d
 # docker compose --profile nginx up -d
-# docker compose --profile nodeserver up -d
-# docker compose logs -f nodeserver
+# docker compose --profile assessment up -d
+# docker compose --profile videocall up -d
+# docker compose logs -f assessment
+# docker compose logs -f videocall
 # docker compose logs -f nginx
 
 # docker compose down --volumes
@@ -75,9 +77,9 @@ services:
           - nginx
 
   # docker run -it us-docker.pkg.dev/ejfexperiments/us.gcr.io/nodeserverdev:v0.8.0 /bin/bash
-  nodeserver:
-    profiles: [ "all", "nodeserver" ]
-    image: ${IMAGE_NODE_SERVER}
+  assessment:
+    profiles: [ "all", "assessment" ]
+    image: ${assessment_image}
     environment:
       PORT: "8081"
       ENV: "pro"
@@ -103,8 +105,7 @@ services:
       POSTGRES_PASSWORD: pass
     ports:
       - "2219:22"
-      #- "8081:8081"
-      #- "4200:4200"
+      - "8081:8081"
     volumes:
       - "flowcharts:/tmp/app/flowcharts"
       - "src:/tmp/app/src"
@@ -115,14 +116,62 @@ services:
     networks:
       network_develop:
         aliases:
-          - nodeserver
+          - assessment
     healthcheck:
       test: curl --fail http://localhost:8081/srv/shell?cmd=ls || exit 1
       interval: 2s
       timeout: 2s
       retries: 60
       start_period: 10s
-    command: sh /tmp/app/rundev.sh
+    command: sh /tmp/app/run.sh
+
+  videocall:
+    profiles: [ "all", "videocall" ]
+    image: ${videocall_image}
+    environment:
+      PORT: "8082"
+      ENV: "pro"
+      GOOGLE_APPLICATION_CREDENTIALS: ${GCP_SERVICE_ACCOUNT_JSON}
+      FACE_SERVER: ""
+      TRAIN_SERVER: ""
+      WORKSPACE: "/tmp/app"
+      USE_SECURE: ${USE_SECURE}
+      MILVUS_URI: ${MILVUS_URI}
+      MONGO_USR: ${MONGO_USR}
+      MONGO_PASS: ${MONGO_PASS}
+      MONGO_URI: ${MONGO_URI}
+      MINIO_USR: ${MINIO_USR}
+      MINIO_PASS: ${MINIO_PASS}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MINIO_URI: ${MINIO_URI}
+      NODE_SERVER_PATH: /
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: nogales
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+    ports:
+      - "2219:22"
+      - "8082:8082"
+    volumes:
+      - "flowcharts:/tmp/app/flowcharts"
+      - "src:/tmp/app/src"
+      - "srv:/tmp/app/srv"
+      - "${FOLDER_CODE_CORE}/app.mjs:/tmp/app/app.mjs"
+      - "${FOLDER_CODE_CORE}/rundev.sh:/tmp/app/rundev.sh"
+      - "${FOLDER_CODE_CORE}/package.json:/tmp/app/package.json"
+    networks:
+      network_develop:
+        aliases:
+          - videocall
+    healthcheck:
+      test: curl --fail http://localhost:8082/srv/shell?cmd=ls || exit 1
+      interval: 2s
+      timeout: 2s
+      retries: 60
+      start_period: 10s
+    command: sh /tmp/app/run.sh
 
   postgres:
     profiles: [ "all" ]
