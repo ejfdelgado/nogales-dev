@@ -82,12 +82,12 @@ services:
     image: ${assessment_image}
     environment:
       PORT: "8081"
+      USE_SECURE: "yes"
       ENV: "pro"
       GOOGLE_APPLICATION_CREDENTIALS: ${GCP_SERVICE_ACCOUNT_JSON}
       FACE_SERVER: ""
       TRAIN_SERVER: ""
       WORKSPACE: "/tmp/app"
-      USE_SECURE: ${USE_SECURE}
       MILVUS_URI: ${MILVUS_URI}
       MONGO_USR: ${MONGO_USR}
       MONGO_PASS: ${MONGO_PASS}

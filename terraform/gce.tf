@@ -36,9 +36,9 @@ spec:
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: ${var.credentials_path}
         - name: PORT
-          value: 80
+          value: 443
         - name: USE_SECURE
-          value: no
+          value: yes
         - name: ENV
           value: ${var.environment}
         - name: TRAIN_SERVER
