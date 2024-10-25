@@ -1,23 +1,23 @@
-/*
-resource "google_compute_network" "imagiation-network" {
+
+resource "google_compute_network" "nogales-network" {
   project                 = var.project_name
-  name                    = "imagiation-network"
+  name                    = "${var.environment}-nogales-network"
   auto_create_subnetworks = false
   # Maximum Transmission Unit in bytes
   mtu = 1460
 }
 
-resource "google_compute_subnetwork" "imagiation-subnetwork" {
-  name = "imagiation-subnetwork"
+resource "google_compute_subnetwork" "nogales-subnetwork" {
+  name = "${var.environment}-nogales-subnetwork"
   # 10.2.0.0 - 10.2.255.255
   ip_cidr_range = "10.2.0.0/28"
   region        = var.region
-  network       = google_compute_network.imagiation-network.id
+  network       = google_compute_network.nogales-network.id
 }
 
 resource "google_compute_firewall" "ssh-rule" {
-  name    = "ssh-rule"
-  network = google_compute_network.imagiation-network.name
+  name    = "${var.environment}-nogales-ssh-rule"
+  network = google_compute_network.nogales-network.name
   allow {
     protocol = "tcp"
     ports    = ["22"]
@@ -26,8 +26,8 @@ resource "google_compute_firewall" "ssh-rule" {
 }
 
 resource "google_compute_firewall" "http-rule" {
-  name    = "http-rule"
-  network = google_compute_network.imagiation-network.name
+  name    = "${var.environment}-nogales-http-rule"
+  network = google_compute_network.nogales-network.name
   allow {
     protocol = "tcp"
     ports    = ["80"]
@@ -36,8 +36,8 @@ resource "google_compute_firewall" "http-rule" {
 }
 
 resource "google_compute_firewall" "https-rule" {
-  name    = "https-rule"
-  network = google_compute_network.imagiation-network.name
+  name    = "${var.environment}-nogales-https-rule"
+  network = google_compute_network.nogales-network.name
   allow {
     protocol = "tcp"
     ports    = ["443"]
@@ -46,39 +46,24 @@ resource "google_compute_firewall" "https-rule" {
 }
 
 resource "google_compute_address" "nogales_private_ip" {
-  name         = "nogales-private-ip"
-  subnetwork   = google_compute_subnetwork.imagiation-subnetwork.name
+  name         = "${var.environment}-nogales-private-ip"
+  subnetwork   = google_compute_subnetwork.nogales-subnetwork.name
   address_type = "INTERNAL"
   region       = var.region
   address      = "10.2.0.4"
 }
 
 resource "google_vpc_access_connector" "connector" {
-  name   = "nogales-connector"
-  region = var.region
+  name          = "${var.environment}-nogales-theconnector"
+  region        = var.region
+  max_instances = 3
+  min_instances = 2
   subnet {
-    name = google_compute_subnetwork.imagiation-subnetwork.name
+    name = google_compute_subnetwork.nogales-subnetwork.name
   }
 }
-*/
 
-/*
-resource "google_compute_address" "imagiation1ip" {
-  count  = var.docker_image_job_image_training_count
-  name   = "imagiation1ip"
+resource "google_compute_address" "videcall_ip" {
+  name   = "${var.environment}-nogales-videcall-ip"
   region = var.region
 }
-
-resource "google_compute_address" "imagiation2ip" {
-  count  = var.docker_image_job_image_training_count
-  name   = "imagiation2ip"
-  region = var.region
-}
-*/
-
-/*
-resource "google_compute_address" "nogalesip" {
-  name   = "nogalesip"
-  region = var.region
-}
-*/
