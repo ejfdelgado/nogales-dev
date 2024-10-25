@@ -69,3 +69,9 @@ variable "sendgrid_apikey" {
   type        = string
   default     = ""
 }
+
+variable "email_gce_service_account" {
+  description = "email_gce_service_account"
+  type        = string
+  default     = ""
+}
