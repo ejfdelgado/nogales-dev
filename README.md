@@ -23,8 +23,9 @@ Host nogales
 ## Terraform
 ```
 cd /home/ejfdelgado/desarrollo/yolo/imageia/terraform
-export GOOGLE_APPLICATION_CREDENTIALS=/home/ejfdelgado/desarrollo/widesight-core/credentials/rosy-valor-429621-b6-841682b6208d.json
+export GOOGLE_APPLICATION_CREDENTIALS=/home/ejfdelgado/desarrollo/nogales-assessment/credentials/local-volt-431316-m2-4fe954a04994.json
 terraform init
 terraform plan
-terraform apply -auto-approve && play /sound/finish.mp3
+terraform apply -var-file="env.stg.tfvars" && ffplay /sound/finish.mp3
+terraform apply -auto-approve -var-file="env.stg.tfvars" && ffplay /sound/finish.mp3
 ```

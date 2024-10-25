@@ -10,8 +10,6 @@ variable "firebase_project_id" {
   default     = "local-volt-431316-m2"
 }
 
-# terraform apply -var environment="stg"
-# terraform apply -var environment="pro"
 variable "environment" {
   description = "Environment"
   type        = string
@@ -48,20 +46,26 @@ variable "email" {
   default     = "edgar.jose.fernando.delgado@gmail.com"
 }
 
-variable "nodesrver_image" {
+variable "assessment_image" {
   description = "Node Server Image"
   type        = string
-  default     = "us-docker.pkg.dev/ejfexperiments/us.gcr.io/nodeserver_front_back:1.4.0"
+  default     = ""
+}
+
+variable "videocall_image" {
+  description = "Node Server Image"
+  type        = string
+  default     = ""
 }
 
 variable "credentials_path" {
   description = "Credentials path"
   type        = string
-  default     = "/tmp/app/credentials/rosy-valor-429621-b6-841682b6208d.json"
+  default     = ""
 }
 
 variable "sendgrid_apikey" {
   description = "sendgrid_apikey"
   type        = string
-  default     = "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"
+  default     = ""
 }

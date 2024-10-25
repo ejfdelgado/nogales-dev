@@ -2,11 +2,10 @@
 resource "google_cloud_run_v2_service" "assessment" {
   name     = "${var.environment}-assessment"
   location = var.region
-  ingress  = "INGRESS_TRAFFIC_ALL"
   template {
     max_instance_request_concurrency = 20
     containers {
-      image = var.nodesrver_image
+      image = var.assessment_image
       env {
         name  = "GOOGLE_APPLICATION_CREDENTIALS"
         value = var.credentials_path
@@ -49,4 +48,19 @@ resource "google_cloud_run_v2_service" "assessment" {
       max_instance_count = 1
     }
   }
+  # Allow unauthenticated invocations
+  traffic {
+    type            = "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
+    percent         = 100
+  }
+
+  ingress = "INGRESS_TRAFFIC_ALL"  # Allows all traffic, including unauthenticated
+}
+
+resource "google_cloud_run_service_iam_member" "no_auth" {
+  service     = google_cloud_run_v2_service.assessment.name
+  location    = google_cloud_run_v2_service.assessment.location
+  role        = "roles/run.invoker"
+  member      = "allUsers"  # Allows all users to invoke the service
+  depends_on = [google_cloud_run_v2_service.assessment]
 }
