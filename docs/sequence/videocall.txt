@@ -12,11 +12,11 @@ participant Peer VideoCallComponent
 participant Peer VideoWebStream
 participant Peer RTCCom
 
-critical Connect to public room
+group Connect to public room
 Peer NogalesComponent->Peer NogalesComponent:connectToRoomName("public")
 NogalesComponent->NogalesComponent:connectToRoomName("public")
 end
-critical Connect to video room
+group Connect to video room
 WaitingroomComponent->WaitingroomComponent:configureWaitingRoom()
 activate WaitingroomComponent
 WaitingroomComponent->VideoCallComponent:videoCallConnect(provider room)
@@ -25,14 +25,16 @@ VideoCallComponent->VideoCallComponent:socketIoConnect()
 deactivate VideoCallComponent
 deactivate WaitingroomComponent
 end
-critical Tell the server it wants to invite some peer to the room
+group Tell the server it wants to invite some peer to the room
 WaitingroomComponent->WaitingroomComponent:startCall(peer)
 activate WaitingroomComponent
 WaitingroomComponent->VideoWebStream:stream:MultiScaleMediaStream = getUserMedia()
+WaitingroomComponent->RTCCom:setMediaStream(stream)
+
 opt If first peer
 WaitingroomComponent->VideoCallComponent:destroyModelSimple()
 end
-WaitingroomComponent->RTCCom:setMediaStream(stream)
+
 WaitingroomComponent->VideoCallComponent:openVideoCallDisplay()
 activate VideoCallComponent
 VideoCallComponent->VideoCallComponent:displayVideoCall = true
@@ -48,7 +50,7 @@ activate NogalesComponent
 NogalesComponent-->Signaling Server:emitEvent('openVideoChat', UUID, provider room)
 
 deactivate NogalesComponent
-critical Connect to video room
+group Connect to video room
 activate Signaling Server
 Signaling Server-->Peer NogalesComponent:on.openVideoChat
 activate Peer NogalesComponent
@@ -68,7 +70,7 @@ Peer WaitingroomComponent->Peer WaitingroomComponent:isShowingVideoCall = true
 deactivate Peer WaitingroomComponent
 end
 
-critical Introduce self peer to previous peers in the room
+group Introduce self peer to previous peers in the room
 VideoCallComponent<--Signaling Server:on.connect
 activate VideoCallComponent
 VideoCallComponent->RTCCom:init(instance)
