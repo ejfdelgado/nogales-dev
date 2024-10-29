@@ -1,5 +1,5 @@
 environment = "pro"
-assessment_image = "us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_assessment_front_back:1.13.0"
+assessment_image = "us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_assessment_front_back:1.14.0"
 videocall_image="us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_videocall_front_back:1.2.0"
 credentials_path="/tmp/app/credentials/local-volt-431316-m2-4fe954a04994.json"
 sendgrid_apikey="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"
