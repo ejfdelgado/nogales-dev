@@ -12,6 +12,7 @@ participant Peer VideoCallComponent
 participant Peer VideoWebStream
 participant Peer RTCCom
 
+note over NogalesComponent,WaitingroomComponent:https://sequencediagram.org/
 group Connect to public room
 Peer NogalesComponent->Peer NogalesComponent:connectToRoomName("public")
 NogalesComponent->NogalesComponent:connectToRoomName("public")
