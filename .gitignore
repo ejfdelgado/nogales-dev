@@ -5,3 +5,5 @@ workspace/postgres/data/
 
 node_modules
 cert/
+
+cache/
