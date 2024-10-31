@@ -75,7 +75,7 @@ services:
       - "443:443"
       - "8080:8080"
     volumes:
-      - ${WORKSPACE}/nginx/reverse_proxy.conf:/etc/nginx/conf.d/default.conf
+      # - ${WORKSPACE}/nginx/reverse_proxy.conf:/etc/nginx/conf.d/default.conf
       - cache:/data/nginx/cache
     restart: always
     depends_on:
@@ -90,7 +90,7 @@ services:
   # docker run -it us-docker.pkg.dev/ejfexperiments/us.gcr.io/nodeserverdev:v0.8.0 /bin/bash
   assessment:
     profiles: [ "all", "assessment", "all_nginx" ]
-    image: ${assessment_image}
+    image: ${IMAGE_ASSESSMENT}
     environment:
       PORT: "443"
       USE_SECURE: "yes"
@@ -131,7 +131,7 @@ services:
 
   videocall:
     profiles: [ "all", "videocall", "videocall_nginx", "all_nginx" ]
-    image: ${videocall_image}
+    image: ${IMAGE_VIDEOCALL}
     environment:
       PORT: "443"
       ENV: "pro"
@@ -159,7 +159,7 @@ services:
       - "2220:22"
     networks:
       network_develop:
-        ipv4_address: 10.2.0.10
+        ipv4_address: 10.2.0.4
         aliases:
           - videocall
     healthcheck:

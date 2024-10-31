@@ -59,6 +59,7 @@ resource "google_cloud_run_v2_service" "assessment" {
   }
 
   ingress = "INGRESS_TRAFFIC_ALL"  # Allows all traffic, including unauthenticated
+  deletion_protection = false
 }
 
 resource "google_cloud_run_service_iam_member" "no_auth" {
@@ -129,6 +130,7 @@ resource "google_cloud_run_v2_service" "videocall" {
   }
 
   ingress = "INGRESS_TRAFFIC_ALL"  # Allows all traffic, including unauthenticated
+  deletion_protection = false
 }
 
 resource "google_cloud_run_service_iam_member" "no_auth_videocall" {
