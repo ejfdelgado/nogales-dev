@@ -4,6 +4,7 @@
 # docker compose --profile assessment up -d
 # docker compose --profile videocall up -d
 # docker compose --profile videocall_nginx up -d
+# docker compose --profile all_nginx up -d
 # docker compose logs -f assessment
 # docker compose logs -f videocall
 # docker compose logs -f nginx
@@ -11,7 +12,10 @@
 # docker compose down --volumes
 # docker compose ps
 
+# Assessment:
 # ssh root@localhost -p 2219
+# Videocall:
+# ssh root@localhost -p 2220
 
 # http://localhost:4200/
 # http://localhost:8081/srv/postgress/test
@@ -60,11 +64,11 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.26.0.0/24
+        - subnet: 10.2.0.0/28
 
 services:
   nginx:
-    profiles: [ "all", "nginx", "videocall_nginx" ]
+    profiles: [ "all", "nginx", "videocall_nginx", "all_nginx" ]
     image: ${IMAGE_NGINX}
     ports:
       - "80:80"
@@ -85,11 +89,11 @@ services:
 
   # docker run -it us-docker.pkg.dev/ejfexperiments/us.gcr.io/nodeserverdev:v0.8.0 /bin/bash
   assessment:
-    profiles: [ "all", "assessment" ]
+    profiles: [ "all", "assessment", "all_nginx" ]
     image: ${assessment_image}
     environment:
-      PORT: "8081"
-      USE_SECURE: "yes"
+      PORT: "8080"
+      USE_SECURE: "no"
       ENV: "pro"
       GOOGLE_APPLICATION_CREDENTIALS: ${GCP_SERVICE_ACCOUNT_JSON}
       FACE_SERVER: ""
@@ -104,7 +108,7 @@ services:
       MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
       MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
       MINIO_URI: ${MINIO_URI}
-      NODE_SERVER_PATH: /
+      NODE_SERVER_PATH: /assessment/
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
       POSTGRES_DB: nogales
@@ -112,20 +116,13 @@ services:
       POSTGRES_PASSWORD: pass
     ports:
       - "2219:22"
-      - "8081:8081"
-    volumes:
-      - "flowcharts:/tmp/app/flowcharts"
-      - "src:/tmp/app/src"
-      - "srv:/tmp/app/srv"
-      - "${FOLDER_CODE_CORE}/app.mjs:/tmp/app/app.mjs"
-      - "${FOLDER_CODE_CORE}/rundev.sh:/tmp/app/rundev.sh"
-      - "${FOLDER_CODE_CORE}/package.json:/tmp/app/package.json"
     networks:
       network_develop:
+        ipv4_address: 10.2.0.5
         aliases:
           - assessment
     healthcheck:
-      test: curl --fail http://localhost:8081/srv/shell?cmd=ls || exit 1
+      test: curl --fail http://localhost:8080/srv/shell?cmd=ls || exit 1
       interval: 2s
       timeout: 2s
       retries: 60
@@ -133,10 +130,10 @@ services:
     command: sh /tmp/app/run.sh
 
   videocall:
-    profiles: [ "all", "videocall", "videocall_nginx" ]
+    profiles: [ "all", "videocall", "videocall_nginx", "all_nginx" ]
     image: ${videocall_image}
     environment:
-      PORT: "8082"
+      PORT: "8080"
       ENV: "pro"
       GOOGLE_APPLICATION_CREDENTIALS: ${GCP_SERVICE_ACCOUNT_JSON}
       FACE_SERVER: ""
@@ -159,14 +156,14 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: pass
     ports:
-      - "2219:22"
-      - "8082:8082"
+      - "2220:22"
     networks:
       network_develop:
+        ipv4_address: 10.2.0.10
         aliases:
           - videocall
     healthcheck:
-      test: curl --fail http://localhost:8082/srv/shell?cmd=ls || exit 1
+      test: curl --fail http://localhost:8080/srv/shell?cmd=ls || exit 1
       interval: 2s
       timeout: 2s
       retries: 60

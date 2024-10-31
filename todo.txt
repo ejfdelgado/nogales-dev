@@ -1,6 +1,6 @@
 
-Build and deploy pro, stg versions of assessment and videocall
-Deploy in nogales account using prefix test prod
+Use nginx to serve videocall
+Use static local IP in GCE videocall
 
 How to pass custom version to scripts of package.json
 
