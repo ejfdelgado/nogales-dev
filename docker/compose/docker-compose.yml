@@ -92,8 +92,8 @@ services:
     profiles: [ "all", "assessment", "all_nginx" ]
     image: ${assessment_image}
     environment:
-      PORT: "8080"
-      USE_SECURE: "no"
+      PORT: "443"
+      USE_SECURE: "yes"
       ENV: "pro"
       GOOGLE_APPLICATION_CREDENTIALS: ${GCP_SERVICE_ACCOUNT_JSON}
       FACE_SERVER: ""
@@ -122,7 +122,7 @@ services:
         aliases:
           - assessment
     healthcheck:
-      test: curl --fail http://localhost:8080/srv/shell?cmd=ls || exit 1
+      test: curl --fail --insecure https://localhost:443/srv/shell?cmd=ls || exit 1
       interval: 2s
       timeout: 2s
       retries: 60
@@ -133,13 +133,13 @@ services:
     profiles: [ "all", "videocall", "videocall_nginx", "all_nginx" ]
     image: ${videocall_image}
     environment:
-      PORT: "8080"
+      PORT: "443"
       ENV: "pro"
       GOOGLE_APPLICATION_CREDENTIALS: ${GCP_SERVICE_ACCOUNT_JSON}
       FACE_SERVER: ""
       TRAIN_SERVER: ""
       WORKSPACE: "/tmp/app"
-      USE_SECURE: ${USE_SECURE}
+      USE_SECURE: "yes"
       MILVUS_URI: ${MILVUS_URI}
       MONGO_USR: ${MONGO_USR}
       MONGO_PASS: ${MONGO_PASS}
@@ -163,7 +163,7 @@ services:
         aliases:
           - videocall
     healthcheck:
-      test: curl --fail http://localhost:8080/srv/shell?cmd=ls || exit 1
+      test: curl --fail --insecure option https://localhost:443/srv/shell?cmd=ls || exit 1
       interval: 2s
       timeout: 2s
       retries: 60
