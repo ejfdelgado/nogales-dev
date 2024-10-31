@@ -149,7 +149,7 @@ services:
       MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
       MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
       MINIO_URI: ${MINIO_URI}
-      NODE_SERVER_PATH: /videocall/
+      NODE_SERVER_PATH: "/videocall/"
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
       POSTGRES_DB: nogales

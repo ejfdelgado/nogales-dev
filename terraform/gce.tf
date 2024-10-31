@@ -50,7 +50,7 @@ spec:
         - name: WORKSPACE
           value: /tmp/app
         - name: NODE_SERVER_PATH
-          value: /
+          value: /videocall/
       securityContext:
         privileged: true
       stdin: false
@@ -63,6 +63,10 @@ EOT
   }
 
   network_interface {
+    access_config {
+      nat_ip       = google_compute_address.videcall_ip.address
+      network_tier = "PREMIUM"
+    }
     queue_count = 0
     stack_type  = "IPV4_ONLY"
     network     = google_compute_network.nogales-network.id
