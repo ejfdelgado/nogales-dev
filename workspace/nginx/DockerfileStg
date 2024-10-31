@@ -1,0 +1,10 @@
+# Use the official NGINX image from Docker Hub
+FROM nginx:latest
+
+RUN mkdir -p /data/nginx/cache
+
+WORKDIR /etc/nginx/conf.d/
+COPY ./reverse_proxy_pro.conf ./default.conf
+
+# Expose port
+EXPOSE 8080

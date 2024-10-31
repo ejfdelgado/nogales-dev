@@ -79,7 +79,8 @@ resource "google_cloud_run_v2_service" "assessment" {
       }
       env {
         name  = "NODE_SERVER_PATH"
-        value = "/assessment/"
+        value = "/"
+        #value = "/assessment/"
       }
       resources {
         limits = {
@@ -93,6 +94,10 @@ resource "google_cloud_run_v2_service" "assessment" {
     scaling {
       min_instance_count = 0
       max_instance_count = 1
+    }
+    vpc_access {
+      connector = google_vpc_access_connector.connector.id
+      egress    = "ALL_TRAFFIC"
     }
   }
   # Allow unauthenticated invocations

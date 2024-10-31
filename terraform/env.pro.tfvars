@@ -4,4 +4,4 @@ sendgrid_apikey="SG.er0NJajXQrqYJqjMdVPATg._sliQPEg738IzmqfvFOipr28yTah9v-IBDCMg
 email_gce_service_account="284609972807-compute@developer.gserviceaccount.com"
 assessment_image = "us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_assessment_front_back:1.15.0"
 videocall_image="us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_videocall_front_back:1.2.0"
-nginx_image="us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_nginx:1.1.0"
+nginx_image="us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_nginx_pro:1.2.0"
