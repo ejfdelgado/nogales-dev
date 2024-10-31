@@ -63,7 +63,10 @@ resource "google_vpc_access_connector" "connector" {
   }
 }
 
+/*
+# No IP public address needed for videocall
 resource "google_compute_address" "videcall_ip" {
   name   = "${var.environment}-nogales-videcall-ip"
   region = var.region
 }
+*/

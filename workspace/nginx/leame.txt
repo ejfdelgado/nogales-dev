@@ -1,5 +1,5 @@
 
 
-docker build --no-cache=true -t us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_nginx:1.0.1 -f Dockerfile .
+docker build --no-cache=true -t us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_nginx:1.1.0 -f Dockerfile .
 
-docker push us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_nginx:1.0.1
+docker push us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_nginx:1.1.0

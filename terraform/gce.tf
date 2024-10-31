@@ -36,9 +36,9 @@ spec:
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: ${var.credentials_path}
         - name: PORT
-          value: 443
+          value: 80
         - name: USE_SECURE
-          value: yes
+          value: no
         - name: ENV
           value: ${var.environment}
         - name: TRAIN_SERVER
@@ -63,11 +63,6 @@ EOT
   }
 
   network_interface {
-    access_config {
-      nat_ip       = google_compute_address.videcall_ip.address
-      network_tier = "PREMIUM"
-    }
-
     queue_count = 0
     stack_type  = "IPV4_ONLY"
     network     = google_compute_network.nogales-network.id

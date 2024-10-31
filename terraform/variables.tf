@@ -46,6 +46,12 @@ variable "email" {
   default     = "edgar.jose.fernando.delgado@gmail.com"
 }
 
+variable "nginx_image" {
+  description = "Nginx Image"
+  type        = string
+  default     = ""
+}
+
 variable "assessment_image" {
   description = "Node Server Image"
   type        = string
