@@ -82,6 +82,12 @@ variable "sendgrid_apikey" {
   default     = ""
 }
 
+variable "postgres_version" {
+  description = "postgres_version"
+  type        = string
+  default     = "POSTGRES_16"
+}
+
 variable "email_gce_service_account" {
   description = "email_gce_service_account"
   type        = string
