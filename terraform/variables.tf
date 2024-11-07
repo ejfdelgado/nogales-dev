@@ -64,6 +64,12 @@ variable "videocall_image" {
   default     = ""
 }
 
+variable "playground_image" {
+  description = "Node Server Image"
+  type        = string
+  default     = ""
+}
+
 variable "credentials_path" {
   description = "Credentials path"
   type        = string

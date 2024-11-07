@@ -58,8 +58,9 @@ activate Peer NogalesComponent
 deactivate Signaling Server
 Peer NogalesComponent->Peer WaitingroomComponent:openVideoCallDisplay()
 activate Peer WaitingroomComponent
-Peer WaitingroomComponent->Peer VideoCallComponent:connectToRoomName(provider room)
+Peer WaitingroomComponent->Peer VideoCallComponent:registerCallStart()
 activate Peer VideoCallComponent
+Peer WaitingroomComponent->Peer VideoCallComponent:connectToRoomName(provider room)
 Peer WaitingroomComponent->Peer VideoCallComponent:openVideoCallDisplay()
 deactivate Peer WaitingroomComponent
 Peer VideoCallComponent->Peer VideoCallComponent:displayVideoCall = true
