@@ -67,7 +67,7 @@ resource "google_cloud_run_v2_service" "assessment" {
       }
       env {
         name  = "FACE_SERVER"
-        value = "NA"
+        value = "N/A"
       }
       env {
         name  = "SEND_GRID_VARIABLE"
