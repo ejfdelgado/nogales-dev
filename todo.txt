@@ -6,5 +6,4 @@ How to pass custom version to scripts of package.json
 
 Use ssh in nginx
 
-Capacitaciones:
-- git
+Allow the cloud run be visible from other cloud run instances, get in into the GCE to ping the cloud run end point.

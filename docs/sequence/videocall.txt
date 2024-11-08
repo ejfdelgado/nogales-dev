@@ -3,12 +3,14 @@ title Video Call
 participant NogalesComponent
 participant WaitingroomComponent
 participant VideoCallComponent
+participant CallService
 participant VideoWebStream
 participant RTCCom
 participant Signaling Server
 participant Peer NogalesComponent
 participant Peer WaitingroomComponent
 participant Peer VideoCallComponent
+participant Peer CallService
 participant Peer VideoWebStream
 participant Peer RTCCom
 
@@ -17,14 +19,29 @@ group Connect to public room
 Peer NogalesComponent->Peer NogalesComponent:connectToRoomName("public")
 NogalesComponent->NogalesComponent:connectToRoomName("public")
 end
-group Connect to video room
-WaitingroomComponent->WaitingroomComponent:configureWaitingRoom()
+group ngOnInit
+WaitingroomComponent->WaitingroomComponent:onAuthStateChanged()
 activate WaitingroomComponent
+WaitingroomComponent->WaitingroomComponent:configureWaitingRoom(user)
+opt if it's patient
+WaitingroomComponent->WaitingroomComponent:openPatientIdPopUp()
+NogalesComponent<--WaitingroomComponent:updateMyInformation(current)
+NogalesComponent-->Signaling Server:emitEvent('updateMyInformation', UUID, data MyLocalUserData)
+end
+opt if it's provider
+WaitingroomComponent->WaitingroomComponent:includeMeInRooms()
 WaitingroomComponent->VideoCallComponent:videoCallConnect(provider room)
+group videoCallConnect
 activate VideoCallComponent
 VideoCallComponent->VideoCallComponent:socketIoConnect()
+VideoCallComponent->CallService:beginConnection()
+VideoCallComponent->VideoCallComponent:bindEvents()
+VideoCallComponent->VideoCallComponent:bindBasic()
+VideoCallComponent->CallService:waitUntilConnection()
+end
 deactivate VideoCallComponent
 deactivate WaitingroomComponent
+end
 end
 group Tell the server it wants to invite some peer to the room
 WaitingroomComponent->WaitingroomComponent:startCall(peer)
