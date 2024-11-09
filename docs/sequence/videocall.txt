@@ -23,6 +23,7 @@ group ngOnInit
 WaitingroomComponent->WaitingroomComponent:onAuthStateChanged()
 activate WaitingroomComponent
 WaitingroomComponent->WaitingroomComponent:configureWaitingRoom(user)
+activate WaitingroomComponent
 opt if it's patient
 WaitingroomComponent->WaitingroomComponent:openPatientIdPopUp()
 NogalesComponent<--WaitingroomComponent:updateMyInformation(current)
@@ -40,6 +41,7 @@ VideoCallComponent->VideoCallComponent:bindBasic()
 VideoCallComponent->CallService:waitUntilConnection()
 end
 deactivate VideoCallComponent
+deactivate WaitingroomComponent
 deactivate WaitingroomComponent
 end
 end
