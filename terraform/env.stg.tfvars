@@ -1,6 +1,6 @@
 environment = "stg"
 credentials_path="/tmp/app/credentials/local-volt-431316-m2-4fe954a04994.json"
-sendgrid_apikey="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"
+sendgrid_apikey=""
 email_gce_service_account="284609972807-compute@developer.gserviceaccount.com"
 assessment_image = "us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_assessment_front_back:1.14.0"
 videocall_image="us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_videocall_front_back:1.2.0"
