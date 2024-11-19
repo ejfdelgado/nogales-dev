@@ -82,6 +82,26 @@ resource "google_cloud_run_v2_service" "assessment" {
         value = "/"
         #value = "/assessment/"
       }
+      env {
+        name  = "POSTGRES_HOST"
+        value = "35.239.160.163"
+      }
+      env {
+        name  = "POSTGRES_PORT"
+        value = "5432"
+      }
+      env {
+        name  = "POSTGRES_DB"
+        value = "nogales"
+      }
+      env {
+        name  = "POSTGRES_USER"
+        value = "postgres"
+      }
+      env {
+        name  = "POSTGRES_PASSWORD"
+        value = var.postgress_pass
+      }
       resources {
         limits = {
           # 512Mi
@@ -94,10 +114,6 @@ resource "google_cloud_run_v2_service" "assessment" {
     scaling {
       min_instance_count = 0
       max_instance_count = 1
-    }
-    vpc_access {
-      connector = google_vpc_access_connector.connector.id
-      egress    = "ALL_TRAFFIC"
     }
   }
   # Allow unauthenticated invocations

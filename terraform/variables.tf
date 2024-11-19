@@ -93,3 +93,9 @@ variable "email_gce_service_account" {
   type        = string
   default     = ""
 }
+
+variable "postgress_pass" {
+  description = "postgress_pass"
+  type        = string
+  default     = ""
+}
