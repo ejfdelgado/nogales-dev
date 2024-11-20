@@ -88,6 +88,12 @@ variable "email_gce_service_account" {
   default     = ""
 }
 
+variable "email_sender" {
+  description = "email_sender"
+  type        = string
+  default     = ""
+}
+
 variable "api_yml" {
   description = "api_yml"
   type        = string
