@@ -46,7 +46,7 @@ spec:
         - name: FACE_SERVER
           value: NA
         - name: SEND_GRID_VARIABLE
-          value: ${local.secrets.postgress_pass}
+          value: ${local.secrets.sendgrid_apikey}
         - name: EMAIL_SENDER
           value: ${var.email_sender}
         - name: WORKSPACE
