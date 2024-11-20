@@ -46,7 +46,7 @@ spec:
         - name: FACE_SERVER
           value: NA
         - name: SEND_GRID_VARIABLE
-          value: ${var.sendgrid_apikey}
+          value: ${local.secrets.postgress_pass}
         - name: WORKSPACE
           value: /tmp/app
         - name: NODE_SERVER_PATH
@@ -101,4 +101,51 @@ EOT
 
   tags = ["ssh", "http-server", "https-server"]
   zone = var.zone
+}
+
+resource "google_compute_network_endpoint_group" "neg" {
+  name                  = "private-neg"
+  network_endpoint_type = "GCE_VM_IP_PORT"
+  network               = google_compute_network.nogales-network.name
+  subnetwork            = google_compute_subnetwork.nogales-subnetwork.name
+  zone                  = var.zone
+}
+
+
+resource "google_compute_network_endpoints" "default-endpoints" {
+  network_endpoint_group = google_compute_network_endpoint_group.neg.name
+  depends_on = [google_compute_instance.videocall]
+
+  network_endpoints {
+    instance = google_compute_instance.videocall.name
+    ip_address = google_compute_instance.videocall.network_interface[0].network_ip
+    port = 80
+  }
+}
+
+resource "google_compute_http_health_check" "videocall" {
+  name               = "${var.environment}-videocall-hc"
+  request_path       = "/assets/leame.txt"
+  check_interval_sec = 1
+  timeout_sec        = 1
+}
+
+resource "google_compute_health_check" "videocall" {
+  name = "health-check"
+  http_health_check {
+    port = 80
+  }
+}
+
+resource "google_compute_backend_service" "videocall-lb" {
+  name                  = "${var.environment}-videocall-lb"
+  load_balancing_scheme = "INTERNAL_MANAGED"
+  protocol              = "HTTP"
+  health_checks = [google_compute_health_check.videocall.id]
+
+  backend {
+    group = google_compute_network_endpoint_group.neg.id
+    balancing_mode = "RATE"
+    max_rate = 100
+  }
 }

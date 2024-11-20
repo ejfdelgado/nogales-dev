@@ -71,7 +71,7 @@ resource "google_cloud_run_v2_service" "assessment" {
       }
       env {
         name  = "SEND_GRID_VARIABLE"
-        value = var.sendgrid_apikey
+        value = local.secrets.postgress_pass
       }
       env {
         name  = "WORKSPACE"
@@ -100,7 +100,7 @@ resource "google_cloud_run_v2_service" "assessment" {
       }
       env {
         name  = "POSTGRES_PASSWORD"
-        value = var.postgress_pass
+        value = local.secrets.postgress_pass
       }
       resources {
         limits = {
@@ -163,7 +163,7 @@ resource "google_cloud_run_v2_service" "playground" {
       }
       env {
         name  = "SEND_GRID_VARIABLE"
-        value = var.sendgrid_apikey
+        value = local.secrets.postgress_pass
       }
       env {
         name  = "WORKSPACE"

@@ -76,12 +76,6 @@ variable "credentials_path" {
   default     = ""
 }
 
-variable "sendgrid_apikey" {
-  description = "sendgrid_apikey"
-  type        = string
-  default     = ""
-}
-
 variable "postgres_version" {
   description = "postgres_version"
   type        = string
@@ -94,8 +88,8 @@ variable "email_gce_service_account" {
   default     = ""
 }
 
-variable "postgress_pass" {
-  description = "postgress_pass"
+variable "api_yml" {
+  description = "api_yml"
   type        = string
-  default     = ""
+  default     = "nogales_api.yaml"
 }
