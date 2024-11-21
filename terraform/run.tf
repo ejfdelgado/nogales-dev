@@ -209,3 +209,26 @@ resource "google_cloud_run_service_iam_member" "no_auth_playground" {
   member      = "allUsers"  # Allows all users to invoke the service
   depends_on = [google_cloud_run_v2_service.playground]
 }
+
+resource "google_compute_managed_ssl_certificate" "assessment" {
+  name    = "${var.environment}-assessment-cert"
+  managed {
+    domains = ["assessment.solvista.me."]
+  }
+}
+
+resource "google_cloud_run_domain_mapping" "assessment_mapping" {
+  name     = "assessment.solvista.me"
+  location = var.region
+
+  metadata {
+    namespace = var.project_name
+    annotations = {
+      "run.googleapis.com/managed-certificates" = "true"
+    }
+  }
+
+  spec {
+    route_name = google_cloud_run_v2_service.assessment.name
+  }
+}
