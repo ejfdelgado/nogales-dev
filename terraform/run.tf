@@ -232,3 +232,19 @@ resource "google_cloud_run_domain_mapping" "assessment_mapping" {
     route_name = google_cloud_run_v2_service.assessment.name
   }
 }
+
+resource "google_cloud_run_domain_mapping" "apps_mapping" {
+  name     = "apps.solvista.me"
+  location = var.region
+
+  metadata {
+    namespace = var.project_name
+    annotations = {
+      "run.googleapis.com/managed-certificates" = "true"
+    }
+  }
+
+  spec {
+    route_name = google_cloud_run_v2_service.nginx.name
+  }
+}
