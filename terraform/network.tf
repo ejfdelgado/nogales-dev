@@ -69,3 +69,4 @@ resource "google_compute_address" "videcall_ip" {
   name   = "${var.environment}-nogales-videcall-ip"
   region = var.region
 }
+

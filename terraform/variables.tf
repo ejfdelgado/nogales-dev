@@ -64,6 +64,12 @@ variable "videocall_image" {
   default     = ""
 }
 
+variable "turn_image" {
+  description = "Turn Server Image"
+  type        = string
+  default     = ""
+}
+
 variable "playground_image" {
   description = "Node Server Image"
   type        = string
