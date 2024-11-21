@@ -36,9 +36,9 @@ spec:
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: ${var.credentials_path}
         - name: PORT
-          value: 80
+          value: 443
         - name: USE_SECURE
-          value: no
+          value: yes
         - name: ENV
           value: ${var.environment}
         - name: TRAIN_SERVER
@@ -111,8 +111,10 @@ resource "google_compute_instance_group" "videocallgroup" {
   instances   = [google_compute_instance.videocall.self_link]
 
   named_port {
-    name = "http"
-    port = "80"
+    #name = "http"
+    #port = "80"
+    name = "https"
+    port = "443"
   }
 
   network     = google_compute_network.nogales-network.id
@@ -122,14 +124,30 @@ resource "google_compute_health_check" "videocall" {
   name = "health-check"
   timeout_sec        = 5
   check_interval_sec = 5
-  http_health_check {
-    port = 80
+
+  #http_health_check {
+  # port = 80
+  #}
+
+  https_health_check {
+    port         = 443
+    #request_path = "/health"
+    #validate_ssl = false
+  }
+
+  log_config {
+    enable = false
   }
 }
 
 resource "google_compute_backend_service" "videocallbkservice" {
   name     = "${var.environment}-videocall-bksrv"
-  protocol = "HTTP"
+  #protocol = "HTTP"
+
+  protocol              = "HTTPS"
+  port_name             = "https"
+  timeout_sec           = 30
+  enable_cdn            = false
 
   backend {
     group = google_compute_instance_group.videocallgroup.self_link
