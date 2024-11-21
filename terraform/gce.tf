@@ -52,7 +52,7 @@ spec:
         - name: WORKSPACE
           value: /tmp/app
         - name: NODE_SERVER_PATH
-          value: /videocall/
+          value: /
       securityContext:
         privileged: true
       stdin: false
@@ -105,31 +105,17 @@ EOT
   zone = var.zone
 }
 
-resource "google_compute_network_endpoint_group" "neg" {
-  name                  = "private-neg"
-  network_endpoint_type = "GCE_VM_IP_PORT"
-  network               = google_compute_network.nogales-network.name
-  subnetwork            = google_compute_subnetwork.nogales-subnetwork.name
-  zone                  = var.zone
-}
+resource "google_compute_instance_group" "videocallgroup" {
+  name        = "${var.environment}-videocall-group"
+  zone        = var.zone
+  instances   = [google_compute_instance.videocall.self_link]
 
-
-resource "google_compute_network_endpoints" "default-endpoints" {
-  network_endpoint_group = google_compute_network_endpoint_group.neg.name
-  depends_on = [google_compute_instance.videocall]
-
-  network_endpoints {
-    instance = google_compute_instance.videocall.name
-    ip_address = google_compute_instance.videocall.network_interface[0].network_ip
-    port = 80
+  named_port {
+    name = "http"
+    port = "80"
   }
-}
 
-resource "google_compute_http_health_check" "videocall" {
-  name               = "${var.environment}-videocall-hc"
-  request_path       = "/assets/leame.txt"
-  check_interval_sec = 1
-  timeout_sec        = 1
+  network     = google_compute_network.nogales-network.id
 }
 
 resource "google_compute_health_check" "videocall" {
@@ -139,15 +125,53 @@ resource "google_compute_health_check" "videocall" {
   }
 }
 
-resource "google_compute_backend_service" "videocall-lb" {
-  name                  = "${var.environment}-videocall-lb"
-  load_balancing_scheme = "INTERNAL_MANAGED"
-  protocol              = "HTTP"
-  health_checks = [google_compute_health_check.videocall.id]
+resource "google_compute_backend_service" "videocallbkservice" {
+  name     = "${var.environment}-videocall-bksrv"
+  protocol = "HTTP"
 
   backend {
-    group = google_compute_network_endpoint_group.neg.id
-    balancing_mode = "RATE"
-    max_rate = 100
+    group = google_compute_instance_group.videocallgroup.self_link
   }
+
+  health_checks = [google_compute_health_check.videocall.self_link]
+}
+
+resource "google_compute_managed_ssl_certificate" "default" {
+  name    = "${var.environment}-videocall-cert"
+  managed {
+    domains = ["videocall.solvista.me."]
+  }
+}
+
+resource "google_compute_url_map" "videocallmap" {
+  name        = "${var.environment}-videocall-map"
+
+  default_service = google_compute_backend_service.videocallbkservice.id
+
+  host_rule {
+    hosts        = ["videocall.solvista.me"]
+    path_matcher = "allpaths"
+  }
+
+  path_matcher {
+    name            = "allpaths"
+    default_service = google_compute_backend_service.videocallbkservice.id
+
+    path_rule {
+      paths   = ["/*"]
+      service = google_compute_backend_service.videocallbkservice.id
+    }
+  }
+}
+
+resource "google_compute_target_https_proxy" "default" {
+  name             = "${var.environment}-videocall-proxy"
+  url_map          = google_compute_url_map.videocallmap.id
+  ssl_certificates = [google_compute_managed_ssl_certificate.default.id]
+}
+
+resource "google_compute_global_forwarding_rule" "default" {
+  name       = "${var.environment}-videocall-forward"
+  target     = google_compute_target_https_proxy.default.id
+  port_range = 443
 }

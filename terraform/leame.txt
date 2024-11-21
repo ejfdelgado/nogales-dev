@@ -53,3 +53,69 @@ resource "google_compute_network_peering_routes_config" "peering_routes" {
 #   dns_suffix = "example.com."
 #   service    = "servicenetworking.googleapis.com"
 # }
+
+
+--------------------------------------------------------------------
+
+
+
+# Create a Backend Service
+resource "google_compute_backend_service" "default" {
+  name                  = "my-backend-service"
+  load_balancing_scheme = "EXTERNAL"
+  health_checks         = [google_compute_health_check.http.self_link]
+
+  backend {
+    group = google_compute_instance_group.default.self_link
+  }
+}
+
+# Create an Instance Group for the Backend
+resource "google_compute_instance_group" "default" {
+  name = "instance-group"
+
+  instances = [google_compute_instance.default.self_link]
+  zone      = "us-central1-a"
+}
+
+# Create a URL Map
+resource "google_compute_url_map" "default" {
+  name            = "url-map"
+  default_service = google_compute_backend_service.default.self_link
+}
+
+# Create an HTTPS Target Proxy
+resource "google_compute_target_https_proxy" "default" {
+  name            = "https-proxy"
+  url_map         = google_compute_url_map.default.self_link
+  ssl_certificates = [google_compute_managed_ssl_certificate.default.self_link]
+}
+
+# Create a Forwarding Rule
+resource "google_compute_global_forwarding_rule" "https" {
+  name        = "https-forwarding-rule"
+  target      = google_compute_target_https_proxy.default.self_link
+  port_range  = "443"
+  ip_protocol = "TCP"
+}
+
+# Create a Managed SSL Certificate
+resource "google_compute_managed_ssl_certificate" "default" {
+  name    = "managed-cert"
+  domains = ["videocall.solvista.me"]
+}
+
+# Output the external IP
+output "instance_external_ip" {
+  value = google_compute_instance.default.network_interface[0].access_config[0].nat_ip
+}
+
+------
+
+Reconfigure TURN servers only google
+
+Assure use cache from backend
+https://34.56.212.112/assets/fonts/MaterialIcons.woff2
+
+Usar cache para esto:
+https://34.56.212.112/assets/img/mic/mic_50.svg
