@@ -120,6 +120,8 @@ resource "google_compute_instance_group" "videocallgroup" {
 
 resource "google_compute_health_check" "videocall" {
   name = "health-check"
+  timeout_sec        = 5
+  check_interval_sec = 5
   http_health_check {
     port = 80
   }
