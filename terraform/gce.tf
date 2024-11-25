@@ -146,7 +146,7 @@ resource "google_compute_backend_service" "videocallbkservice" {
 
   protocol              = "HTTPS"
   port_name             = "https"
-  timeout_sec           = 30
+  timeout_sec           = 7200
   enable_cdn            = false
 
   backend {

@@ -20,17 +20,26 @@ Peer NogalesComponent->Peer NogalesComponent:connectToRoomName("public")
 NogalesComponent->NogalesComponent:connectToRoomName("public")
 end
 group ngOnInit
+activate WaitingroomComponent
+WaitingroomComponent->WaitingroomComponent:makeResize()
+WaitingroomComponent->WaitingroomComponent:reloadDevices()
+activate WaitingroomComponent
+WaitingroomComponent->VideoWebStream:autoReloadDevices():EmmiterThen<DevicesData>
+activate WaitingroomComponent
+WaitingroomComponent->RTCCom:setMediaStream(VideoWebStream:getUserMedia())
+deactivate WaitingroomComponent
+deactivate WaitingroomComponent
 WaitingroomComponent->WaitingroomComponent:onAuthStateChanged()
 activate WaitingroomComponent
 WaitingroomComponent->WaitingroomComponent:configureWaitingRoom(user)
-activate WaitingroomComponent
 opt if it's patient
+WaitingroomComponent->WaitingroomComponent:loadRoomsInfo()
 WaitingroomComponent->WaitingroomComponent:openPatientIdPopUp()
 NogalesComponent<--WaitingroomComponent:updateMyInformation(current)
 NogalesComponent-->Signaling Server:emitEvent('updateMyInformation', UUID, data MyLocalUserData)
 end
 opt if it's provider
-WaitingroomComponent->WaitingroomComponent:includeMeInRooms()
+WaitingroomComponent->WaitingroomComponent:loadRoomsInfo()
 WaitingroomComponent->VideoCallComponent:videoCallConnect(provider room)
 group videoCallConnect
 activate VideoCallComponent
