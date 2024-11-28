@@ -159,7 +159,7 @@ resource "google_compute_backend_service" "videocallbkservice" {
 resource "google_compute_managed_ssl_certificate" "default" {
   name    = "${var.environment}-videocall-cert"
   managed {
-    domains = ["videocall.solvista.me."]
+    domains = ["video.solvista.me."]
   }
 }
 
@@ -169,7 +169,7 @@ resource "google_compute_url_map" "videocallmap" {
   default_service = google_compute_backend_service.videocallbkservice.id
 
   host_rule {
-    hosts        = ["videocall.solvista.me"]
+    hosts        = ["video.solvista.me"]
     path_matcher = "allpaths"
   }
 

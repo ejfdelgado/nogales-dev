@@ -213,12 +213,12 @@ resource "google_cloud_run_service_iam_member" "no_auth_playground" {
 resource "google_compute_managed_ssl_certificate" "assessment" {
   name    = "${var.environment}-assessment-cert"
   managed {
-    domains = ["assessment.solvista.me."]
+    domains = ["test.solvista.me."]
   }
 }
 
 resource "google_cloud_run_domain_mapping" "assessment_mapping" {
-  name     = "assessment.solvista.me"
+  name     = "test.solvista.me"
   location = var.region
 
   metadata {
