@@ -53,6 +53,20 @@ spec:
           value: /tmp/app
         - name: NODE_SERVER_PATH
           value: /
+        - name: BUCKET_PUBLIC
+          value: pro-nogales-public
+        - name: BUCKET_PRIVATE
+          value: pro-nogales-private
+        - name: POSTGRES_HOST
+          value: ${local.secrets.postgress.host}
+        - name: POSTGRES_PORT
+          value: ${local.secrets.postgress.port}
+        - name: POSTGRES_DB
+          value: ${local.secrets.postgress.db}
+        - name: POSTGRES_USER
+          value: ${local.secrets.postgress.user}
+        - name: POSTGRES_PASSWORD
+          value: ${local.secrets.postgress.pass}
       securityContext:
         privileged: true
       stdin: false
