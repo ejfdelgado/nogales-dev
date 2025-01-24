@@ -84,24 +84,41 @@ resource "google_cloud_run_v2_service" "assessment" {
       }
       env {
         name  = "POSTGRES_HOST"
-        value = "35.239.160.163"
+        value = local.secrets.postgress.host
       }
       env {
         name  = "POSTGRES_PORT"
-        value = "5432"
+        value = local.secrets.postgress.port
       }
       env {
         name  = "POSTGRES_DB"
-        value = "nogales"
+        value = local.secrets.postgress.db
       }
       env {
         name  = "POSTGRES_USER"
-        value = "postgres"
+        value = local.secrets.postgress.user
       }
       env {
         name  = "POSTGRES_PASSWORD"
         value = local.secrets.postgress_pass
       }
+      env {
+        name  = "AUTH_GROUP_ID_MAP"
+        value = var.auth_group_id_map
+      }
+      env {
+        name  = "AUTH_PROVIDER"
+        value = local.secrets.authentication.AUTH_PROVIDER
+      }
+      env {
+        name  = "MICROSOFT_CLIENT_ID"
+        value = local.secrets.authentication.MICROSOFT_CLIENT_ID
+      }
+      env {
+        name  = "MICROSOFT_TENANT"
+        value = local.secrets.authentication.MICROSOFT_TENANT
+      }
+
       resources {
         limits = {
           # 512Mi
