@@ -67,6 +67,22 @@ spec:
           value: ${local.secrets.postgress.user}
         - name: POSTGRES_PASSWORD
           value: ${local.secrets.postgress.pass}
+        - name: AUTH_GROUP_ID_MAP
+          value: ${var.auth_group_id_map}
+        - name: HEY_MARKET_API_KEY
+          value: ${local.secrets.heymarket.HEY_MARKET_API_KEY}
+        - name: HEY_MARKET_SENDER_ID
+          value: ${local.secrets.heymarket.HEY_MARKET_SENDER_ID}
+        - name: HEY_MARKET_INBOX_ID
+          value: ${local.secrets.heymarket.HEY_MARKET_INBOX_ID}
+        - name: HEY_MARKET_END_POINT
+          value: ${var.heymarket_end_point}
+        - name: AUTH_PROVIDER
+          value: ${local.secrets.authentication.AUTH_PROVIDER}
+        - name: MICROSOFT_CLIENT_ID
+          value: ${local.secrets.authentication.MICROSOFT_CLIENT_ID}
+        - name: MICROSOFT_TENANT
+          value: ${local.secrets.authentication.MICROSOFT_TENANT}          
       securityContext:
         privileged: true
       stdin: false

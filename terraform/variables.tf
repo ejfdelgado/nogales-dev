@@ -105,3 +105,15 @@ variable "api_yml" {
   type        = string
   default     = "nogales_api.yaml"
 }
+
+variable "auth_group_id_map" {
+  description = "auth_group_id_map"
+  type        = string
+  default     = ""
+}
+
+variable "heymarket_end_point" {
+  description = "heymarket_end_point"
+  type        = string
+  default     = ""
+}
