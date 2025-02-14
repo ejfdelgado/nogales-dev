@@ -17,6 +17,7 @@ terraform import google_compute_address.turn_ip pro-nogales-turn-ip
 terraform import google_compute_firewall.turn_ports pro-nogales-turn-firewall
 terraform import google_compute_address.nogales_private_turn_ip pro-nogales-private-turn-ip
 terraform import google_compute_managed_ssl_certificate.assessment pro-assessment-cert
+terraform import google_compute_managed_ssl_certificate.apps pro-apps-cert
 terraform import google_compute_managed_ssl_certificate.default pro-videocall-cert
 terraform import google_compute_managed_ssl_certificate.turn pro-turn-cert
 terraform import google_cloud_run_v2_service.nginx projects/local-volt-431316-m2/locations/us-central1/services/pro-nginx
