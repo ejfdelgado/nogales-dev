@@ -234,3 +234,9 @@ resource "google_compute_managed_ssl_certificate" "assessment" {
   }
 }
 
+resource "google_compute_managed_ssl_certificate" "apps" {
+  name    = "${var.environment}-apps-cert"
+  managed {
+    domains = ["apps.solvista.me."]
+  }
+}

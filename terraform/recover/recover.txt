@@ -33,7 +33,6 @@ terraform import google_compute_global_forwarding_rule.default pro-videocall-for
 terraform import google_compute_global_forwarding_rule.turn pro-turn-forward
 terraform import google_compute_backend_service.videocallbkservice pro-videocall-bksrv
 terraform import google_compute_instance.turn pro-nogales-turn
-
 terraform import google_compute_health_check.videocall pro-health-check
 terraform import google_compute_health_check.turn pro-turn-healthcheck
 terraform import google_compute_url_map.videocallmap pro-videocall-map
