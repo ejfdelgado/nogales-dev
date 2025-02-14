@@ -234,34 +234,3 @@ resource "google_compute_managed_ssl_certificate" "assessment" {
   }
 }
 
-resource "google_cloud_run_domain_mapping" "assessment_mapping" {
-  name     = "test.solvista.me"
-  location = var.region
-
-  metadata {
-    namespace = var.project_name
-    annotations = {
-      "run.googleapis.com/managed-certificates" = "true"
-    }
-  }
-
-  spec {
-    route_name = google_cloud_run_v2_service.assessment.name
-  }
-}
-
-resource "google_cloud_run_domain_mapping" "apps_mapping" {
-  name     = "apps.solvista.me"
-  location = var.region
-
-  metadata {
-    namespace = var.project_name
-    annotations = {
-      "run.googleapis.com/managed-certificates" = "true"
-    }
-  }
-
-  spec {
-    route_name = google_cloud_run_v2_service.nginx.name
-  }
-}

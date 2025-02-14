@@ -1,0 +1,43 @@
+gcloud config set project local-volt-431316-m2
+
+gcloud sql instances describe pro-general > sql.txt
+
+terraform import google_sql_database_instance.general pro-general
+terraform import google_storage_bucket.processor_public pro-nogales-public
+terraform import google_storage_bucket.processor_private pro-nogales-private
+terraform import google_compute_network.nogales-network pro-nogales-network
+terraform import google_compute_subnetwork.nogales-subnetwork pro-nogales-subnetwork
+terraform import google_compute_firewall.ssh-rule pro-nogales-ssh-rule
+terraform import google_compute_firewall.http-rule pro-nogales-http-rule
+terraform import google_compute_firewall.https-rule pro-nogales-https-rule
+terraform import google_compute_address.nogales_private_ip pro-nogales-private-ip
+terraform import google_vpc_access_connector.connector pro-nogales-theconnector
+terraform import google_compute_address.videcall_ip pro-nogales-videcall-ip
+terraform import google_compute_address.turn_ip pro-nogales-turn-ip
+terraform import google_compute_firewall.turn_ports pro-nogales-turn-firewall
+terraform import google_compute_address.nogales_private_turn_ip pro-nogales-private-turn-ip
+terraform import google_compute_managed_ssl_certificate.assessment pro-assessment-cert
+terraform import google_compute_managed_ssl_certificate.default pro-videocall-cert
+terraform import google_compute_managed_ssl_certificate.turn pro-turn-cert
+terraform import google_cloud_run_v2_service.nginx projects/local-volt-431316-m2/locations/us-central1/services/pro-nginx
+terraform import google_cloud_run_v2_service.assessment projects/local-volt-431316-m2/locations/us-central1/services/pro-assessment
+terraform import google_cloud_run_v2_service.playground projects/local-volt-431316-m2/locations/us-central1/services/pro-playground
+terraform import google_compute_instance.videocall pro-nogales-videocall
+terraform import google_compute_instance_group.videocallgroup projects/local-volt-431316-m2/zones/us-central1-c/instanceGroups/pro-videocall-group
+terraform import google_compute_instance_group.turngroup projects/local-volt-431316-m2/zones/us-central1-c/instanceGroups/pro-turn-group
+terraform import google_compute_backend_service.turnbkservice pro-turn-bksrv
+terraform import google_firestore_database.database pro-room-intro
+terraform import google_compute_target_https_proxy.default pro-videocall-proxy
+terraform import google_compute_target_https_proxy.turn pro-turn-proxy
+terraform import google_compute_global_forwarding_rule.default pro-videocall-forward
+terraform import google_compute_global_forwarding_rule.turn pro-turn-forward
+terraform import google_compute_backend_service.videocallbkservice pro-videocall-bksrv
+terraform import google_compute_instance.turn pro-nogales-turn
+
+terraform import google_compute_health_check.videocall pro-health-check
+terraform import google_compute_health_check.turn pro-turn-healthcheck
+terraform import google_compute_url_map.videocallmap pro-videocall-map
+terraform import google_compute_url_map.turnmap pro-turn-map
+
+
+terraform apply -var-file="env.pro.tfvars" && ffplay /sound/finish.mp3 -nodisp -nostats -hide_banner -autoexit

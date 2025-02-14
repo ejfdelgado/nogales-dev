@@ -4,6 +4,7 @@
 # docker compose --profile assessment up -d
 # docker compose --profile videocall up -d
 # docker compose --profile videocall_nginx up -d
+# docker compose --profile assessment_nginx up -d
 # docker compose --profile all_nginx up -d
 # docker compose logs -f assessment
 # docker compose logs -f videocall
@@ -16,6 +17,8 @@
 # ssh root@localhost -p 2219
 # Videocall:
 # ssh root@localhost -p 2220
+
+# docker commit -m "chrome" -p 3e41966c31fb  us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_assessment_front_back:1.28.2 
 
 # http://localhost:4200/
 # http://localhost:8081/srv/postgress/test
@@ -108,14 +111,19 @@ services:
       MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
       MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
       MINIO_URI: ${MINIO_URI}
-      NODE_SERVER_PATH: /assessment/
-      POSTGRES_HOST: postgres
-      POSTGRES_PORT: 5432
-      POSTGRES_DB: nogales
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: pass
+      NODE_SERVER_PATH: /
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      AUTH_PROVIDER: microsoft
+      MICROSOFT_CLIENT_ID: 4c1062f0-7409-4597-9eac-21b87ac6005e
+      MICROSOFT_TENANT: e03b8fb1-7e35-4dab-ae1e-aa681402dbf2
+      AUTH_GROUP_ID_MAP: eyIxZjRlNzk5MC05YWQ5LTQ0MzItYWY1Ni1hNWM1Njk4OGZjZWEiOiJhcHBzX3ZpZGVvX2NhbGxfY2FsbGVyIiwiNGE1OTlmZTktMzMyMi00YTk0LTgyNDEtYTI1YmU2MjhlOGU0IjoiYXBwc192aWRlb19jYWxsX2ludHJvX2VkaXRvciJ9
     ports:
       - "2219:22"
+      - "443:443"
     networks:
       network_develop:
         ipv4_address: 10.2.0.5

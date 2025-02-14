@@ -151,7 +151,7 @@ resource "google_compute_instance_group" "videocallgroup" {
 }
 
 resource "google_compute_health_check" "videocall" {
-  name = "health-check"
+  name = "${var.environment}-health-check"
   timeout_sec        = 5
   check_interval_sec = 5
 

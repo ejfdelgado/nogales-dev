@@ -1,7 +1,7 @@
 
 resource "google_compute_network" "nogales-network" {
-  project                 = var.project_name
   name                    = "${var.environment}-nogales-network"
+  project                 = var.project_name
   auto_create_subnetworks = false
   # Maximum Transmission Unit in bytes
   mtu = 1460
