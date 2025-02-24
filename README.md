@@ -28,3 +28,6 @@ terraform init
 terraform plan
 terraform state rm
 terraform apply -var-file="env.pro.tfvars" && ffplay /sound/finish.mp3 -nodisp -nostats -hide_banner -autoexit
+
+
+docker commit -m "puppeter" a443dcb20cef us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_assessment_front_back:1.29.3

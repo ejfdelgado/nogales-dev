@@ -121,6 +121,10 @@ services:
       MICROSOFT_CLIENT_ID: 4c1062f0-7409-4597-9eac-21b87ac6005e
       MICROSOFT_TENANT: e03b8fb1-7e35-4dab-ae1e-aa681402dbf2
       AUTH_GROUP_ID_MAP: eyIxZjRlNzk5MC05YWQ5LTQ0MzItYWY1Ni1hNWM1Njk4OGZjZWEiOiJhcHBzX3ZpZGVvX2NhbGxfY2FsbGVyIiwiNGE1OTlmZTktMzMyMi00YTk0LTgyNDEtYTI1YmU2MjhlOGU0IjoiYXBwc192aWRlb19jYWxsX2ludHJvX2VkaXRvciJ9
+      SEND_GRID_VARIABLE: ${SEND_GRID_VARIABLE}
+      EMAIL_SENDER: ejdelgado@nogalespsychological.com
+    #volumes:
+    #  - /home/ejfdelgado/desarrollo/nogales-assessment:/tmp/app
     ports:
       - "2219:22"
       - "443:443"
