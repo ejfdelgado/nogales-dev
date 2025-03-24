@@ -187,6 +187,7 @@ resource "google_compute_backend_service" "videocallbkservice" {
 }
 
 resource "google_compute_managed_ssl_certificate" "default" {
+  count = var.environment == "pro" ? 1 : 0
   name    = "${var.environment}-videocall-cert"
   managed {
     domains = ["video.solvista.me."]
@@ -194,6 +195,7 @@ resource "google_compute_managed_ssl_certificate" "default" {
 }
 
 resource "google_compute_url_map" "videocallmap" {
+  count = var.environment == "pro" ? 1 : 0
   name        = "${var.environment}-videocall-map"
 
   default_service = google_compute_backend_service.videocallbkservice.id
@@ -215,13 +217,15 @@ resource "google_compute_url_map" "videocallmap" {
 }
 
 resource "google_compute_target_https_proxy" "default" {
+  count = var.environment == "pro" ? 1 : 0
   name             = "${var.environment}-videocall-proxy"
-  url_map          = google_compute_url_map.videocallmap.id
-  ssl_certificates = [google_compute_managed_ssl_certificate.default.id]
+  url_map          = google_compute_url_map.videocallmap[count.index].id
+  ssl_certificates = [google_compute_managed_ssl_certificate.default[count.index].id]
 }
 
 resource "google_compute_global_forwarding_rule" "default" {
+  count = var.environment == "pro" ? 1 : 0
   name       = "${var.environment}-videocall-forward"
-  target     = google_compute_target_https_proxy.default.id
+  target     = google_compute_target_https_proxy.default[count.index].id
   port_range = 443
 }

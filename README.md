@@ -27,7 +27,11 @@ export GOOGLE_APPLICATION_CREDENTIALS=/home/ejfdelgado/desarrollo/nogales-assess
 terraform init
 terraform plan
 terraform state rm
-terraform apply -var-file="env.pro.tfvars" && ffplay /sound/finish.mp3 -nodisp -nostats -hide_banner -autoexit
 
+terraform workspace new pro
+terraform workspace new stg
 
-docker commit -m "puppeter" a443dcb20cef us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_assessment_front_back:1.29.3
+terraform workspace select pro && terraform apply -var-file="env.pro.tfvars" && ffplay /sound/finish.mp3 -nodisp -nostats -hide_banner -autoexit
+
+terraform workspace select stg && terraform apply -var-file="env.stg.tfvars" && ffplay /sound/finish.mp3 -nodisp -nostats -hide_banner -autoexit
+
