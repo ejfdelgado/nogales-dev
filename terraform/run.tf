@@ -104,7 +104,7 @@ resource "google_cloud_run_v2_service" "assessment" {
       }
       env {
         name  = "POSTGRES_PASSWORD"
-        value = local.secrets.postgress_pass
+        value = local.secrets.postgress.pass
       }
       env {
         name  = "AUTH_GROUP_ID_MAP"
@@ -220,7 +220,7 @@ resource "google_cloud_run_v2_service" "videocall" {
       }
       env {
         name  = "SEND_GRID_VARIABLE"
-        value = local.secrets.postgress_pass
+        value = local.secrets.postgress.pass
       }
       env {
         name  = "WORKSPACE"
@@ -249,7 +249,7 @@ resource "google_cloud_run_v2_service" "videocall" {
       }
       env {
         name  = "POSTGRES_PASSWORD"
-        value = local.secrets.postgress_pass
+        value = local.secrets.postgress.pass
       }
       env {
         name  = "HEY_MARKET_API_KEY"
