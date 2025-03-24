@@ -1,5 +1,6 @@
 
 resource "google_compute_instance" "videocall" {
+  count = var.environment == "pro" ? 1 : 0
   name     = "${var.environment}-nogales-videocall"
 
   boot_disk {
@@ -136,9 +137,10 @@ EOT
 }
 
 resource "google_compute_instance_group" "videocallgroup" {
+  count = var.environment == "pro" ? 1 : 0
   name        = "${var.environment}-videocall-group"
   zone        = var.zone
-  instances   = [google_compute_instance.videocall.self_link]
+  instances   = [google_compute_instance.videocall[count.index].self_link]
 
   named_port {
     #name = "http"
@@ -151,6 +153,7 @@ resource "google_compute_instance_group" "videocallgroup" {
 }
 
 resource "google_compute_health_check" "videocall" {
+  count = var.environment == "pro" ? 1 : 0
   name = "${var.environment}-health-check"
   timeout_sec        = 5
   check_interval_sec = 5
@@ -171,6 +174,7 @@ resource "google_compute_health_check" "videocall" {
 }
 
 resource "google_compute_backend_service" "videocallbkservice" {
+  count = var.environment == "pro" ? 1 : 0
   name     = "${var.environment}-videocall-bksrv"
   #protocol = "HTTP"
 
@@ -180,10 +184,10 @@ resource "google_compute_backend_service" "videocallbkservice" {
   enable_cdn            = false
 
   backend {
-    group = google_compute_instance_group.videocallgroup.self_link
+    group = google_compute_instance_group.videocallgroup[count.index].self_link
   }
 
-  health_checks = [google_compute_health_check.videocall.self_link]
+  health_checks = [google_compute_health_check.videocall[count.index].self_link]
 }
 
 resource "google_compute_managed_ssl_certificate" "default" {
@@ -198,7 +202,7 @@ resource "google_compute_url_map" "videocallmap" {
   count = var.environment == "pro" ? 1 : 0
   name        = "${var.environment}-videocall-map"
 
-  default_service = google_compute_backend_service.videocallbkservice.id
+  default_service = google_compute_backend_service.videocallbkservice[count.index].id
 
   host_rule {
     hosts        = ["video.solvista.me"]
@@ -207,11 +211,11 @@ resource "google_compute_url_map" "videocallmap" {
 
   path_matcher {
     name            = "allpaths"
-    default_service = google_compute_backend_service.videocallbkservice.id
+    default_service = google_compute_backend_service.videocallbkservice[count.index].id
 
     path_rule {
       paths   = ["/*"]
-      service = google_compute_backend_service.videocallbkservice.id
+      service = google_compute_backend_service.videocallbkservice[count.index].id
     }
   }
 }
