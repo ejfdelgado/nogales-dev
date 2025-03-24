@@ -5,8 +5,8 @@ resource "google_sql_database_instance" "general" {
   region           = var.region
 
   settings {
-    tier              = "db-g1-small"
-    disk_size         = "100"
+    tier              = var.sql_type
+    disk_size         = var.sql_gb
 
     ip_configuration {
       ipv4_enabled = true 

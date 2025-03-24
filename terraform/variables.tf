@@ -97,7 +97,19 @@ variable "email_gce_service_account" {
 variable "email_sender" {
   description = "email_sender"
   type        = string
-  default     = ""
+  default     = "ejdelgado@nogalespsychological.com"
+}
+
+variable "sql_type" {
+  description = "sql_type"
+  type        = string
+  default     = "db-g1-small"
+}
+
+variable "sql_gb" {
+  description = "sql_gb"
+  type        = string
+  default     = "100"
 }
 
 variable "api_yml" {

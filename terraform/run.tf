@@ -71,7 +71,11 @@ resource "google_cloud_run_v2_service" "assessment" {
       }
       env {
         name  = "SEND_GRID_VARIABLE"
-        value = local.secrets.postgress_pass
+        value = local.secrets.sendgrid_apikey
+      }
+      env {
+        name  = "EMAIL_SENDER"
+        value = var.email_sender
       }
       env {
         name  = "WORKSPACE"
@@ -228,6 +232,7 @@ resource "google_cloud_run_service_iam_member" "no_auth_playground" {
 }
 
 resource "google_compute_managed_ssl_certificate" "assessment" {
+  count = var.environment == "pro" ? 1 : 0
   name    = "${var.environment}-assessment-cert"
   managed {
     domains = ["test.solvista.me."]
@@ -235,6 +240,7 @@ resource "google_compute_managed_ssl_certificate" "assessment" {
 }
 
 resource "google_compute_managed_ssl_certificate" "apps" {
+  count = var.environment == "pro" ? 1 : 0
   name    = "${var.environment}-apps-cert"
   managed {
     domains = ["apps.solvista.me."]
