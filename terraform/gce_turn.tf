@@ -1,5 +1,6 @@
 
 resource "google_compute_instance" "turn" {
+  count = var.environment == "pro" ? 1 : 0
   name     = "${var.environment}-nogales-turn"
 
   boot_disk {
@@ -96,9 +97,10 @@ EOT
 }
 
 resource "google_compute_instance_group" "turngroup" {
+  count = var.environment == "pro" ? 1 : 0
   name        = "${var.environment}-turn-group"
   zone        = var.zone
-  instances   = [google_compute_instance.turn.self_link]
+  instances   = [google_compute_instance.turn[count.index].self_link]
 
   named_port {
     name = "http"
@@ -109,6 +111,7 @@ resource "google_compute_instance_group" "turngroup" {
 }
 
 resource "google_compute_health_check" "turn" {
+  count = var.environment == "pro" ? 1 : 0
   name = "${var.environment}-turn-healthcheck"
   timeout_sec        = 5
   check_interval_sec = 5
@@ -119,18 +122,20 @@ resource "google_compute_health_check" "turn" {
 
 
 resource "google_compute_backend_service" "turnbkservice" {
+  count = var.environment == "pro" ? 1 : 0
   name     = "${var.environment}-turn-bksrv"
   protocol = "HTTP"
 
   backend {
-    group = google_compute_instance_group.turngroup.self_link
+    group = google_compute_instance_group.turngroup[count.index].self_link
   }
 
-  health_checks = [google_compute_health_check.turn.self_link]
+  health_checks = [google_compute_health_check.turn[count.index].self_link]
 }
 
 
 resource "google_compute_managed_ssl_certificate" "turn" {
+  count = var.environment == "pro" ? 1 : 0
   name    = "${var.environment}-turn-cert"
   managed {
     domains = ["turn.solvista.me."]
@@ -138,9 +143,10 @@ resource "google_compute_managed_ssl_certificate" "turn" {
 }
 
 resource "google_compute_url_map" "turnmap" {
+  count = var.environment == "pro" ? 1 : 0
   name        = "${var.environment}-turn-map"
 
-  default_service = google_compute_backend_service.turnbkservice.id
+  default_service = google_compute_backend_service.turnbkservice[count.index].id
 
   host_rule {
     hosts        = ["turn.solvista.me"]
@@ -149,23 +155,25 @@ resource "google_compute_url_map" "turnmap" {
 
   path_matcher {
     name            = "allpaths"
-    default_service = google_compute_backend_service.turnbkservice.id
+    default_service = google_compute_backend_service.turnbkservice[count.index].id
 
     path_rule {
       paths   = ["/*"]
-      service = google_compute_backend_service.turnbkservice.id
+      service = google_compute_backend_service.turnbkservice[count.index].id
     }
   }
 }
 
 resource "google_compute_target_https_proxy" "turn" {
+  count = var.environment == "pro" ? 1 : 0
   name             = "${var.environment}-turn-proxy"
-  url_map          = google_compute_url_map.turnmap.id
-  ssl_certificates = [google_compute_managed_ssl_certificate.turn.id]
+  url_map          = google_compute_url_map.turnmap[count.index].id
+  ssl_certificates = [google_compute_managed_ssl_certificate.turn[count.index].id]
 }
 
 resource "google_compute_global_forwarding_rule" "turn" {
+  count = var.environment == "pro" ? 1 : 0
   name       = "${var.environment}-turn-forward"
-  target     = google_compute_target_https_proxy.turn.id
+  target     = google_compute_target_https_proxy.turn[count.index].id
   port_range = 443
 }
