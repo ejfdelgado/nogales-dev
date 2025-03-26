@@ -50,6 +50,10 @@ resource "google_cloud_run_v2_service" "assessment" {
     containers {
       image = var.assessment_image
       env {
+        name  = "LOGLEVEL"
+        value = "error"
+      }
+      env {
         name  = "GOOGLE_APPLICATION_CREDENTIALS"
         value = var.credentials_path
       }
