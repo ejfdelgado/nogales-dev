@@ -97,7 +97,7 @@ variable "email_gce_service_account" {
 variable "email_sender" {
   description = "email_sender"
   type        = string
-  default     = "ejdelgado@nogalespsychological.com"
+  default     = "no_reply@nogalespsychological.com"
 }
 
 variable "sql_type" {
@@ -121,7 +121,7 @@ variable "api_yml" {
 variable "auth_group_id_map" {
   description = "auth_group_id_map"
   type        = string
-  default     = ""
+  default     = "ewogICAgIjQ1ODc0MzMyLTdjZjUtNDA0Ny1iYTU3LTJlY2Q5MTgzYjdmYyI6ICJhcHBzX3ZpZGVvY2FsbF9hZG1pbiIsCiAgICAiNzNiY2I5MjktMGNhNi00YjUyLTllZGQtNGFjMzllNmQ2ZTllIjogImFwcHNfdmlkZW9jYWxsX3Byb3ZpZGVyIiwKICAgICI0YmI3MzliNS03MTQ2LTRkNTYtYjQ3ZC0yNTVkZjNmOWUxYjIiOiAiYXBwc19kZXYiLAogICAgIjA4ODkwZWI3LWNkODItNGZlNS05YjQ3LTQyMjVjZjQwYTBmMSI6ICJhcHBzX2hpc3RvcmlhbnMiLAogICAgImFjYjkwMzU0LThjMDgtNDA0OC04ZGFiLTgyNGQ5ODhjMWYyZiI6ICJhcHBzX2VkaXRvcnMiCn0="
 }
 
 variable "heymarket_end_point" {
