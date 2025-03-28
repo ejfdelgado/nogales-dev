@@ -1,7 +1,7 @@
 environment = "stg"
 credentials_path="/tmp/app/credentials/local-volt-431316-m2-4fe954a04994.json"
 email_gce_service_account="284609972807-compute@developer.gserviceaccount.com"
-assessment_image = "us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_assessment_front_back:1.30.0"
+assessment_image = "us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_assessment_front_back:1.31.1"
 videocall_image="us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_videocall_front_back:1.16.1"
 playground_image="us-docker.pkg.dev/ejfexperiments/us.gcr.io/ejflab_playground_front_back:1.0.0"
 turn_image="us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_turn:1.3.0"
