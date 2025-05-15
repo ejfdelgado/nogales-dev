@@ -66,6 +66,10 @@ resource "google_cloud_run_v2_service" "assessment" {
         value = "pro"
       }
       env {
+        name  = "LOCAL_TRANSCRIPT"
+        value = "yes"
+      }
+      env {
         name  = "TRAIN_SERVER"
         value = "NA"
       }

@@ -18,7 +18,7 @@
 # Videocall:
 # ssh root@localhost -p 2220
 
-# docker commit -m "chrome" -p 3e41966c31fb  us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_assessment_front_back:1.28.2 
+# docker commit -m "chrome" -p 1998c1faf9bc  us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_assessment_front_back:1.36.1
 
 # http://localhost:4200/
 # http://localhost:8081/srv/postgress/test
@@ -98,6 +98,7 @@ services:
       PORT: "443"
       USE_SECURE: "yes"
       ENV: "pro"
+      LOCAL_TRANSCRIPT: "yes"
       GOOGLE_APPLICATION_CREDENTIALS: ${GCP_SERVICE_ACCOUNT_JSON}
       FACE_SERVER: ""
       TRAIN_SERVER: ""
@@ -120,7 +121,7 @@ services:
       AUTH_PROVIDER: microsoft
       MICROSOFT_CLIENT_ID: 4c1062f0-7409-4597-9eac-21b87ac6005e
       MICROSOFT_TENANT: e03b8fb1-7e35-4dab-ae1e-aa681402dbf2
-      AUTH_GROUP_ID_MAP: eyIxZjRlNzk5MC05YWQ5LTQ0MzItYWY1Ni1hNWM1Njk4OGZjZWEiOiJhcHBzX3ZpZGVvX2NhbGxfY2FsbGVyIiwiNGE1OTlmZTktMzMyMi00YTk0LTgyNDEtYTI1YmU2MjhlOGU0IjoiYXBwc192aWRlb19jYWxsX2ludHJvX2VkaXRvciJ9
+      AUTH_GROUP_ID_MAP: ewogICAgICAgICIzNzY5ZjM1YS0xYjcwLTRkZjEtYmU1Mi00YWQyNTdhMTkxNmUiOiAiYXBwc19hZG1pbiIsCiAgICAgICAgIjRiYjczOWI1LTcxNDYtNGQ1Ni1iNDdkLTI1NWRmM2Y5ZTFiMiI6ICJhcHBzX2RldiIsCiAgICAgICAgImFjYjkwMzU0LThjMDgtNDA0OC04ZGFiLTgyNGQ5ODhjMWYyZiI6ICJhcHBzX2VkaXRvcnMiLAogICAgICAgICIwODg5MGViNy1jZDgyLTRmZTUtOWI0Ny00MjI1Y2Y0MGEwZjEiOiAiYXBwc19oaXN0b3JpYW5zIiwKICAgICAgICAiMmM2NjcxYzQtYjI3NC00NGJkLWFlOWItZjU2NDc2NzFmMzFhIjogImFwcHNfaW1wb3J0ZXIiLAogICAgICAgICI0NTg3NDMzMi03Y2Y1LTQwNDctYmE1Ny0yZWNkOTE4M2I3ZmMiOiAiYXBwc192aWRlb2NhbGxfYWRtaW4iLAogICAgICAgICI3M2JjYjkyOS0wY2E2LTRiNTItOWVkZC00YWMzOWU2ZDZlOWUiOiAiYXBwc192aWRlb2NhbGxfcHJvdmlkZXIiCiAgICAgIH0=
       SEND_GRID_VARIABLE: ${SEND_GRID_VARIABLE}
       EMAIL_SENDER: ejdelgado@nogalespsychological.com
     #volumes:
