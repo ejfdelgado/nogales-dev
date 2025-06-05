@@ -1,0 +1,26 @@
+title RTC Hand Shake
+
+
+participant RTCCom
+participant Signaling Server
+participant Peer RTCCom
+
+note over RTCCom,Signaling Server:https://sequencediagram.org/
+RTCCom->RTCCom:openChannelWith(remoteSocketId)
+activate RTCCom
+RTCCom->RTCCom:this.peers[remoteSocketId] = new RTCPeerConnection()
+RTCCom->RTCCom:setLocalDestription()
+RTCCom-->Signaling Server:callUser
+deactivate RTCCom
+Signaling Server-->Peer RTCCom:callMade
+activate Peer RTCCom
+Peer RTCCom->Peer RTCCom:new RTCPeerConnection()
+Peer RTCCom->Peer RTCCom:setRemoteDestription()
+Peer RTCCom->Peer RTCCom:setLocalDestription()
+Peer RTCCom-->Signaling Server:makeAnswer
+deactivate Peer RTCCom
+Signaling Server-->RTCCom:answerMade
+activate RTCCom
+RTCCom->RTCCom:peer = this.peers[remoteSocketId]
+RTCCom->RTCCom:setRemoteDestription()
+deactivate RTCCom
