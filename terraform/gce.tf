@@ -2,6 +2,7 @@
 resource "google_compute_instance" "videocall" {
   count = var.environment == "pro" ? 1 : 0
   name     = "${var.environment}-nogales-videocall"
+  allow_stopping_for_update = true
 
   boot_disk {
     auto_delete = false
@@ -25,7 +26,9 @@ resource "google_compute_instance" "videocall" {
     goog-ec-src  = "vm_add-tf"
   }
 
-  machine_type = "n1-standard-1"
+  # n1-standard-1 = 3.7G = 36 usd/month
+  # n1-standard-2 = 7.5G = 70 usd/month
+  machine_type = "n1-standard-2"
 
   metadata = {
     gce-container-declaration = <<EOT
