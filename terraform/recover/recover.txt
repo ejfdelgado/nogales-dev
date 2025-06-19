@@ -38,3 +38,5 @@ terraform import google_compute_health_check.turn pro-turn-healthcheck
 terraform import google_compute_url_map.videocallmap pro-videocall-map
 terraform import google_compute_url_map.turnmap pro-turn-map
 terraform import google_sql_database_instance.general pro-general
+
+terraform import -var-file=env.pro.tfvars google_compute_managed_ssl_certificate.assessment pro-assessment-cert

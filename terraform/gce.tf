@@ -184,7 +184,22 @@ resource "google_compute_backend_service" "videocallbkservice" {
   protocol              = "HTTPS"
   port_name             = "https"
   timeout_sec           = 7200
-  enable_cdn            = false
+  enable_cdn            = true
+
+  cdn_policy {
+    cache_mode                    = "CACHE_ALL_STATIC"  # Options: "CACHE_ALL_STATIC", "USE_ORIGIN_HEADERS", "FORCE_CACHE_ALL"
+    default_ttl                   = 600                  # in seconds
+    max_ttl                       = 1200                 # in seconds
+    client_ttl                    = 300                   # in seconds
+    negative_caching              = true
+    serve_while_stale             = 86400
+    cache_key_policy {
+      include_protocol            = true
+      include_host                = true
+      include_query_string        = true
+      #query_string_whitelist      = ["id", "l"]
+    }
+  }
 
   backend {
     group = google_compute_instance_group.videocallgroup[count.index].self_link
