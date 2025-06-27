@@ -86,7 +86,9 @@ spec:
         - name: MICROSOFT_CLIENT_ID
           value: ${local.secrets.authentication.MICROSOFT_CLIENT_ID}
         - name: MICROSOFT_TENANT
-          value: ${local.secrets.authentication.MICROSOFT_TENANT}          
+          value: ${local.secrets.authentication.MICROSOFT_TENANT}
+        - name: WEBRTC_CONF
+          value: ${var.webrtc_config}
       securityContext:
         privileged: true
       stdin: false

@@ -129,3 +129,9 @@ variable "heymarket_end_point" {
   type        = string
   default     = ""
 }
+
+variable "webrtc_config" {
+  description = "webrtc_config"
+  type        = string
+  default     = "./credentials/webrtcconfig.all.json"
+}
