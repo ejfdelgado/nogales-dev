@@ -226,37 +226,45 @@ resource "google_compute_managed_ssl_certificate" "default" {
 }
 
 resource "google_compute_url_map" "videocallmap" {
-  count = var.environment == "pro" ? 1 : 0
+  #count = var.environment == "pro" ? 1 : 0
   name        = "${var.environment}-videocall-map"
 
-  default_service = google_compute_backend_service.videocallbkservice[count.index].id
+  #default_service = google_compute_backend_service.videocallbkservice[count.index].id
+  default_service = google_compute_backend_service.videocallbkservice.id
 
   host_rule {
-    hosts        = ["video.solvista.me"]
+    hosts        = [
+      var.environment == "pro" ? "video.solvista.me" : "video-stg.solvista.me"
+      ]
     path_matcher = "allpaths"
   }
 
   path_matcher {
     name            = "allpaths"
-    default_service = google_compute_backend_service.videocallbkservice[count.index].id
+    #default_service = google_compute_backend_service.videocallbkservice[count.index].id
+    default_service = google_compute_backend_service.videocallbkservice.id
 
     path_rule {
       paths   = ["/*"]
-      service = google_compute_backend_service.videocallbkservice[count.index].id
+      #service = google_compute_backend_service.videocallbkservice[count.index].id
+      service = google_compute_backend_service.videocallbkservice.id
     }
   }
 }
 
 resource "google_compute_target_https_proxy" "default" {
-  count = var.environment == "pro" ? 1 : 0
+  #count = var.environment == "pro" ? 1 : 0
   name             = "${var.environment}-videocall-proxy"
-  url_map          = google_compute_url_map.videocallmap[count.index].id
-  ssl_certificates = [google_compute_managed_ssl_certificate.default[count.index].id]
+  #url_map          = google_compute_url_map.videocallmap[count.index].id
+  url_map          = google_compute_url_map.videocallmap.id
+  #ssl_certificates = [google_compute_managed_ssl_certificate.default[count.index].id]
+  ssl_certificates = [google_compute_managed_ssl_certificate.default.id]
 }
 
 resource "google_compute_global_forwarding_rule" "default" {
-  count = var.environment == "pro" ? 1 : 0
+  #count = var.environment == "pro" ? 1 : 0
   name       = "${var.environment}-videocall-forward"
-  target     = google_compute_target_https_proxy.default[count.index].id
+  #target     = google_compute_target_https_proxy.default[count.index].id
+  target     = google_compute_target_https_proxy.default.id
   port_range = 443
 }
