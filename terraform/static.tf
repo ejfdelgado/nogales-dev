@@ -33,7 +33,11 @@ resource "google_compute_url_map" "static_map" {
 }
 
 resource "google_compute_target_https_proxy" "static_proxy" {
-  name             = "${var.environment}-https-proxy"
+  name             = "${var.environment}-static-https-proxy"
   ssl_certificates = [google_compute_managed_ssl_certificate.static_ssl.id]
   url_map          = google_compute_url_map.static_map.id
+}
+
+resource "google_compute_global_address" "static_ip" {
+  name = "${var.environment}-static-ip"
 }
