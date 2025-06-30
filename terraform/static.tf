@@ -65,7 +65,6 @@ variable "static_file_list" {
   default = {
     "camera/index.html" = "camera/index.html",
     "camera/js/index.js" = "camera/js/index.js",
-    "index.html" = "index.html",
     "404.html" = "404.html"
   }
 }

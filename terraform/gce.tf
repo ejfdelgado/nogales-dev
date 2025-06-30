@@ -1,6 +1,6 @@
 
 resource "google_compute_instance" "videocall" {
-  count = var.environment == "pro" ? 1 : 0
+  #count = var.environment == "pro" ? 1 : 0
   name     = "${var.environment}-nogales-videocall"
   allow_stopping_for_update = true
 
@@ -28,7 +28,7 @@ resource "google_compute_instance" "videocall" {
 
   # n1-standard-1 = 3.7G = 36 usd/month
   # n1-standard-2 = 7.5G = 70 usd/month
-  machine_type = "n1-standard-2"
+  machine_type = var.environment == "pro" ? "n1-standard-2" : "n1-standard-1"
 
   metadata = {
     gce-container-declaration = <<EOT
@@ -142,10 +142,11 @@ EOT
 }
 
 resource "google_compute_instance_group" "videocallgroup" {
-  count = var.environment == "pro" ? 1 : 0
+  #count = var.environment == "pro" ? 1 : 0
   name        = "${var.environment}-videocall-group"
   zone        = var.zone
-  instances   = [google_compute_instance.videocall[count.index].self_link]
+  # instances   = [google_compute_instance.videocall[count.index].self_link]
+  instances   = [google_compute_instance.videocall.self_link]
 
   named_port {
     #name = "http"
@@ -158,7 +159,7 @@ resource "google_compute_instance_group" "videocallgroup" {
 }
 
 resource "google_compute_health_check" "videocall" {
-  count = var.environment == "pro" ? 1 : 0
+  #count = var.environment == "pro" ? 1 : 0
   name = "${var.environment}-health-check"
   timeout_sec        = 5
   check_interval_sec = 5
@@ -179,7 +180,7 @@ resource "google_compute_health_check" "videocall" {
 }
 
 resource "google_compute_backend_service" "videocallbkservice" {
-  count = var.environment == "pro" ? 1 : 0
+  #count = var.environment == "pro" ? 1 : 0
   name     = "${var.environment}-videocall-bksrv"
   #protocol = "HTTP"
 
@@ -204,17 +205,23 @@ resource "google_compute_backend_service" "videocallbkservice" {
   }
 
   backend {
-    group = google_compute_instance_group.videocallgroup[count.index].self_link
+    #group = google_compute_instance_group.videocallgroup[count.index].self_link
+    group = google_compute_instance_group.videocallgroup.self_link
   }
 
-  health_checks = [google_compute_health_check.videocall[count.index].self_link]
+  health_checks = [
+    #google_compute_health_check.videocall[count.index].self_link
+    google_compute_health_check.videocall.self_link
+    ]
 }
 
 resource "google_compute_managed_ssl_certificate" "default" {
-  count = var.environment == "pro" ? 1 : 0
+  #count = var.environment == "pro" ? 1 : 0
   name    = "${var.environment}-videocall-cert"
   managed {
-    domains = ["video.solvista.me."]
+    domains = [
+      var.environment == "pro" ? "video.solvista.me." : "video-stg.solvista.me"
+      ]
   }
 }
 
