@@ -44,7 +44,7 @@ spec:
         - name: USE_SECURE
           value: yes
         - name: ENV
-          value: ${var.environment}
+          value: pro
         - name: TRAIN_SERVER
           value: NA
         - name: FACE_SERVER
@@ -70,7 +70,7 @@ spec:
         - name: POSTGRES_USER
           value: ${local.secrets.postgress.user}
         - name: POSTGRES_PASSWORD
-          value: ${local.secrets.postgress.pass}
+          value: "${local.secrets.postgress.pass}"
         - name: HEY_MARKET_API_KEY
           value: ${local.secrets.heymarket.HEY_MARKET_API_KEY}
         - name: HEY_MARKET_SENDER_ID
