@@ -24,7 +24,16 @@ resource "google_compute_managed_ssl_certificate" "static_ssl" {
 resource "google_compute_backend_bucket" "static_backend" {
   name        = "${var.environment}-static-backend-bucket"
   bucket_name = google_storage_bucket.static_site.name
-  enable_cdn  = true
+  enable_cdn  = false
+
+  cdn_policy {
+    cache_mode                  = "CACHE_ALL_STATIC"
+    default_ttl                 = 60         # 1 hour (in seconds)
+    max_ttl                     = 60        # 1 day
+    client_ttl                  = 60          # 5 minutes sent to browsers
+    negative_caching            = true
+    signed_url_cache_max_age_sec = 60
+  }
 }
 
 resource "google_compute_url_map" "static_map" {
