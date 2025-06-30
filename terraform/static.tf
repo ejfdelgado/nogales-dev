@@ -41,3 +41,27 @@ resource "google_compute_target_https_proxy" "static_proxy" {
 resource "google_compute_global_address" "static_ip" {
   name = "${var.environment}-static-ip"
 }
+
+resource "google_compute_global_forwarding_rule" "https_rule" {
+  name        = "${var.environment}-static-https-forward"
+  target      = google_compute_target_https_proxy.static_proxy.id
+  port_range  = "443"
+  load_balancing_scheme = "EXTERNAL"
+  ip_protocol = "TCP"
+  ip_address  = google_compute_global_address.static_ip.address
+}
+
+variable "static_file_list" {
+  type = map(string)
+  default = {
+    "index.html"            = "index.html",
+    "404.html"            = "404.html"
+  }
+}
+
+resource "google_storage_bucket_object" "static_site" {
+  for_each = var.static_file_list
+  name     = "${each.value}"
+  source   = "${var.static_file_root}/${each.key}"
+  bucket   = google_storage_bucket.static_site.id
+}

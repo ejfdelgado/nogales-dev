@@ -135,3 +135,9 @@ variable "webrtc_config" {
   type        = string
   default     = "./credentials/webrtcconfig.all.json"
 }
+
+variable "static_file_root" {
+  description = "static_file_root"
+  type        = string
+  default     = "/home/ejfdelgado/desarrollo/nogales-dev/static-site"
+}
