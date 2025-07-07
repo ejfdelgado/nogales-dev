@@ -10,8 +10,8 @@ resource "google_project_service" "artifact_registry" {
 # docker tag us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_videocall_front_back:1.18.1 us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_videocall_front_back:1.18.1
 # docker push us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_videocall_front_back:1.18.1 && npm run bip
 
-# us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_assessment_front_back:
-# us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_assessment_front_back:
+# us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_assessment_front_back:1.37.2
+# us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_assessment_front_back:1.37.2
 # docker tag us-docker.pkg.dev/ejfexperiments/us.gcr.io/nogales_assessment_front_back:1.37.2 us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_assessment_front_back:1.37.2
 # docker push us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_assessment_front_back:1.37.2 && npm run bip
 
