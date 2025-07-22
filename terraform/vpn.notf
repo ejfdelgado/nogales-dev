@@ -1,4 +1,4 @@
-resource "google_compute_instance_template" "container_template" {
+resource "google_compute_instance_template" "vpn_server" {
   name         = "${var.environment}-nogales-vpn-template"
   machine_type = "e2-medium"
   region       = "us-east1"
@@ -85,4 +85,30 @@ EOT
   }
 
   tags = ["gce-container"]
+}
+
+resource "google_compute_instance_group_manager" "vpn_server" {
+  name               = "example-mig"
+  base_instance_name = "example"
+  #region             = "us-central1"
+  version {
+    instance_template = google_compute_instance_template.vpn_server.id
+  }
+  target_size        = 1  # This will be managed by autoscaler later
+}
+
+resource "google_compute_autoscaler" "vpn_server" {
+  name   = "example-autoscaler"
+  #region = "us-central1"
+  target = google_compute_instance_group_manager.vpn_server.id
+
+  autoscaling_policy {
+    min_replicas    = 1
+    max_replicas    = 5
+    cooldown_period = 60
+
+    cpu_utilization {
+      target = 0.6
+    }
+  }
 }
