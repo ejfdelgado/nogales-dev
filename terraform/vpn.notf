@@ -1,0 +1,88 @@
+resource "google_compute_instance_template" "container_template" {
+  name         = "${var.environment}-nogales-vpn-template"
+  machine_type = "e2-medium"
+  region       = "us-east1"
+
+  disk {
+    auto_delete  = true
+    boot         = true
+    # Container-Optimized OS
+    source_image = "projects/cos-cloud/global/images/family/cos-stable"
+  }
+
+  network_interface {
+    network = "default"
+    access_config {}
+  }
+
+  metadata = {
+    "gce-container-declaration" = <<EOT
+spec:
+  containers:
+    - image: ${var.videocall_image}
+      name:  nogalesserver
+      env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: ${var.credentials_path}
+        - name: PORT
+          value: 443
+        - name: USE_SECURE
+          value: yes
+        - name: ENV
+          value: pro
+        - name: TRAIN_SERVER
+          value: NA
+        - name: FACE_SERVER
+          value: NA
+        - name: SEND_GRID_VARIABLE
+          value: ${local.secrets.sendgrid_apikey}
+        - name: EMAIL_SENDER
+          value: ${var.email_sender}
+        - name: WORKSPACE
+          value: /tmp/app
+        - name: NODE_SERVER_PATH
+          value: /
+        - name: BUCKET_PUBLIC
+          value: pro-nogales-public
+        - name: BUCKET_PRIVATE
+          value: pro-nogales-private
+        - name: POSTGRES_HOST
+          value: ${local.secrets.postgress.host}
+        - name: POSTGRES_PORT
+          value: ${local.secrets.postgress.port}
+        - name: POSTGRES_DB
+          value: ${local.secrets.postgress.db}
+        - name: POSTGRES_USER
+          value: ${local.secrets.postgress.user}
+        - name: POSTGRES_PASSWORD
+          value: "${local.secrets.postgress.pass}"
+        - name: HEY_MARKET_API_KEY
+          value: ${local.secrets.heymarket.HEY_MARKET_API_KEY}
+        - name: HEY_MARKET_SENDER_ID
+          value: ${local.secrets.heymarket.HEY_MARKET_SENDER_ID}
+        - name: HEY_MARKET_INBOX_ID
+          value: ${local.secrets.heymarket.HEY_MARKET_INBOX_ID}
+        - name: HEY_MARKET_END_POINT
+          value: ${var.heymarket_end_point}
+        - name: AUTH_GROUP_ID_MAP
+          value: ${var.auth_group_id_map}
+        - name: AUTH_PROVIDER
+          value: ${local.secrets.authentication.AUTH_PROVIDER}
+        - name: MICROSOFT_CLIENT_ID
+          value: ${local.secrets.authentication.MICROSOFT_CLIENT_ID}
+        - name: MICROSOFT_TENANT
+          value: ${local.secrets.authentication.MICROSOFT_TENANT}
+        - name: WEBRTC_CONF
+          value: ${var.webrtc_config}
+      securityContext:
+        privileged: true
+      stdin: false
+      tty: false
+      volumeMounts: []
+      restartPolicy: Always
+      volumes: []
+EOT
+  }
+
+  tags = ["gce-container"]
+}
