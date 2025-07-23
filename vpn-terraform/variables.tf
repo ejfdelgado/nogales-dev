@@ -15,3 +15,18 @@ variable "environment" {
   type        = string
   default     = "pro"
 }
+
+variable "vpn_image" {
+  description = "vpn_image"
+  type        = string
+}
+
+variable "region" {
+  description = "region"
+  type        = string
+}
+
+variable "zone" {
+  description = "zone"
+  type        = string
+}
