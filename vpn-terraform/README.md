@@ -11,3 +11,5 @@ terraform workspace select stg && terraform apply -var-file="env.stg.tfvars" && 
 
 terraform workspace select pro && terraform apply -var-file="env.pro.tfvars" && ffplay /sound/finish.mp3 -nodisp -nostats -hide_banner -autoexit
 ```
+
+The VPN docker image came from: https://hub.docker.com/r/linuxserver/wireguard

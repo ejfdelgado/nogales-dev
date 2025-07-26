@@ -1,8 +1,7 @@
-
 resource "google_compute_instance_group_manager" "vpn_server" {
-  name         = "${var.environment}-nogales-vpn-mig"
-  base_instance_name = "${var.environment}-nogales-vpn-mig"
-  zone               = var.zone
+  name               = "${var.environment}-nogales-vpn"
+  base_instance_name = "${var.environment}-nogales-vpn-base"
+  #region             = "us-central1"
   version {
     instance_template = google_compute_instance_template.vpn_server.id
   }
@@ -10,12 +9,12 @@ resource "google_compute_instance_group_manager" "vpn_server" {
 }
 
 resource "google_compute_autoscaler" "vpn_server" {
-  name   = "${var.environment}-nogales-vpn-autoscaler"
-  zone   = var.zone
+  name   = "${var.environment}-nogales-vpn"
+  #region = "us-central1"
   target = google_compute_instance_group_manager.vpn_server.id
 
   autoscaling_policy {
-    min_replicas    = 1
+    min_replicas    = 0
     max_replicas    = 5
     cooldown_period = 60
 
