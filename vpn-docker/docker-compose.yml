@@ -1,0 +1,53 @@
+#docker compose -f docker-compose.yml --profile all up -d && docker compose -f docker-compose.yml logs -f wireguard
+#docker compose -f docker-compose.yml --profile all down --remove-orphans
+#docker compose -f docker-compose.yml logs -f wireguard
+
+networks:
+  network_vpn:
+    name: network_vpn
+    driver: bridge
+    enable_ipv6: false
+
+volumes:
+  vpn_modules:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: "${WORKSPACE}/vpn_modules"
+  vpn_config:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: "${WORKSPACE}/vpn_config"
+
+# https://github.com/linuxserver/docker-wireguard
+services:
+    wireguard:
+        image: lscr.io/linuxserver/wireguard:latest
+        container_name: wireguard
+        cap_add:
+            - NET_ADMIN
+            - SYS_MODULE
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=Etc/UTC
+            #- SERVERURL=wireguard.domain.com
+            - SERVERPORT=51820
+            - PEERS=1
+            - PEERDNS=auto
+            - INTERNAL_SUBNET=10.13.13.0
+            - ALLOWEDIPS=0.0.0.0/0
+            - PERSISTENTKEEPALIVE_PEERS=
+            - LOG_CONFS=true
+        ports:
+            - 51820:51820/udp
+        volumes:
+            - vpn_config:/config
+            - vpn_modules:/lib/modules
+        sysctls:
+            - net.ipv4.conf.all.src_valid_mark=1
+        restart: unless-stopped
+
