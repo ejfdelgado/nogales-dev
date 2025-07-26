@@ -13,3 +13,8 @@ terraform workspace select pro && terraform apply -var-file="env.pro.tfvars" && 
 ```
 
 The VPN docker image came from: https://hub.docker.com/r/linuxserver/wireguard
+
+```
+nmap -sU -p 51820 34.94.114.14
+nmap -sU -p 51820 34.171.61.38
+```

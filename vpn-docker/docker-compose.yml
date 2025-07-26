@@ -27,9 +27,6 @@ services:
     wireguard:
         image: lscr.io/linuxserver/wireguard:latest
         container_name: wireguard
-        cap_add:
-            - NET_ADMIN
-            - SYS_MODULE
         environment:
             # External IP or domain name for docker host. 
             # Used in server mode. If set to auto, 
@@ -48,6 +45,9 @@ services:
             - ALLOWEDIPS=0.0.0.0/0
             - PERSISTENTKEEPALIVE_PEERS=
             - LOG_CONFS=true
+        cap_add:
+            - NET_ADMIN
+            - SYS_MODULE
         ports:
             - 51820:51820/udp
         volumes:

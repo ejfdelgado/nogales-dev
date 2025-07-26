@@ -1,0 +1,14 @@
+resource "google_compute_per_instance_config" "vpn_instances" {
+  count               = 3
+  name                = "${var.environment}-vpn-${count.index}"
+  zone                = var.zone
+  instance_group_manager = google_compute_instance_group_manager.vpn_server.name
+
+  preserved_state {
+    disk {
+      device_name = "vpn-data"
+      source      = google_compute_disk.stateful_disks[count.index].id
+      mode        = "READ_WRITE"
+    }
+  }
+}
