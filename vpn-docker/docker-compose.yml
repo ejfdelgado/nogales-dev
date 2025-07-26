@@ -31,14 +31,20 @@ services:
             - NET_ADMIN
             - SYS_MODULE
         environment:
+            # External IP or domain name for docker host. 
+            # Used in server mode. If set to auto, 
+            # the container will try to determine and set 
+            # the external IP automatically
+            #- SERVERURL=wireguard.domain.com
+            # Internal subnet for the wireguard and server and peers 
+            # (only change if it clashes). Used in server mode.
+            - INTERNAL_SUBNET=10.13.13.0
             - PUID=1000
             - PGID=1000
             - TZ=Etc/UTC
-            #- SERVERURL=wireguard.domain.com
             - SERVERPORT=51820
             - PEERS=1
             - PEERDNS=auto
-            - INTERNAL_SUBNET=10.13.13.0
             - ALLOWEDIPS=0.0.0.0/0
             - PERSISTENTKEEPALIVE_PEERS=
             - LOG_CONFS=true
