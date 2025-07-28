@@ -1,8 +1,8 @@
 
-#ssh-keygen -f '/home/ejfdelgado/.ssh/known_hosts' -R '34.139.177.41'
-#ssh -i ~/.ssh/id_ed25519 ejfdelgado@34.139.177.41
+#ssh-keygen -f '/home/ejfdelgado/.ssh/known_hosts' -R '34.74.215.84'
+#ssh -i ~/.ssh/id_ed25519 ejfdelgado@34.74.215.84
 #docker ps
-#docker exec -it 39da115d0818 /bin/bash
+#docker exec -it 58427691c63d /bin/bash
 
 resource "google_compute_instance" "single_vpn" {
   count        = 1
@@ -69,12 +69,22 @@ spec:
   restartPolicy: Always
 YAML
     startup-script = <<-EOT
-#!/bin/bash
-mkdir -p /mnt/stateful_partition/persisten_disk
-mount /dev/sdb /mnt/stateful_partition/persisten_disk
-chmod 777 /mnt/stateful_partition/persisten_disk
-mkdir -p /mnt/stateful_partition/persisten_disk/vpn_modules
-mkdir -p /mnt/stateful_partition/persisten_disk/vpn_config
+      #!/bin/bash
+      DISK_DEV="/dev/disk/by-id/google-data-disk"
+      MNT_DIR="/mnt/stateful_partition/persisten_disk"
+
+      while [ ! -e "$DISK_DEV" ]; do sleep 1; done
+
+      if ! blkid $DISK_DEV; then
+        mkfs.ext4 -F $DISK_DEV
+      fi
+
+      mkdir -p $MNT_DIR
+      mount -o discard,defaults $DISK_DEV $MNT_DIR
+      chmod 777 $MNT_DIR
+
+      mkdir -p $MNT_DIR/vpn_config
+      chmod 777 "$MNT_DIR/vpn_config
 EOT
     google-logging-enabled    = "true"
   }
