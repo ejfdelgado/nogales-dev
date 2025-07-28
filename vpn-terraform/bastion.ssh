@@ -1,10 +1,10 @@
 
 lsblk
 sudo mkfs.ext4 /dev/sdb
-sudo mkdir /mnt/persisten_disk
+sudo mkdir -p /mnt/persisten_disk
 sudo mount /dev/sdb /mnt/persisten_disk
 sudo chmod 777 /mnt/persisten_disk
 echo "It exist" > first.txt
 
-mkdir vpn_modules
-mkdir vpn_config
+mkdir -p /mnt/persisten_disk/vpn_modules
+mkdir -p /mnt/persisten_disk/vpn_config

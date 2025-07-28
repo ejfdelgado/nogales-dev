@@ -1,33 +1,19 @@
 
-# ssh -i ~/.ssh/id_ed25519 ejfdelgado@34.74.215.84
+#ssh -i ~/.ssh/id_ed25519 ejfdelgado@34.74.215.84
+#docker ps
+#docker exec -it 7c7dbf47edf6 /bin/bash
 
 resource "google_compute_instance" "single_vpn" {
   count = 0
   name         = "${var.environment}-nogales-single-vpn"
-  # $24.46 / month
-  machine_type = "e2-medium"
+  # $24.46 / month "e2-medium"
+  machine_type = "e2-micro"
   zone         = var.zone
 
   boot_disk {
-    auto_delete = false
-    device_name = "${var.environment}-nogales-single-vpn"
-
     initialize_params {
-      image = "projects/cos-cloud/global/images/cos-stable-113-18244-85-29"
-      size  = 10
-      type  = "pd-balanced"
+      image = "cos-cloud/cos-stable"
     }
-
-    mode = "READ_WRITE"
-  }
-
-  #can_ip_forward      = false
-  deletion_protection = false
-  #enable_display      = false
-
-  labels = {
-    container-vm = "cos-stable-113-18244-85-29"
-    goog-ec-src  = "vm_add-tf"
   }
 
   attached_disk {
@@ -38,15 +24,13 @@ resource "google_compute_instance" "single_vpn" {
 
   network_interface {
     network     = google_compute_network.nogales-vpn-network.id
-
     access_config {
-
     }
   }
 
   metadata = {
     ssh-keys = local.secrets.ssh_ejfdelgado
-    gce-container-declaration = <<-EOT
+    gce-container-declaration = <<-YAML
 spec:
   containers:
     - image: ${var.vpn_image}
@@ -58,7 +42,7 @@ spec:
         privileged: true
       env:
         - name: INTERNAL_SUBNET
-          value: 10.13.13.0
+          value: 10.128.0.0/9
         - name: PUID
           value: 1000
         - name: PGID
@@ -68,7 +52,7 @@ spec:
         - name: SERVERPORT
           value: 51820
         - name: PEERS
-          value: 1
+          value: 3
         - name: PEERDNS
           value: auto
         - name: ALLOWEDIPS
@@ -82,25 +66,37 @@ spec:
       hostPath:
         path: /mnt/persisten_disk/vpn_config
   restartPolicy: Always
-EOT
-    startup-script = <<-EOT
-      #!/bin/bash
-      DISK_DEV="/dev/disk/by-id/google-data-disk"
-      MNT_DIR="/mnt/persisten_disk"
-
-      while [ ! -e "$DISK_DEV" ]; do sleep 1; done
-
-      if ! blkid $DISK_DEV; then
-        mkfs.ext4 -F $DISK_DEV
-      fi
-
-      mkdir -p $MNT_DIR
-      mount -o discard,defaults $DISK_DEV $MNT_DIR
-      chmod 777 $MNT_DIR
-
-      mkdir -p $MNT_DIR/vpn_config
-EOT
+YAML
+#    startup-script = <<-EOT
+#      #!/bin/bash
+#      DISK_DEV="/dev/disk/by-id/google-data-disk"
+#      MNT_DIR="/mnt/persisten_disk"
+#
+#      while [ ! -e "$DISK_DEV" ]; do sleep 1; done
+#
+#      if ! blkid $DISK_DEV; then
+#        mkfs.ext4 -F $DISK_DEV
+#      fi
+#
+#      mkdir -p $MNT_DIR
+#      mount -o discard,defaults $DISK_DEV $MNT_DIR
+#      chmod 777 $MNT_DIR
+#
+#      mkdir -p $MNT_DIR/vpn_config
+#      chmod 777 "$MNT_DIR/vpn_config
+#EOT
     google-logging-enabled    = "true"
+  }
+
+  shielded_instance_config {
+    enable_integrity_monitoring = false
+    enable_secure_boot          = false
+    enable_vtpm                 = true
+  }
+
+  service_account {
+    email  = "default"
+    scopes = ["cloud-platform"]
   }
 
   tags = ["ssh", "allow-ssh"]

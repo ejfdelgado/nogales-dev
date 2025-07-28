@@ -1,10 +1,11 @@
 
-#ssh -i ~/.ssh/id_ed25519 ejfdelgado@34.74.215.84
+#ssh-keygen -f '/home/ejfdelgado/.ssh/known_hosts' -R '34.139.177.41'
+#ssh -i ~/.ssh/id_ed25519 ejfdelgado@34.139.177.41
 #docker ps
-#docker exec -it 7c7dbf47edf6 /bin/bash
+#docker exec -it 39da115d0818 /bin/bash
 
 resource "google_compute_instance" "single_vpn" {
-  count = 1
+  count        = 1
   name         = "${var.environment}-nogales-single-vpn"
   # $24.46 / month
   machine_type = "e2-micro"
@@ -14,6 +15,12 @@ resource "google_compute_instance" "single_vpn" {
     initialize_params {
       image = "cos-cloud/cos-stable"
     }
+  }
+
+  attached_disk {
+    source      = google_compute_disk.stateful_disks[0].id
+    device_name = "data-disk"
+    mode        = "READ_WRITE"
   }
 
   network_interface {
@@ -29,7 +36,9 @@ spec:
   containers:
     - image: ${var.vpn_image}
       name:  vpn-server
-      volumeMounts: []
+      volumeMounts:
+        - name: vpn_config
+          mountPath: /config
       securityContext:
         privileged: true
       env:
@@ -53,9 +62,20 @@ spec:
           value: 
         - name: LOG_CONFS
           value: true
-  volumes: []
+  volumes:
+    - name: vpn_config
+      hostPath:
+        path: /mnt/stateful_partition/persisten_disk/vpn_config
   restartPolicy: Always
 YAML
+    startup-script = <<-EOT
+#!/bin/bash
+mkdir -p /mnt/stateful_partition/persisten_disk
+mount /dev/sdb /mnt/stateful_partition/persisten_disk
+chmod 777 /mnt/stateful_partition/persisten_disk
+mkdir -p /mnt/stateful_partition/persisten_disk/vpn_modules
+mkdir -p /mnt/stateful_partition/persisten_disk/vpn_config
+EOT
     google-logging-enabled    = "true"
   }
 
