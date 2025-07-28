@@ -30,3 +30,9 @@ variable "zone" {
   description = "zone"
   type        = string
 }
+
+variable "email_gce_service_account" {
+  description = "email_gce_service_account"
+  type        = string
+  default     = ""
+}

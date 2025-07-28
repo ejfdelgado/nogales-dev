@@ -40,7 +40,7 @@ services:
             - PGID=1000
             - TZ=Etc/UTC
             - SERVERPORT=51820
-            - PEERS=1
+            - PEERS=5
             - PEERDNS=auto
             - ALLOWEDIPS=0.0.0.0/0
             - PERSISTENTKEEPALIVE_PEERS=
