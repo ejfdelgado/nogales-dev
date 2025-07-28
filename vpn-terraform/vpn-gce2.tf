@@ -1,5 +1,5 @@
 
-#ssh -i ~/.ssh/id_ed25519 ejfdelgado@34.139.177.41
+#ssh -i ~/.ssh/id_ed25519 ejfdelgado@34.74.215.84
 #docker ps
 #docker exec -it 7c7dbf47edf6 /bin/bash
 
@@ -34,7 +34,7 @@ spec:
         privileged: true
       env:
         - name: INTERNAL_SUBNET
-          value: 10.13.13.0
+          value: 10.128.0.0/9
         - name: PUID
           value: 1000
         - name: PGID
@@ -69,18 +69,6 @@ YAML
     email  = "default"
     scopes = ["cloud-platform"]
   }
-
-  #service_account {
-  #  email = "${var.email_gce_service_account}"
-  #  scopes = [
-  #    "https://www.googleapis.com/auth/devstorage.read_only",
-  #    "https://www.googleapis.com/auth/logging.write",
-  #    "https://www.googleapis.com/auth/monitoring.write",
-  #    "https://www.googleapis.com/auth/service.management.readonly",
-  #    "https://www.googleapis.com/auth/servicecontrol",
-  #    "https://www.googleapis.com/auth/trace.append"
-  #  ]
-  #}
 
   tags = ["ssh", "allow-ssh"]
 }
