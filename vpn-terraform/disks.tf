@@ -6,3 +6,4 @@ resource "google_compute_disk" "stateful_disks" {
   zone  = var.zone
   size  = 5
 }
+
