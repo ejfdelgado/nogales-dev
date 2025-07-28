@@ -14,3 +14,5 @@ terraform.tfstate.backup
 terraform/terraform.tfstate.d/
 
 vpn-docker/workspace/
+
+vpn-terraform/temp
