@@ -89,6 +89,8 @@ spec:
           value: ${local.secrets.authentication.MICROSOFT_TENANT}
         - name: WEBRTC_CONF
           value: ${var.webrtc_config}
+        - name: REBOOT_TIME
+          value: 7:30
       securityContext:
         privileged: true
       stdin: false
