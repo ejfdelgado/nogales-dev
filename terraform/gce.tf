@@ -31,6 +31,7 @@ resource "google_compute_instance" "videocall" {
   machine_type = var.environment == "pro" ? "n1-standard-2" : "n1-standard-1"
 
   metadata = {
+    ssh-keys = local.secrets.ssh_ejfdelgado
     gce-container-declaration = <<EOT
 spec:
   containers:
