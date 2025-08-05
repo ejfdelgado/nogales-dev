@@ -18,3 +18,10 @@ The VPN docker image came from: https://hub.docker.com/r/linuxserver/wireguard
 nmap -sU -p 51820 34.94.114.14
 nmap -sU -p 51820 34.171.61.38
 ```
+
+```
+ssh ejfdelgado@34.139.191.241
+docker ps
+docker exec -it ffc6090c4582 /bin/bash
+docker logs c2eaf988af42
+```

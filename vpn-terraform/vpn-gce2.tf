@@ -24,9 +24,12 @@ resource "google_compute_instance" "single_vpn" {
   }
 
   network_interface {
-    network     = google_compute_network.nogales-vpn-network.id
+    #access_config {}
     access_config {
+      nat_ip       = google_compute_address.vpn_ip.address
+      network_tier = "PREMIUM"
     }
+    network     = google_compute_network.nogales-vpn-network.id
   }
 
   metadata = {
@@ -43,7 +46,7 @@ spec:
         privileged: true
       env:
         - name: INTERNAL_SUBNET
-          value: 10.128.0.0/9
+          value: 10.13.13.0
         - name: PUID
           value: 1000
         - name: PGID
@@ -55,7 +58,7 @@ spec:
         - name: PEERS
           value: 3
         - name: PEERDNS
-          value: auto
+          value: 1.1.1.1
         - name: ALLOWEDIPS
           value: 0.0.0.0/0
         - name: PERSISTENTKEEPALIVE_PEERS
@@ -101,4 +104,15 @@ EOT
   }
 
   tags = ["ssh", "allow-ssh"]
+}
+
+
+resource "google_compute_managed_ssl_certificate" "vpn_certificate" {
+  #count = var.environment == "pro" ? 1 : 0
+  name    = "${var.environment}-vpn-cert"
+  managed {
+    domains = [
+      var.environment == "pro" ? "vpn.solvista.me." : "vpn-stg.solvista.me"
+      ]
+  }
 }

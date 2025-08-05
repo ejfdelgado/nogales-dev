@@ -36,3 +36,8 @@ resource "google_compute_firewall" "allow-ssh" {
   source_ranges = ["0.0.0.0/0"]
   target_tags   = ["allow-ssh"]
 }
+
+resource "google_compute_address" "vpn_ip" {
+  name   = "${var.environment}-nogales-vpn-ip"
+  region = var.region
+}
