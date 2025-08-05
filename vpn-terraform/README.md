@@ -22,6 +22,9 @@ nmap -sU -p 51820 34.171.61.38
 ```
 ssh ejfdelgado@34.139.191.241
 docker ps
-docker exec -it ffc6090c4582 /bin/bash
+docker exec -it 99a2bfebe1fe /bin/bash
 docker logs c2eaf988af42
+zip -r all.zip /config
+
+vi /config/peer21/peer21.conf
 ```

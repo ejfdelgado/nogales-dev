@@ -56,7 +56,7 @@ spec:
         - name: SERVERPORT
           value: 51820
         - name: PEERS
-          value: 3
+          value: 200
         - name: PEERDNS
           value: 1.1.1.1
         - name: ALLOWEDIPS
