@@ -92,6 +92,12 @@ spec:
           value: ${var.webrtc_config}
         - name: REBOOT_TIME
           value: 7:30
+        - name: SERVER_ZONE
+          value: ${var.zone}
+        - name: SERVER_PROJECT
+          value: ${var.project_name}
+        - name: SERVER_INSTANCE_NAME
+          value: ${var.environment}-nogales-videocall
       securityContext:
         privileged: true
       stdin: false
