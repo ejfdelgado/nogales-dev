@@ -5,13 +5,13 @@ resource "google_compute_instance" "videocall" {
   allow_stopping_for_update = true
 
   boot_disk {
-    auto_delete = false
+    auto_delete = true
     device_name = "${var.environment}-nogales-videocall"
 
     initialize_params {
       image = "projects/cos-cloud/global/images/cos-stable-113-18244-85-29"
-      size  = 100
-      type  = "pd-balanced"
+      size  = 50
+      type  = "hyperdisk-balanced"
     }
 
     mode = "READ_WRITE"
@@ -28,7 +28,9 @@ resource "google_compute_instance" "videocall" {
 
   # n1-standard-1 = 3.7G = 36 usd/month
   # n1-standard-2 = 7.5G = 70 usd/month
-  machine_type = var.environment == "pro" ? "n1-standard-2" : "n1-standard-1"
+  # n4-standard-8 = 8vcpu 32G = 278 usd/month (incompatible)
+  # n4-highcpu-16 = 16vcpu 32GB = 468 usd/month (Enable 10 Gbps networking (comes with ≥16 vCPU VMs by default).)
+  machine_type = var.environment == "pro" ? "n1-standard-2" : "n4-standard-8"
 
   metadata = {
     ssh-keys = local.secrets.ssh_ejfdelgado
@@ -98,6 +100,10 @@ spec:
           value: ${var.project_name}
         - name: SERVER_INSTANCE_NAME
           value: ${var.environment}-nogales-videocall
+        - name: SOUP_ANNOUNCED_IP
+          value: ${var.videocall_soup_ip}
+        - name: USE_AUTORECOVERY_PROCESS
+          value: ${var.videocall_autorecovery}
       securityContext:
         privileged: true
       stdin: false
@@ -107,6 +113,30 @@ spec:
       volumes: []
 EOT
     google-logging-enabled    = "true"
+    # Magic number
+    # 26214400 = 1024*1024*25
+    # 23068672 = 1024*1024*22
+    startup-script = <<-EOT
+      #!/bin/bash
+      set -e
+
+      # Sysctl tuning for high RTP load
+      cat <<EOF >/etc/sysctl.d/99-mediasoup.conf
+      # Maximum receive buffer size 23068672
+      net.core.rmem_max = 23068672
+      # Maximum send buffer size
+      net.core.wmem_max = 23068672
+      net.core.rmem_default = 23068672
+      net.core.wmem_default = 23068672
+      # UDP memory limits (in pages; 1 page = usually 4096 bytes)
+      # Format: min default max (65536 131072 262144)
+      # ~256 MB max kernel memory for all UDP sockets (262144 pages x 4 KB).
+      net.ipv4.udp_mem = 65536 131072 262144
+      EOF
+
+      # Apply changes immediately
+      sysctl --system
+EOT
   }
 
   network_interface {
@@ -146,7 +176,7 @@ EOT
     enable_vtpm                 = true
   }
 
-  tags = ["ssh", "http-server", "https-server"]
+  tags = ["ssh", "http-server", "https-server", "mediasoup-server"]
   zone = var.zone
 }
 

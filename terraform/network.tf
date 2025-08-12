@@ -70,3 +70,23 @@ resource "google_compute_address" "videcall_ip" {
   region = var.region
 }
 
+resource "google_compute_firewall" "mediasoup_rtp" {
+  name    = "${var.environment}-mediasoup"
+  network = google_compute_network.nogales-network.name
+
+  allow {
+    protocol = "udp"
+    ports    = ["10000-59999"]
+  }
+
+  # Optionally allow TCP in the same range (for TCP fallback)
+  allow {
+    protocol = "tcp"
+    ports    = ["10000-59999"]
+  }
+
+  # Restrict to specific source IPs if possible
+  source_ranges = ["0.0.0.0/0"]
+
+  target_tags = ["mediasoup-server"] # Apply only to instances with this tag
+}

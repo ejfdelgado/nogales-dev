@@ -8,7 +8,7 @@ resource "google_compute_instance" "single_vpn" {
   count        = 1
   name         = "${var.environment}-nogales-single-vpn"
   # $24.46 / month
-  machine_type = "e2-micro"
+  machine_type = "n2d-standard-2"
   zone         = var.zone
 
   boot_disk {
