@@ -11,7 +11,7 @@ resource "google_compute_instance" "videocall" {
     initialize_params {
       image = "projects/cos-cloud/global/images/cos-stable-113-18244-85-29"
       size  = 50
-      type  = "hyperdisk-balanced"
+      type  = var.environment == "pro" ? "pd-balanced" : "hyperdisk-balanced"
     }
 
     mode = "READ_WRITE"
@@ -113,30 +113,7 @@ spec:
       volumes: []
 EOT
     google-logging-enabled    = "true"
-    # Magic number
-    # 26214400 = 1024*1024*25
-    # 23068672 = 1024*1024*22
-    startup-script = <<-EOT
-      #!/bin/bash
-      set -e
-
-      # Sysctl tuning for high RTP load
-      cat <<EOF >/etc/sysctl.d/99-mediasoup.conf
-      # Maximum receive buffer size 23068672
-      net.core.rmem_max = 23068672
-      # Maximum send buffer size
-      net.core.wmem_max = 23068672
-      net.core.rmem_default = 23068672
-      net.core.wmem_default = 23068672
-      # UDP memory limits (in pages; 1 page = usually 4096 bytes)
-      # Format: min default max (65536 131072 262144)
-      # ~256 MB max kernel memory for all UDP sockets (262144 pages x 4 KB).
-      net.ipv4.udp_mem = 65536 131072 262144
-      EOF
-
-      # Apply changes immediately
-      sysctl --system
-EOT
+    startup-script = var.videocall_script
   }
 
   network_interface {

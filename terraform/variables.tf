@@ -140,3 +140,12 @@ variable "videocall_autorecovery" {
   type        = string
   default     = "1"
 }
+
+variable "videocall_script" {
+  description = "videocall_script"
+  type        = string
+  default = <<-EOT
+    #!/bin/bash
+    echo "Running default"
+  EOT
+}
