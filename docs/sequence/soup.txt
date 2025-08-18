@@ -1,0 +1,65 @@
+title Soup Hand Shake
+
+
+participant peer1
+participant soup
+
+note over peer1 :https://sequencediagram.org/
+
+peer1-->soup:getRouterRtpCapabilities
+soup-->peer1:routerRtpCapabilities
+peer1-->soup:createSendTransport
+activate soup
+soup->soup:getTransporter(room, uuid, "send", true)
+
+
+group Send
+soup-->peer1:sendTransportCreated
+deactivate soup
+activate peer1
+peer1->peer1:createSendTransport(args.transportOptions)
+
+
+group event: sendTransport.on('connect'...)
+peer1-->soup:connectSendTransport
+activate soup
+soup->soup:sendTransport.connect({ dtlsParameters: dtlsParameters })
+deactivate soup
+end
+
+
+group event: sendTransport.on('produce'...
+activate peer1
+peer1-->soup:produce
+activate peer1
+soup-->peer1:produced
+deactivate peer1
+end
+
+peer1->peer1:updateSourceTracks()
+activate peer1
+peer1->peer1:sendTransport.produce(track, "audio")
+peer1->peer1:sendTransport.produce(track, "small")
+deactivate peer1
+
+peer1-->soup:createRecvTransport
+deactivate peer1
+deactivate peer1
+end
+
+
+group Receive
+soup->soup:getTransporter(room, uuid, "receive", true)
+soup-->peer1:recvTransportCreated
+activate peer1
+peer1->peer1:createRecvTransport(args.transportOptions)
+group event: recvTransport.on('connect'...
+peer1-->soup:connectRecvTransport
+activate soup
+soup->soup:receiveTransport.connect({ dtlsParameters: dtlsParameters })
+deactivate soup
+end
+peer1->peer1:onStatusChangeEvent.emit()
+peer1-->soup:consume
+deactivate peer1
+end
