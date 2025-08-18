@@ -35,3 +35,16 @@ terraform workspace select stg && terraform apply -var-file="env.stg.tfvars" && 
 
 terraform workspace select pro && terraform apply -var-file="env.pro.tfvars" && ffplay /sound/finish.mp3 -nodisp -nostats -hide_banner -autoexit
 ```
+
+ssh ejfdelgado@104.197.163.219
+docker ps
+
+docker exec -it 4ec51340afae /bin/bash
+docker logs -f 4ec51340afae
+
+Consume request ignored: producer missing or closed
+
+Error: NO receive transport on ejdelgado.pat_public_6c36e9a2_6f1c_4e57_80c9_2b1b6b971af3
+
+Error: NO receive transport on ejdelgado.sig_ejdelgado
+
