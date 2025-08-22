@@ -3,6 +3,7 @@ title Soup Hand Shake
 
 participant peer1
 participant soup
+participant others
 
 note over peer1 :https://sequencediagram.org/
 
@@ -51,6 +52,10 @@ end
 group Receive
 soup->soup:getTransporter(room, uuid, "receive", true)
 soup-->peer1:recvTransportCreated
+soup-->others:consumeMe
+activate others
+others-->soup:consume
+deactivate others
 activate peer1
 peer1->peer1:createRecvTransport(args.transportOptions)
 group event: recvTransport.on('connect'...
@@ -58,8 +63,16 @@ peer1-->soup:connectRecvTransport
 activate soup
 soup->soup:receiveTransport.connect({ dtlsParameters: dtlsParameters })
 deactivate soup
-end
-peer1->peer1:onStatusChangeEvent.emit()
+peer1->peer1:onStatusChangeEvent.emit(...)
 peer1-->soup:consume
+activate soup
 deactivate peer1
+end
+group for producer in getProducersByRoom(room) except self
+soup->soup:recvTransport.consume(...)
+soup-->peer1:consumeOk
+peer1->peer1:recvTransport.consume(...)
+peer1->peer1:streamActive.emit(...)
+end
+deactivate soup
 end
