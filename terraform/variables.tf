@@ -149,3 +149,9 @@ variable "videocall_script" {
     echo "Running default"
   EOT
 }
+
+variable "max_node_memory" {
+  description = "max_node_memory"
+  type        = string
+  default     = "2000"
+}

@@ -30,11 +30,12 @@ resource "google_compute_instance" "videocall" {
   # n1-standard-1 = 3.7G = 36 usd/month
   # n1-standard-2 = 7.5G = 70 usd/month
   # n1-highmem-2 = 2vcp 13G = 88 usd/month
-  # n2-standard-2 = vCPUs: 2, RAM: 8 GiB = 72usd/m
+  # n2-standard-2 = 2vCPUs, 8 GiB = 72usd/m
+  # n4-standard-4 = vCPUs: 4, RAM: 16 GiB = 140usd/mont
   # n4-standard-8 = 8vcpu 32G = 278 usd/month (incompatible)
   # n4-highcpu-16 = 16vcpu 32GB = 468 usd/month (Enable 10 Gbps networking (comes with ≥16 vCPU VMs by default).)
   #machine_type = var.environment == "pro" ? "n2-standard-2" : "n4-standard-8"
-  machine_type = var.environment == "pro" ? "n4-highcpu-16" : "n4-standard-8"
+  machine_type = var.environment == "pro" ? "n4-highcpu-16" : "n4-standard-4"
 
   metadata = {
     ssh-keys = local.secrets.ssh_ejfdelgado
@@ -111,7 +112,9 @@ spec:
         - name: AVOID_REBOOT_ON_ERROR
           value: 1
         - name: MAX_SOUP_WORKER_LOAD
-          value: 20
+          value: 5
+        - name: NODE_OPTIONS
+          value: --max-old-space-size=${var.max_node_memory}
       securityContext:
         privileged: true
       stdin: false
