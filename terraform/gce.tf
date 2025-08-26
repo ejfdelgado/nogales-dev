@@ -188,8 +188,8 @@ resource "google_compute_instance_group" "videocallgroup" {
 resource "google_compute_health_check" "videocall" {
   #count = var.environment == "pro" ? 1 : 0
   name = "${var.environment}-health-check"
-  timeout_sec        = 5
-  check_interval_sec = 5
+  timeout_sec        = 10
+  check_interval_sec = 10
 
   #http_health_check {
   # port = 80
@@ -218,9 +218,9 @@ resource "google_compute_backend_service" "videocallbkservice" {
 
   cdn_policy {
     cache_mode                    = "CACHE_ALL_STATIC"  # Options: "CACHE_ALL_STATIC", "USE_ORIGIN_HEADERS", "FORCE_CACHE_ALL"
-    default_ttl                   = 600                  # in seconds
-    max_ttl                       = 1200                 # in seconds
-    client_ttl                    = 300                   # in seconds
+    default_ttl                   = 43200                  # in seconds 12 h = 60x60x12
+    max_ttl                       = 43200                 # in seconds
+    client_ttl                    = 43200                   # in seconds
     negative_caching              = true
     serve_while_stale             = 86400
     cache_key_policy {
