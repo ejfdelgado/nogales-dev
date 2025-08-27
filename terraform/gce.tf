@@ -44,6 +44,9 @@ spec:
   containers:
     - image: ${var.videocall_image}
       name:  nogalesserver
+      resources:
+        limits:
+          memory: "10Gi"
       env:
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: ${var.credentials_path}
@@ -125,6 +128,20 @@ spec:
 EOT
     google-logging-enabled    = "true"
     startup-script = var.videocall_script
+
+# gce-container-declaration deprecation at July 31, 2026
+#  metadata = {
+#    startup-script = <<-EOT
+#      #!/bin/bash
+#      # Pull the Docker image
+#      docker pull gcr.io/your-project/your-node-image:latest
+#
+#      # Run the container with a memory limit
+#      docker run -d --restart=always --name node-server --memory=14g \
+#        gcr.io/your-project/your-node-image:latest
+#    EOT
+#  }
+
   }
 
   network_interface {
