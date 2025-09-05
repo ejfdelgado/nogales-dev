@@ -155,3 +155,9 @@ variable "max_node_memory" {
   type        = string
   default     = "2000"
 }
+
+variable "soup_max_worker_load" {
+  description = "soup_max_worker_load"
+  type        = string
+  default     = "5"
+}

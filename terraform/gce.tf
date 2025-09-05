@@ -115,7 +115,7 @@ spec:
         - name: AVOID_REBOOT_ON_ERROR
           value: 1
         - name: MAX_SOUP_WORKER_LOAD
-          value: 5
+          value: ${var.soup_max_worker_load}
         - name: NODE_OPTIONS
           value: --max-old-space-size=${var.max_node_memory}
       securityContext:
