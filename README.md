@@ -40,7 +40,7 @@ ssh ejfdelgado@104.197.163.219
 docker ps
 
 docker exec -it 4ec51340afae /bin/bash
-docker logs -f 4ec51340afae
+docker logs -f f6b534f16b37
 
 Consume request ignored: producer missing or closed
 
