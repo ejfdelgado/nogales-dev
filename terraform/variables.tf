@@ -109,7 +109,7 @@ variable "api_yml" {
 variable "auth_group_id_map" {
   description = "auth_group_id_map"
   type        = string
-  default     = "ewogICAgICAgICIzNzY5ZjM1YS0xYjcwLTRkZjEtYmU1Mi00YWQyNTdhMTkxNmUiOiAiYXBwc19hZG1pbiIsCiAgICAgICAgIjRiYjczOWI1LTcxNDYtNGQ1Ni1iNDdkLTI1NWRmM2Y5ZTFiMiI6ICJhcHBzX2RldiIsCiAgICAgICAgImFjYjkwMzU0LThjMDgtNDA0OC04ZGFiLTgyNGQ5ODhjMWYyZiI6ICJhcHBzX2VkaXRvcnMiLAogICAgICAgICIwODg5MGViNy1jZDgyLTRmZTUtOWI0Ny00MjI1Y2Y0MGEwZjEiOiAiYXBwc19oaXN0b3JpYW5zIiwKICAgICAgICAiMmM2NjcxYzQtYjI3NC00NGJkLWFlOWItZjU2NDc2NzFmMzFhIjogImFwcHNfaW1wb3J0ZXIiLAogICAgICAgICI0NTg3NDMzMi03Y2Y1LTQwNDctYmE1Ny0yZWNkOTE4M2I3ZmMiOiAiYXBwc192aWRlb2NhbGxfYWRtaW4iLAogICAgICAgICI3M2JjYjkyOS0wY2E2LTRiNTItOWVkZC00YWMzOWU2ZDZlOWUiOiAiYXBwc192aWRlb2NhbGxfcHJvdmlkZXIiCiAgICAgIH0="
+  default     = "eyIzNzY5ZjM1YS0xYjcwLTRkZjEtYmU1Mi00YWQyNTdhMTkxNmUiOiJhcHBzX2FkbWluIiwiNGJiNzM5YjUtNzE0Ni00ZDU2LWI0N2QtMjU1ZGYzZjllMWIyIjoiYXBwc19kZXYiLCJhY2I5MDM1NC04YzA4LTQwNDgtOGRhYi04MjRkOTg4YzFmMmYiOiJhcHBzX2VkaXRvcnMiLCIwODg5MGViNy1jZDgyLTRmZTUtOWI0Ny00MjI1Y2Y0MGEwZjEiOiJhcHBzX2hpc3RvcmlhbnMiLCIyYzY2NzFjNC1iMjc0LTQ0YmQtYWU5Yi1mNTY0NzY3MWYzMWEiOiJhcHBzX2ltcG9ydGVyIiwiNDU4NzQzMzItN2NmNS00MDQ3LWJhNTctMmVjZDkxODNiN2ZjIjoiYXBwc192aWRlb2NhbGxfYWRtaW4iLCI3M2JjYjkyOS0wY2E2LTRiNTItOWVkZC00YWMzOWU2ZDZlOWUiOiJhcHBzX3ZpZGVvY2FsbF9wcm92aWRlciIsImQzMjVjNGI2LTFiYWItNDdhZi05N2M3LTlhYjJlMWUyNGZlZCI6ImFwcHNfdmlkZW9jYWxsX3N0YXRpc3RpY3MifQ=="
 }
 
 variable "heymarket_end_point" {
@@ -160,4 +160,10 @@ variable "soup_max_worker_load" {
   description = "soup_max_worker_load"
   type        = string
   default     = "5"
+}
+
+variable "videocall_disktype" {
+  description = "videocall_disktype"
+  type        = string
+  default     = "2000"
 }

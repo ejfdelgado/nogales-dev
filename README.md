@@ -35,12 +35,13 @@ terraform workspace select stg && terraform apply -var-file="env.stg.tfvars" && 
 
 terraform workspace select pro && terraform apply -var-file="env.pro.tfvars" && ffplay /sound/finish.mp3 -nodisp -nostats -hide_banner -autoexit
 ```
-
+vi /usr/local/bin/docker-entrypoint.sh
+ssh ejfdelgado@34.171.61.38
 ssh ejfdelgado@104.197.163.219
 docker ps
 
 docker exec -it 4ec51340afae /bin/bash
-docker logs -f f6b534f16b37
+docker logs -f 22625d771890
 
 Consume request ignored: producer missing or closed
 

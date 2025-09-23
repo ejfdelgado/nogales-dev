@@ -11,8 +11,10 @@ resource "google_compute_instance" "videocall" {
     initialize_params {
       image = "projects/cos-cloud/global/images/cos-stable-113-18244-85-29"
       size  = 50
-      #type  = var.environment == "pro" ? "pd-balanced" : "hyperdisk-balanced"
-      type  = "hyperdisk-balanced"
+      #type  = var.environment == "pro" ? "hyperdisk-balanced" : "pd-balanced"
+      #type  = "hyperdisk-balanced"
+      #type  = "pd-balanced"
+      type = var.videocall_disktype
     }
 
     mode = "READ_WRITE"
@@ -35,7 +37,9 @@ resource "google_compute_instance" "videocall" {
   # n4-standard-8 = 8vcpu 32G = 278 usd/month (incompatible)
   # n4-highcpu-16 = 16vcpu 32GB = 468 usd/month (Enable 10 Gbps networking (comes with ≥16 vCPU VMs by default).)
   #machine_type = var.environment == "pro" ? "n2-standard-2" : "n4-standard-8"
-  machine_type = var.environment == "pro" ? "n4-highcpu-16" : "n4-standard-4"
+  # custom-16-14848 16vcpu and 14G
+  # custom-4-3840
+  machine_type = var.environment == "pro" ? "n4-highcpu-16" : "n2-standard-2"
 
   metadata = {
     ssh-keys = local.secrets.ssh_ejfdelgado
@@ -118,6 +122,10 @@ spec:
           value: ${var.soup_max_worker_load}
         - name: NODE_OPTIONS
           value: --max-old-space-size=${var.max_node_memory}
+        - name: COMPUTE_DAILY_STATISTICS
+          value: 1
+        - name: REPLACER_USER
+          value: aquintana@nogalespsychological.com
       securityContext:
         privileged: true
       stdin: false
