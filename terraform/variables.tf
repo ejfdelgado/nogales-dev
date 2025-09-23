@@ -167,3 +167,8 @@ variable "videocall_disktype" {
   type        = string
   default     = "2000"
 }
+
+variable "docker_image_speedmeter" {
+  description = "docker_image_speedmeter"
+  type        = string
+}
