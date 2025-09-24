@@ -126,6 +126,8 @@ spec:
           value: 1
         - name: REPLACER_USER
           value: aquintana@nogalespsychological.com
+        - name: NO_PAGES
+          value: 1
       securityContext:
         privileged: true
       stdin: false
