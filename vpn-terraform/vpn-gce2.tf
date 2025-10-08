@@ -33,7 +33,9 @@ resource "google_compute_instance" "single_vpn" {
   }
 
   metadata = {
-    ssh-keys = local.secrets.ssh_ejfdelgado
+    ssh-keys = join("\n", [
+      local.secrets.ssh_ejfdelgado
+      ])
     gce-container-declaration = <<-YAML
 spec:
   containers:
