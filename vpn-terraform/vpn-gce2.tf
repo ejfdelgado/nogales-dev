@@ -7,8 +7,10 @@
 resource "google_compute_instance" "single_vpn" {
   count        = 1
   name         = "${var.environment}-nogales-single-vpn"
-  # $24.46 / month
-  machine_type = "n2d-standard-2"
+  # n1-standard-1 => $35.67/ mo
+  machine_type = "n1-standard-1"
+  # n2d-standard-2 => $62.68/ mo
+  #machine_type = "n2d-standard-2"
   zone         = var.zone
 
   boot_disk {
@@ -34,7 +36,8 @@ resource "google_compute_instance" "single_vpn" {
 
   metadata = {
     ssh-keys = join("\n", [
-      local.secrets.ssh_ejfdelgado
+      local.secrets.ssh_ejfdelgado,
+      local.secrets.ssh_rodalbores
       ])
     gce-container-declaration = <<-YAML
 spec:
