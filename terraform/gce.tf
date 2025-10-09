@@ -43,7 +43,8 @@ resource "google_compute_instance" "videocall" {
 
   metadata = {
     ssh-keys = join("\n", [
-      local.secrets.ssh_ejfdelgado
+      local.secrets.ssh_ejfdelgado,
+      local.secrets.ssh_rodalbores
       ])
     gce-container-declaration = <<EOT
 spec:
