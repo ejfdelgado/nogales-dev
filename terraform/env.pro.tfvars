@@ -11,8 +11,12 @@ videocall_soup_ip="34.171.61.38"
 videocall_autorecovery="0"
 # value in MB -> here around 9GB
 max_node_memory="9000"
-soup_max_worker_load="2"
-videocall_disktype="hyperdisk-balanced"
+# Always this muts be 32, it is the maximum of concurrent calls.
+# 2(soup_max_worker_load)x16(vcpu)=32
+# 4(soup_max_worker_load)x8(vcpu)=32
+soup_max_worker_load="4"
+#videocall_disktype="hyperdisk-balanced"
+videocall_disktype="pd-balanced"
 # Magic number
 # 26214400 = 1024*1024*25
 # 23068672 = 1024*1024*22
@@ -23,16 +27,16 @@ videocall_script=<<-EOT
 
       # Sysctl tuning for high RTP load
       cat <<EOF >/etc/sysctl.d/99-mediasoup.conf
-      # Maximum receive buffer size 23068672
-      net.core.rmem_max = 23068672
+      # Maximum receive buffer size 14680064
+      net.core.rmem_max = 14680064
       # Maximum send buffer size
-      net.core.wmem_max = 23068672
-      net.core.rmem_default = 23068672
-      net.core.wmem_default = 23068672
+      net.core.wmem_max = 14680064
+      net.core.rmem_default = 14680064
+      net.core.wmem_default = 14680064
       # UDP memory limits (in pages; 1 page = usually 4096 bytes)
-      # Format: min default max (65536 131072 262144)
-      # ~256 MB max kernel memory for all UDP sockets (262144 pages x 4 KB).
-      net.ipv4.udp_mem = 65536 131072 262144
+      # Format: min default max (65536 131072 146800)
+      # ~256 MB max kernel memory for all UDP sockets (146800 pages x 4 KB).
+      net.ipv4.udp_mem = 65536 131072 146800
       EOF
 
       # Apply changes immediately

@@ -39,7 +39,10 @@ resource "google_compute_instance" "videocall" {
   #machine_type = var.environment == "pro" ? "n2-standard-2" : "n4-standard-8"
   # custom-16-14848 16vcpu and 14G
   # custom-4-3840
-  machine_type = var.environment == "pro" ? "n4-highcpu-16" : "n2-standard-2"
+  # --------------
+  # c4-highcpu-8 = 4vcpu 16G = 250usd
+  # n1-highcpu-16 = 8vcpu 16G = 290usd (causes error)
+  machine_type = var.environment == "pro" ? "n1-highcpu-16" : "n2-standard-2"
 
   metadata = {
     ssh-keys = join("\n", [
