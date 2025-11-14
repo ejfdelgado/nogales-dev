@@ -40,7 +40,7 @@ ssh ejfdelgado@34.171.61.38
 ssh ejfdelgado@104.197.163.219
 docker ps
 docker exec -it 092f96adacaf /bin/bash
-docker logs -f 092f96adacaf
+docker logs -f e4e8079edbb8
 
 ssh -i ~/.ssh/your_file rodalbores@104.197.163.219
  
