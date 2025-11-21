@@ -87,7 +87,10 @@ resource "google_cloud_run_v2_service" "assessment" {
         name  = "MICROSOFT_TENANT"
         value = local.secrets.authentication.MICROSOFT_TENANT
       }
-
+      env {
+        name  = "DB_CONNECTION_NAME"
+        value = google_sql_database_instance.general.connection_name
+      }
       resources {
         limits = {
           # 512Mi
@@ -100,6 +103,15 @@ resource "google_cloud_run_v2_service" "assessment" {
     scaling {
       min_instance_count = 0
       max_instance_count = 1
+    }
+    vpc_access {
+      egress = "ALL_TRAFFIC"
+    }
+    volumes {
+      name = "cloudsql"
+      cloud_sql_instance {
+        instances = [google_sql_database_instance.general.connection_name]
+      }
     }
   }
   # Allow unauthenticated invocations

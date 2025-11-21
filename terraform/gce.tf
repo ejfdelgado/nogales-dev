@@ -199,6 +199,23 @@ EOT
 
   tags = ["ssh", "http-server", "https-server", "mediasoup-server"]
   zone = var.zone
+
+  metadata_startup_script = <<-EOF
+    #!/bin/bash
+    
+    mkdir -p /cloudsql
+    chmod 777 /cloudsql
+
+    curl -o /usr/local/bin/cloud-sql-proxy \
+      https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.10.0/cloud-sql-proxy.linux.amd64
+
+    chmod +x /usr/local/bin/cloud-sql-proxy
+
+    /usr/local/bin/cloud-sql-proxy \
+      --unix-socket-path=/cloudsql \
+      ${google_sql_database_instance.general.connection_name} \
+      >/var/log/cloudsql-proxy.log 2>&1 &
+  EOF
 }
 
 resource "google_compute_instance_group" "videocallgroup" {
