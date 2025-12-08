@@ -16,6 +16,15 @@ resource "google_sql_database_instance" "general" {
         value = "0.0.0.0/0"  
       }
     }
+
+    backup_configuration {
+      enabled            = var.environment == "pro" ? true : false
+      start_time         = "01:00"
+      backup_retention_settings {
+        retained_backups = 7
+        retention_unit   = "COUNT"
+      }
+    }
   }
 }
 
