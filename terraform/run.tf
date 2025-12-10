@@ -120,6 +120,11 @@ resource "google_cloud_run_service_iam_member" "no_auth" {
   depends_on = [google_cloud_run_v2_service.assessment]
 }
 
+/*
+It works because on GoDaddy we have:
+cname	test	ghs.googlehosted.com.
+*/
+
 resource "google_compute_managed_ssl_certificate" "assessment" {
   count = var.environment == "pro" ? 1 : 0
   name    = "${var.environment}-assessment-cert"
