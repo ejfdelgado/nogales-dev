@@ -1,6 +1,5 @@
 
+El chat del provider no se actualiza al inicio
 
-How to pass custom version to scripts of package.json
+El patient pierde los providers disponibles despues del inicio.
 
-
-Allow the cloud run be visible from other cloud run instances, get in into the GCE to ping the cloud run end point.
