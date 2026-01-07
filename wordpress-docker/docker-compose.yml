@@ -1,0 +1,48 @@
+# docker compose --profile all up -d
+
+volumes:
+  mysql_data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: "./data/mysql_data"
+
+networks:
+  network_wordpress:
+    name: network_analitics
+    driver: bridge
+    enable_ipv6: false
+
+services:
+  mysql:
+    profiles: [ "all" ]
+    image: mysql:8.4
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      network_wordpress:
+        aliases:
+          - mysql
+
+  wordpress:
+    profiles: [ "all" ]
+    image: wordpress:php8.2-apache
+    ports:
+      - 8080:80
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+    #volumes:
+    #  - wordpress:/var/www/html
+
