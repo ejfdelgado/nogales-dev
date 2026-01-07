@@ -1,4 +1,7 @@
 # docker compose --profile all up -d
+# docker compose --profile all down --remove-orphans
+# docker compose logs -f mysql
+# docker compose logs -f wordpress
 
 volumes:
   mysql_data:
@@ -7,6 +10,12 @@ volumes:
       o: bind
       type: none
       device: "./data/mysql_data"
+  wordpress_data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: "./data/wordpress_data"
 
 networks:
   network_wordpress:
@@ -43,6 +52,10 @@ services:
       WORDPRESS_DB_USER: ${MYSQL_USER}
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
-    #volumes:
-    #  - wordpress:/var/www/html
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      network_wordpress:
+        aliases:
+          - wordpress
 
