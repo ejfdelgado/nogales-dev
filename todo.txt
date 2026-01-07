@@ -1,5 +1,0 @@
-
-El chat del provider no se actualiza al inicio
-
-El patient pierde los providers disponibles despues del inicio.
-
