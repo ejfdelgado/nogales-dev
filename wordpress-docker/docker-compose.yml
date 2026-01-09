@@ -3,6 +3,8 @@
 # docker compose logs -f mysql
 # docker compose logs -f wordpress
 
+# http://localhost:8080/
+
 volumes:
   mysql_data:
     driver: local
