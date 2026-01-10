@@ -1,6 +1,6 @@
 resource "google_cloud_run_v2_service" "wordpress_1" {
   count    = var.environment == "pro" ? 1 : 0
-  name     = "${var.environment}-common-backend"
+  name     = "${var.environment}-wordpress-1"
   location = var.region
   template {
     max_instance_request_concurrency = 20
@@ -57,6 +57,18 @@ resource "google_cloud_run_v2_service" "wordpress_1" {
         #  "gid=1000"
         #]
       }
+    }
+
+    annotations = {
+      #"run.googleapis.com/cloudsql-instances" = var.cloudsql_instance
+      "run.googleapis.com/volumes" = jsonencode([{
+        name = "gcs-fuse-mount"
+        gcs = {
+          bucket    = google_storage_bucket.wordpress_1.name
+          read_only = false
+          mount_options = ["implicit-dirs", "allow-other"]
+        }
+      }])
     }
   }
   # Allow unauthenticated invocations
