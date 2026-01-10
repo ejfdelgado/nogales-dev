@@ -65,7 +65,7 @@ resource "google_sql_database_instance" "wordpress_1" {
   region           = var.region
 
   deletion_protection = false
-  depends_on = [google_service_networking_connection.default]
+  depends_on = [google_service_networking_connection.default_a]
 
   settings {
     tier              = var.mysql_type
