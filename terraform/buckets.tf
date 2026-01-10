@@ -18,3 +18,10 @@ resource "google_storage_bucket" "processor_private" {
   storage_class               = "STANDARD"
   uniform_bucket_level_access = true
 }
+
+resource "google_storage_bucket" "wordpress_1" {
+  name                        = "${var.environment}-wordpress-1"
+  location                    = "US"
+  storage_class               = "STANDARD"
+  uniform_bucket_level_access = true
+}
