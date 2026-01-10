@@ -28,12 +28,8 @@ resource "google_cloud_run_v2_service" "wordpress_1" {
         value = var.environment
       }
       env {
-        name  = "DB_SOCKET"
-        value = "/cloudsql/${google_sql_database_instance.wordpress_1[0].connection_name}"
-      }
-      env {
         name  = "MYSQL_HOST"
-        value = "/cloudsql/${google_sql_database_instance.wordpress_1[0].connection_name}"
+        value = google_sql_database_instance.wordpress_1[0].private_ip_address
       }
       env {
         name  = "MYSQL_PORT"
@@ -65,11 +61,10 @@ resource "google_cloud_run_v2_service" "wordpress_1" {
         name       = "gcs-volume"
         mount_path = "/var/www/html"
       }
-
-      volume_mounts {
-        name       = "cloudsql"
-        mount_path = "/cloudsql"
-      }
+    }
+    vpc_access {
+      connector = google_vpc_access_connector.wordpress_1.id
+      egress    = "PRIVATE_RANGES_ONLY"
     }
     scaling {
       min_instance_count = 0
@@ -82,15 +77,8 @@ resource "google_cloud_run_v2_service" "wordpress_1" {
         read_only = false
       }
     }
-    volumes {
-      name = "cloudsql"
-      cloud_sql_instance {
-        instances = [google_sql_database_instance.wordpress_1[0].connection_name]
-      }
-    }
 
     annotations = {
-      "run.googleapis.com/cloudsql-instances" = google_sql_database_instance.wordpress_1[0].connection_name
       "run.googleapis.com/volumes" = jsonencode([{
         name = "gcs-fuse-mount"
         gcs = {

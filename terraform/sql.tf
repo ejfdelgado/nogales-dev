@@ -64,6 +64,8 @@ resource "google_sql_database_instance" "wordpress_1" {
   database_version = var.mysql_version
   region           = var.region
 
+  depends_on = [google_service_networking_connection.default]
+
   settings {
     tier              = var.mysql_type
     disk_size         = var.sql_gb
@@ -75,6 +77,8 @@ resource "google_sql_database_instance" "wordpress_1" {
         name  = "ejfdelgado"
         value = "45.173.12.238"  
       }
+
+      private_network = google_compute_network.peering_network.id
     }
 
     backup_configuration {
