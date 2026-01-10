@@ -72,8 +72,8 @@ resource "google_sql_database_instance" "wordpress_1" {
       ipv4_enabled = true 
       
       authorized_networks {
-        name  = google_compute_network.nogales-network.id
-        value = "0.0.0.0/0"  
+        name  = "ejfdelgado"
+        value = "45.173.12.238"  
       }
     }
 
