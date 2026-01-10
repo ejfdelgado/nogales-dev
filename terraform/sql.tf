@@ -57,3 +57,33 @@ resource "google_sql_database_instance" "general_replica" {
   deletion_protection = false
 }
 */
+
+resource "google_sql_database_instance" "wordpress_1" {
+  count            = var.environment == "pro" ? 1 : 0
+  name             = "${var.environment}-wordpress-1"
+  database_version = var.mysql_version
+  region           = var.region
+
+  settings {
+    tier              = var.mysql_type
+    disk_size         = var.sql_gb
+
+    ip_configuration {
+      ipv4_enabled = true 
+      
+      authorized_networks {
+        name  = google_compute_network.nogales-network.id
+        value = "0.0.0.0/0"  
+      }
+    }
+
+    backup_configuration {
+      enabled            = var.environment == "pro" ? true : false
+      start_time         = "01:00"
+      backup_retention_settings {
+        retained_backups = 7
+        retention_unit   = "COUNT"
+      }
+    }
+  }
+}

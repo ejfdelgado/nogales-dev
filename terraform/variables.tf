@@ -76,6 +76,12 @@ variable "postgres_version" {
   default     = "POSTGRES_16"
 }
 
+variable "mysql_version" {
+  description = "mysql_version"
+  type        = string
+  default     = "MYSQL_8_4"
+}
+
 variable "email_gce_service_account" {
   description = "email_gce_service_account"
   type        = string
@@ -90,6 +96,12 @@ variable "email_sender" {
 
 variable "sql_type" {
   description = "sql_type"
+  type        = string
+  default     = "db-g1-small"
+}
+
+variable "mysql_type" {
+  description = "mysql_type"
   type        = string
   default     = "db-g1-small"
 }
