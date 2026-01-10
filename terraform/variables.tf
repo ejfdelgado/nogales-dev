@@ -184,3 +184,9 @@ variable "docker_image_speedmeter" {
   description = "docker_image_speedmeter"
   type        = string
 }
+
+variable "wordpress_image" {
+  description = "Wordpress Image"
+  type        = string
+  default     = "us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/common_backend:1.2.0"
+}
