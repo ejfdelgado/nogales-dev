@@ -64,6 +64,7 @@ resource "google_sql_database_instance" "wordpress_1" {
   database_version = var.mysql_version
   region           = var.region
 
+  deletion_protection = false
   depends_on = [google_service_networking_connection.default]
 
   settings {
@@ -78,7 +79,7 @@ resource "google_sql_database_instance" "wordpress_1" {
         value = "45.173.12.238"  
       }
 
-      private_network = google_compute_network.peering_network.id
+      private_network = google_compute_network.nogales-network.id
     }
 
     backup_configuration {

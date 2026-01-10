@@ -63,7 +63,7 @@ resource "google_cloud_run_v2_service" "wordpress_1" {
       }
     }
     vpc_access {
-      connector = google_vpc_access_connector.wordpress_1.id
+      connector = google_vpc_access_connector.wordpress_1a.id
       egress    = "PRIVATE_RANGES_ONLY"
     }
     scaling {
