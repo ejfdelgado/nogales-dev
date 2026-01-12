@@ -8,6 +8,13 @@ if [ ! -e /var/www/html/index.php ]; then
     chown -R www-data:www-data /var/www/html
 fi
 
+# 2. Inject our custom config (overwriting the default)
+# This ensures environment variables are always mapped correctly
+cp /usr/local/bin/wp-config-cloudrun.php /var/www/html/wp-config.php
+
+# 3. Ensure permissions are correct
+chown -R www-data:www-data /var/www/html
+
 # Start PHP-FPM in the background
 php-fpm -D
 

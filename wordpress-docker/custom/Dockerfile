@@ -19,6 +19,7 @@ COPY nginx.conf /etc/nginx/http.d/default.conf
 
 # 3. Add the entrypoint script
 COPY entrypoint.sh /usr/local/bin/
+COPY wp-config-cloudrun.php /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Set working directory to the final destination
