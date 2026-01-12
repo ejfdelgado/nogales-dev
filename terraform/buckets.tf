@@ -20,6 +20,7 @@ resource "google_storage_bucket" "processor_private" {
 }
 
 resource "google_storage_bucket" "wordpress_1" {
+  count       = var.environment == "pro" ? 1 : 0
   name                        = "${var.environment}-wordpress-1"
   location                    = "US"
   storage_class               = "STANDARD"

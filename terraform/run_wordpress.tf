@@ -4,47 +4,23 @@ resource "google_cloud_run_v2_service" "wordpress_1" {
   location = var.region
   template {
     max_instance_request_concurrency = 20
-    service_account = google_service_account.wordpress_1_sa.email
+    service_account = google_service_account.wordpress_1_sa[0].email
     containers {
       image = var.wordpress_image
       env {
-        name  = "GOOGLE_CLIENT_ID"
-        value = local.secrets.oauth_client_id
-      }
-      env {
-        name  = "CORS_MAIN_ALLOWED_ORIGIN"
-        value = "http://localhost:4200,https://localhost:4200"
-      }
-      env {
-        name  = "BUCKET_NAME"
-        value = google_storage_bucket.wordpress_1.name
-      }
-      env {
-        name  = "LOCAL_FOLDER"
-        value = "/var/www/html"
-      }
-      env {
-        name  = "NODE_ENV"
-        value = var.environment
-      }
-      env {
-        name  = "MYSQL_HOST"
+        name  = "WORDPRESS_DB_HOST"
         value = google_sql_database_instance.wordpress_1[0].private_ip_address
       }
       env {
-        name  = "MYSQL_PORT"
-        value = "3306"
-      }
-      env {
-        name  = "MYSQL_DB"
+        name  = "WORDPRESS_DB_NAME"
         value = "wordpress"
       }
       env {
-        name  = "MYSQL_USER"
+        name  = "WORDPRESS_DB_USER"
         value = local.secrets.mysql.user
       }
       env {
-        name  = "MYSQL_PASS"
+        name  = "WORDPRESS_DB_PASSWORD"
         value = local.secrets.mysql.pass
       }
 
@@ -63,7 +39,7 @@ resource "google_cloud_run_v2_service" "wordpress_1" {
       }
     }
     vpc_access {
-      connector = google_vpc_access_connector.wordpress_1a.id
+      connector = google_vpc_access_connector.wordpress_1a[0].id
       egress    = "PRIVATE_RANGES_ONLY"
     }
     scaling {
@@ -73,7 +49,7 @@ resource "google_cloud_run_v2_service" "wordpress_1" {
     volumes {
       name = "gcs-volume"
       gcs {
-        bucket    = google_storage_bucket.wordpress_1.name
+        bucket    = google_storage_bucket.wordpress_1[0].name
         read_only = false
       }
     }
@@ -82,7 +58,7 @@ resource "google_cloud_run_v2_service" "wordpress_1" {
       "run.googleapis.com/volumes" = jsonencode([{
         name = "gcs-fuse-mount"
         gcs = {
-          bucket    = google_storage_bucket.wordpress_1.name
+          bucket    = google_storage_bucket.wordpress_1[0].name
           read_only = false
           mount_options = ["implicit-dirs", "allow-other"]
         }
@@ -108,25 +84,32 @@ resource "google_cloud_run_service_iam_member" "wordpress_1_no_auth" {
   depends_on = [google_cloud_run_v2_service.wordpress_1]
 }
 
+# ----------------------------------------------------
+# Service account
+
 resource "google_service_account" "wordpress_1_sa" {
+  count       = var.environment == "pro" ? 1 : 0
   account_id   = "${var.environment}-common-backend-sa"
   display_name = "Service account for Express backend"
 }
 
 resource "google_storage_bucket_iam_member" "wordpress_1_admin" {
-  bucket = google_storage_bucket.wordpress_1.name
+  count       = var.environment == "pro" ? 1 : 0
+  bucket = google_storage_bucket.wordpress_1[0].name
   role   = "roles/storage.admin"
-  member = "serviceAccount:${google_service_account.wordpress_1_sa.email}"
+  member = "serviceAccount:${google_service_account.wordpress_1_sa[0].email}"
 }
 
 resource "google_storage_bucket_iam_member" "wordpress_1_object_admin" {
-  bucket = google_storage_bucket.wordpress_1.name
+  count       = var.environment == "pro" ? 1 : 0
+  bucket = google_storage_bucket.wordpress_1[0].name
   role   = "roles/storage.objectAdmin"
-  member = "serviceAccount:${google_service_account.wordpress_1_sa.email}"
+  member = "serviceAccount:${google_service_account.wordpress_1_sa[0].email}"
 }
 
 resource "google_project_iam_member" "wordpress_1_logging" {
+  count       = var.environment == "pro" ? 1 : 0
   project = var.project_name
   role    = "roles/logging.logWriter"
-  member  = "serviceAccount:${google_service_account.wordpress_1_sa.email}"
+  member  = "serviceAccount:${google_service_account.wordpress_1_sa[0].email}"
 }
