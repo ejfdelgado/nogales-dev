@@ -3,7 +3,8 @@ resource "google_cloud_run_v2_service" "wordpress_1" {
   name     = "${var.environment}-wordpress-1"
   location = var.region
   template {
-    max_instance_request_concurrency = 20
+    timeout = "1200s"
+    max_instance_request_concurrency = 15
     service_account = google_service_account.wordpress_1_sa[0].email
     containers {
       image = var.wordpress_image
