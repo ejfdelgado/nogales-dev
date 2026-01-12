@@ -46,16 +46,18 @@ services:
 
   wordpress:
     profiles: [ "all" ]
-    image: wordpress:php8.2-apache
+    #image: wordpress:php8.2-apache
+    image: us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/wordpress:2.0.1
     ports:
-      - 8080:80
+      - 8080:8080
     environment:
+      PORT: 8080
       WORDPRESS_DB_HOST: mysql
       WORDPRESS_DB_USER: ${MYSQL_USER}
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
     volumes:
-      - wordpress_data:/var/www/html
+      - wordpress_data:/var/www/html/wp-content
     networks:
       network_wordpress:
         aliases:

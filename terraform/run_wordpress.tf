@@ -35,7 +35,7 @@ resource "google_cloud_run_v2_service" "wordpress_1" {
       
       volume_mounts {
         name       = "gcs-volume"
-        mount_path = "/var/www/html"
+        mount_path = "/var/www/html/wp-content"
       }
     }
     vpc_access {
