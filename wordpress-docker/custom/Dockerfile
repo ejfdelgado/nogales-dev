@@ -22,6 +22,11 @@ COPY entrypoint.sh /usr/local/bin/
 COPY wp-config-cloudrun.php /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
+# 4. Bake the original folder
+RUN cp -p -R /usr/src/wordpress/. /var/www/html/
+RUN cp /usr/local/bin/wp-config-cloudrun.php /var/www/html/wp-config.php
+RUN chown -R www-data:www-data /var/www/html
+
 # Set working directory to the final destination
 WORKDIR /var/www/html
 

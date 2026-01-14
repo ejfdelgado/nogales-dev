@@ -28,9 +28,9 @@ resource "google_cloud_run_v2_service" "wordpress_1" {
       resources {
         limits = {
           # 512Mi
-          memory = "2Gi"
+          memory = "4Gi"
           # '1', '2', '4', and '8' 1000m 250m 500m
-          cpu = "1"
+          cpu = "2"
         }
       }
       

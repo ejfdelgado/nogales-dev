@@ -123,6 +123,9 @@ resource "google_cloud_run_service_iam_member" "no_auth" {
 /*
 It works because on GoDaddy we have:
 cname	test	ghs.googlehosted.com.
+
+and, on google cloud we use domain mapping:
+https://console.cloud.google.com/run/domains?project=local-volt-431316-m2
 */
 
 resource "google_compute_managed_ssl_certificate" "assessment" {

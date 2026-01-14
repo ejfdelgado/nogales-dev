@@ -53,9 +53,5 @@ ssh -i ~/.ssh/your_file rodalbores@104.197.163.219
 docker exec -it 8c032cc8e6a6 /bin/bash
 docker logs -f 22625d771890
 
-Consume request ignored: producer missing or closed
 
-Error: NO receive transport on ejdelgado.pat_public_6c36e9a2_6f1c_4e57_80c9_2b1b6b971af3
-
-Error: NO receive transport on ejdelgado.sig_ejdelgado
 

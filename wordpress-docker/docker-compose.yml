@@ -3,7 +3,9 @@
 # docker compose logs -f mysql
 # docker compose logs -f wordpress
 
-# docker exec -it 3079f27186ed sh
+# docker exec -it d18f7f2df5b5 sh
+# vi /etc/nginx/http.d/default.conf
+# docker commit d18f7f2df5b5 us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/wordpress:3.0.2
 
 # http://localhost:8080/
 
@@ -49,7 +51,7 @@ services:
   wordpress:
     profiles: [ "all" ]
     #image: wordpress:php8.2-apache
-    image: us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/wordpress:3.0.1
+    image: ${WORDPRESS_IMAGE}
     ports:
       - 8080:8080
     environment:
@@ -58,8 +60,8 @@ services:
       WORDPRESS_DB_USER: ${MYSQL_USER}
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
-    volumes:
-      - wordpress_data:/var/www/html
+    #volumes:
+    #  - wordpress_data:/var/www/html
     networks:
       network_wordpress:
         aliases:
