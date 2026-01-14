@@ -28,16 +28,16 @@ resource "google_cloud_run_v2_service" "wordpress_1" {
       resources {
         limits = {
           # 512Mi
-          memory = "4Gi"
+          memory = "2Gi"
           # '1', '2', '4', and '8' 1000m 250m 500m
-          cpu = "2"
+          cpu = "1"
         }
       }
       
-      volume_mounts {
-        name       = "gcs-volume"
-        mount_path = "/var/www/html"
-      }
+      #volume_mounts {
+      #  name       = "gcs-volume"
+      #  mount_path = "/var/www/html"
+      #}
     }
     vpc_access {
       connector = google_vpc_access_connector.wordpress_1a[0].id
