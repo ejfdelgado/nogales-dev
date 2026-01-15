@@ -34,10 +34,10 @@ resource "google_cloud_run_v2_service" "wordpress_1" {
         }
       }
       
-      #volume_mounts {
-      #  name       = "gcs-volume"
-      #  mount_path = "/var/www/html"
-      #}
+      volume_mounts {
+        name       = "gcs-volume"
+        mount_path = "/var/www/html/wp-content/uploads"
+      }
     }
     vpc_access {
       connector = google_vpc_access_connector.wordpress_1a[0].id
