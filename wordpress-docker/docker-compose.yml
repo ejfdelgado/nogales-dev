@@ -3,9 +3,9 @@
 # docker compose logs -f mysql
 # docker compose logs -f wordpress
 
-# docker exec -it d18f7f2df5b5 sh
+# docker exec -it 1ce6d52f5331 sh
 # vi /etc/nginx/http.d/default.conf
-# docker commit d18f7f2df5b5 us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/wordpress:3.0.2
+# docker commit 020d0882fa3d us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/wordpress:3.0.7
 
 # http://localhost:8080/
 

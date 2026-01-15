@@ -50,14 +50,14 @@ define( 'DB_COLLATE', '' );
  */
 $seed = getenv('WP_SECRET_SEED') ?: 'some-very-long-fallback-random-string';
 
-define(' AUTH_KEY',         $seed . 'auth');
-define(' SECURE_AUTH_KEY',  $seed . 'secreauth');
-define(' LOGGED_IN_KEY',    $seed . 'loggedin');
-define(' NONCE_KEY',        $seed . 'nonce');
-define(' AUTH_SALT',        $seed . 'authsalt');
-define(' SECURE_AUTH_SALT', $seed . 'secsalt');
-define(' LOGGED_IN_SALT',   $seed . 'logsalt');
-define(' NONCE_SALT',       $seed . 'nonsalt');
+define('AUTH_KEY',         $seed . 'auth');
+define('SECURE_AUTH_KEY',  $seed . 'secreauth');
+define('LOGGED_IN_KEY',    $seed . 'loggedin');
+define('NONCE_KEY',        $seed . 'nonce');
+define('AUTH_SALT',        $seed . 'authsalt');
+define('SECURE_AUTH_SALT', $seed . 'secsalt');
+define('LOGGED_IN_SALT',   $seed . 'logsalt');
+define('NONCE_SALT',       $seed . 'nonsalt');
 
 /**#@-*/
 
