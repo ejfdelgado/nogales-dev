@@ -40,6 +40,9 @@ videocall_script=<<-EOT
       net.ipv4.udp_mem = 65536 131072 146800
       EOF
 
+      # Removes all images but keeps images used in the last 7 days
+      #docker image prune -af --filter "until=168h"
+
       # Apply changes immediately
       sysctl --system
 EOT

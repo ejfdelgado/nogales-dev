@@ -45,13 +45,15 @@ docker exec -it 092f96adacaf /bin/bash
 docker logs -f e4e8079edbb8
 
 df -h && docker rmi -f $(docker images -aq)
+# Removes all images but keeps images used in the last 7 days
+docker image prune -af --filter "until=168h"
+
+Before
+/dev/sda1        46G   22G   24G  49% /mnt/stateful_partition
+After
+/dev/sda1        46G   15G   31G  32% /mnt/stateful_partition
 
 ssh -i ~/.ssh/your_file rodalbores@104.197.163.219
  
-
-
 docker exec -it 8c032cc8e6a6 /bin/bash
 docker logs -f 22625d771890
-
-
-

@@ -143,20 +143,9 @@ spec:
       volumes: []
 EOT
     google-logging-enabled    = "true"
+    google-monitoring-enabled = "true"
+    docker-gc-enabled = "true"
     startup-script = var.videocall_script
-
-# gce-container-declaration deprecation at July 31, 2026
-#  metadata = {
-#    startup-script = <<-EOT
-#      #!/bin/bash
-#      # Pull the Docker image
-#      docker pull gcr.io/your-project/your-node-image:latest
-#
-#      # Run the container with a memory limit
-#      docker run -d --restart=always --name node-server --memory=14g \
-#        gcr.io/your-project/your-node-image:latest
-#    EOT
-#  }
 
   }
 
@@ -202,15 +191,11 @@ EOT
 }
 
 resource "google_compute_instance_group" "videocallgroup" {
-  #count = var.environment == "pro" ? 1 : 0
   name        = "${var.environment}-videocall-group"
   zone        = var.zone
-  # instances   = [google_compute_instance.videocall[count.index].self_link]
   instances   = [google_compute_instance.videocall.self_link]
 
   named_port {
-    #name = "http"
-    #port = "80"
     name = "https"
     port = "443"
   }
@@ -219,19 +204,12 @@ resource "google_compute_instance_group" "videocallgroup" {
 }
 
 resource "google_compute_health_check" "videocall" {
-  #count = var.environment == "pro" ? 1 : 0
   name = "${var.environment}-health-check"
   timeout_sec        = 10
   check_interval_sec = 10
 
-  #http_health_check {
-  # port = 80
-  #}
-
   https_health_check {
     port         = 443
-    #request_path = "/health"
-    #validate_ssl = false
   }
 
   log_config {
@@ -240,9 +218,7 @@ resource "google_compute_health_check" "videocall" {
 }
 
 resource "google_compute_backend_service" "videocallbkservice" {
-  #count = var.environment == "pro" ? 1 : 0
   name     = "${var.environment}-videocall-bksrv"
-  #protocol = "HTTP"
 
   protocol              = "HTTPS"
   port_name             = "https"
@@ -250,33 +226,29 @@ resource "google_compute_backend_service" "videocallbkservice" {
   enable_cdn            = true
 
   cdn_policy {
-    cache_mode                    = "CACHE_ALL_STATIC"  # Options: "CACHE_ALL_STATIC", "USE_ORIGIN_HEADERS", "FORCE_CACHE_ALL"
-    default_ttl                   = 43200                  # in seconds 12 h = 60x60x12
-    max_ttl                       = 43200                 # in seconds
-    client_ttl                    = 43200                   # in seconds
+    cache_mode                    = "CACHE_ALL_STATIC" # Options: "CACHE_ALL_STATIC", "USE_ORIGIN_HEADERS", "FORCE_CACHE_ALL"
+    default_ttl                   = 43200 # in seconds 12 h = 60x60x12
+    max_ttl                       = 43200 # in seconds
+    client_ttl                    = 43200 # in seconds
     negative_caching              = true
     serve_while_stale             = 86400
     cache_key_policy {
       include_protocol            = true
       include_host                = true
       include_query_string        = true
-      #query_string_whitelist      = ["id", "l"]
     }
   }
 
   backend {
-    #group = google_compute_instance_group.videocallgroup[count.index].self_link
     group = google_compute_instance_group.videocallgroup.self_link
   }
 
   health_checks = [
-    #google_compute_health_check.videocall[count.index].self_link
     google_compute_health_check.videocall.self_link
     ]
 }
 
 resource "google_compute_managed_ssl_certificate" "default" {
-  #count = var.environment == "pro" ? 1 : 0
   name    = "${var.environment}-videocall-cert"
   managed {
     domains = [
@@ -286,10 +258,8 @@ resource "google_compute_managed_ssl_certificate" "default" {
 }
 
 resource "google_compute_url_map" "videocallmap" {
-  #count = var.environment == "pro" ? 1 : 0
   name        = "${var.environment}-videocall-map"
 
-  #default_service = google_compute_backend_service.videocallbkservice[count.index].id
   default_service = google_compute_backend_service.videocallbkservice.id
 
   host_rule {
@@ -301,30 +271,23 @@ resource "google_compute_url_map" "videocallmap" {
 
   path_matcher {
     name            = "allpaths"
-    #default_service = google_compute_backend_service.videocallbkservice[count.index].id
     default_service = google_compute_backend_service.videocallbkservice.id
 
     path_rule {
       paths   = ["/*"]
-      #service = google_compute_backend_service.videocallbkservice[count.index].id
       service = google_compute_backend_service.videocallbkservice.id
     }
   }
 }
 
 resource "google_compute_target_https_proxy" "default" {
-  #count = var.environment == "pro" ? 1 : 0
   name             = "${var.environment}-videocall-proxy"
-  #url_map          = google_compute_url_map.videocallmap[count.index].id
   url_map          = google_compute_url_map.videocallmap.id
-  #ssl_certificates = [google_compute_managed_ssl_certificate.default[count.index].id]
   ssl_certificates = [google_compute_managed_ssl_certificate.default.id]
 }
 
 resource "google_compute_global_forwarding_rule" "default" {
-  #count = var.environment == "pro" ? 1 : 0
   name       = "${var.environment}-videocall-forward"
-  #target     = google_compute_target_https_proxy.default[count.index].id
   target     = google_compute_target_https_proxy.default.id
   port_range = 443
 }
