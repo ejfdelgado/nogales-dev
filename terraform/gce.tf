@@ -143,6 +143,7 @@ spec:
       volumes: []
 EOT
     google-logging-enabled    = "true"
+    # Help keep the image disk space free
     google-monitoring-enabled = "true"
     docker-gc-enabled = "true"
     startup-script = var.videocall_script

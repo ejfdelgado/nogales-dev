@@ -58,6 +58,7 @@ resource "google_sql_database_instance" "general_replica" {
 }
 */
 
+/*
 resource "google_sql_database_instance" "wordpress_1" {
   count            = var.environment == "pro" ? 1 : 0
   name             = "${var.environment}-wordpress-1"
@@ -92,3 +93,4 @@ resource "google_sql_database_instance" "wordpress_1" {
     }
   }
 }
+*/

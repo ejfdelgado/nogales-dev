@@ -95,6 +95,9 @@ YAML
       chmod 777 "$MNT_DIR/vpn_config
 EOT
     google-logging-enabled    = "true"
+    # Help keep the image disk space free
+    google-monitoring-enabled = "true"
+    docker-gc-enabled = "true"
   }
 
   shielded_instance_config {
