@@ -11,3 +11,7 @@ ssh ejfdelgado@104.197.163.219
 # Erase old docker images
 df -h && docker rmi -f $(docker images -aq)
 ```
+
+Deployment:
+
+CREATE EXTENSION IF NOT EXISTS pg_cron;

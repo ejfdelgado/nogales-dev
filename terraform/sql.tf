@@ -8,6 +8,16 @@ resource "google_sql_database_instance" "general" {
     tier              = var.sql_type
     disk_size         = var.sql_gb
 
+    database_flags {
+      name  = "cloudsql.enable_pg_cron"
+      value = "on"
+    }
+
+    database_flags {
+      name  = "cron.database_name"
+      value = "nogales"
+    }
+
     ip_configuration {
       ipv4_enabled = true 
       
