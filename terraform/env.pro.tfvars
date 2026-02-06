@@ -7,6 +7,7 @@ videocall_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales
 turn_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_turn:1.3.0"
 wordpress_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/wordpress:3.0.8"
 heymarket_end_point="https://api.heymarket.com"
+assessment_cors="https://test.solvista.me;https://stg-assessment-284609972807.us-central1.run.app;https://apps.solvista.me;https://casa-de-la-familia-3c766f.design.webflow.com"
 sql_type="db-custom-1-3840"
 videocall_soup_ip="34.171.61.38"
 videocall_autorecovery="0"

@@ -87,6 +87,18 @@ resource "google_cloud_run_v2_service" "assessment" {
         name  = "MICROSOFT_TENANT"
         value = local.secrets.authentication.MICROSOFT_TENANT
       }
+      env {
+        name  = "CORS_MAIN_ALLOWED_ORIGIN"
+        value = var.assessment_cors
+      }
+      env {
+        name  = "BUCKET_PUBLIC"
+        value = "${var.environment}-nogales-public"
+      }
+      env {
+        name  = "BUCKET_PRIVATE"
+        value = "${var.environment}-nogales-private"
+      }
 
       resources {
         limits = {

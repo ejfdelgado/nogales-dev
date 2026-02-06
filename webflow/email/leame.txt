@@ -1,0 +1,4 @@
+Use:
+https://htmlemail.io/inline/
+or:
+https://templates.mailchimp.com/resources/inline-css/

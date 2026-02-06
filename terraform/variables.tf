@@ -190,3 +190,9 @@ variable "wordpress_image" {
   type        = string
   default     = ""
 }
+
+variable "assessment_cors" {
+  description = "CORS domains for assessment"
+  type        = string
+  default     = ""
+}
