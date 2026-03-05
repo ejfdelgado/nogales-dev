@@ -134,6 +134,8 @@ spec:
           value: aquintana@nogalespsychological.com
         - name: NO_PAGES
           value: 1
+        - name: CORS_MAIN_ALLOWED_ORIGIN
+          value: https://video.solvista.me,https://video-stg.solvista.me,https://apps.solvista.me
       securityContext:
         privileged: true
       stdin: false
