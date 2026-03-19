@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+
+
+
+<head>
+    <style>
+        :root {
+            --_theme-collection---font_size_m: 27px;
+        }
+        .text_font {
+            font-size: var(--_theme-collection---font_size_m);
+        }
+        .vertical {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .horizontal {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+        }
+    </style>
+    <style>
+        .wcag_font_size_1 {
+            --bigger_text_offset: 10px;
+            --_theme-collection---font_size_xs: calc(13px + var(--bigger_text_offset));
+            --_theme-collection---font_line_height_xs: calc(17px + var(--bigger_text_offset));
+
+            --_theme-collection---font_size_s: calc(16px + var(--bigger_text_offset));
+            --_theme-collection---font_line_height_s: calc(20px + var(--bigger_text_offset));
+
+            --_theme-collection---font_size_ms: calc(23px + var(--bigger_text_offset));
+            --_theme-collection---font_line_height_ms: calc(27px + var(--bigger_text_offset));
+
+            --_theme-collection---font_size_m: calc(27px + var(--bigger_text_offset));
+            --_theme-collection---font_line_height_m: calc(35px + var(--bigger_text_offset));
+
+            --_theme-collection---font_size_l: calc(40px + var(--bigger_text_offset));
+            --_theme-collection---font_line_height_l: calc(44px + var(--bigger_text_offset));
+
+            --_theme-collection---font_size_xl: calc(50px + var(--bigger_text_offset));
+            --_theme-collection---font_line_height_xl: calc(50px + var(--bigger_text_offset));
+        }
+        .wcag_focus_highlight_1 *:focus {
+            outline: none;
+        }
+
+        .wcag_focus_highlight_1 *:focus-visible {
+            outline: 3px solid #005fcc;
+            outline-offset: 4px;
+            border-radius: 2px;
+            box-shadow: 0 0 0 6px rgba(0, 95, 204, 0.3);
+        }
+        .skip-link {
+            position: absolute;
+            left: -100vw;
+        }
+        .skip-link:focus {
+            position: static;
+        }
+        [wcag-menu-item]>* {
+            display: inline;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        [wcag-menu-item][wcag-used="0"]>[wcag-value="0"] {
+            display: none;
+        }
+
+        [wcag-menu-item][wcag-used="1"]>[wcag-value="1"] {
+            display: none;
+        }
+
+        [wcag-menu-item][wcag-used="2"]>[wcag-value="2"] {
+            display: none;
+        }
+    </style>
+    <script>
+        // Accesibility
+        // Text to Speech
+        let lastElement = null;
+        let lastWasTab = false;
+        let synth;
+        let previousKey = null;
+        document.addEventListener('keydown', (e) => {
+            lastWasTab = (['Enter', 'Tab'].indexOf(e.key) >= 0);
+            previousKey = event.key;
+        });
+        function enableTabAutoRead(options = {}) {
+            const {
+                lang = 'en-US',
+                rate = 1,
+                pitch = 1,
+                volume = 1,
+                debug = false
+            } = options;
+
+            synth = window.speechSynthesis;
+
+            function getReadableText(el) {
+                if (!el) return '';
+                const role = el.getAttribute('role') ||
+                    el.tagName == "A" ? 'link' : '' ||
+                        el.tagName == "BUTTON" ? 'button' : ''
+                    ;
+                // Priority: aria-label > innerText > value > alt > title
+                const label = (
+                    el.getAttribute('aria-label') ||
+                    el.innerText ||
+                    el.value ||
+                    el.getAttribute('alt') ||
+                    el.getAttribute('title') ||
+                    ''
+                ).trim();
+                return role ? `${role}: ${label}` : label;
+            }
+
+            function speak(text) {
+                if (!text) return;
+
+                // Cancel previous speech to avoid overlap
+                synth.cancel();
+
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = lang;
+                utterance.rate = rate;
+                utterance.pitch = pitch;
+                utterance.volume = volume;
+
+                synth.speak(utterance);
+
+                if (debug) console.log('🔊 Speaking:', text);
+            }
+
+            function handleFocus(event) {
+                if (!lastWasTab) return;
+                lastWasTab = false;
+                if (event.target === lastElement) return;
+                lastElement = event.target;
+                const el = event.target;
+                const text = getReadableText(el);
+
+                if (debug) console.log('Focus on:', el, 'Text:', text);
+
+                speak(text);
+            }
+
+            document.addEventListener('focusin', handleFocus);
+
+            // Return a cleanup function
+            return () => {
+                document.removeEventListener('focusin', handleFocus);
+                synth.cancel();
+            };
+        }
+
+        const LANG_MAP = {
+            '': 'en-US',
+            'es-mx': 'es-ES',
+        };
+        const keyLang = /\/([^\/]*)$/.exec(location.pathname)[1];
+        let disableTTS = null;
+        // Accesibility menu activation
+        document.addEventListener("DOMContentLoaded", function () {
+            const elements = document.querySelectorAll('[wcag-menu-item]');
+            elements.forEach((el, index) => {
+                const wcagClass = el.getAttribute('data-wcag-class');
+                el.setAttribute('tabindex', '-1');
+                // Handle function
+                const useValue = (val, wcagClass) => {
+                    // Visual feedback on menu
+                    el.setAttribute('wcag-used', val);
+
+                    // Apply in document
+                    if (wcagClass == "wcag_tts") {
+                        if (val == "1") {
+                            disableTTS = enableTabAutoRead({
+                                lang: LANG_MAP[keyLang],
+                                rate: 1.1,
+                                debug: false
+                            });
+                        } else {
+                            if (disableTTS != null) {
+                                disableTTS();
+                                disableTTS = null;
+                            }
+                        }
+                    }
+                    const body = document.querySelectorAll('body')[0];
+                    Array.from(body.classList).forEach((cls) => {
+                        if (cls.startsWith(wcagClass)) {
+                            body.classList.remove(cls);
+                        }
+                    });
+                    body.classList.add(`${wcagClass}_${val}`);
+                };
+                el.setAttribute('wcag-used', "0");
+                Array.from(el.children).forEach((child) => {
+                    const val = child.getAttribute('wcag-value');
+                    if (!child.hasAttribute('tabindex')) {
+                        child.setAttribute('tabindex', '0');
+                    }
+                    child.addEventListener('click', () => {
+                        useValue(val, wcagClass);
+                    });
+                    // Keyboard listener (Enter key)
+                    child.addEventListener('keydown', (event) => {
+                        if (event.key === 'Enter') {
+                            event.preventDefault();
+                            useValue(val, wcagClass);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</head>
+
+<body class="vertical">
+    <div>
+        <div wcag-menu-item data-wcag-class="wcag_font_size">
+            <div wcag-value="1">Font size Big</div>
+            <div wcag-value="0">Font size Normal</div>
+        </div>
+        <div wcag-menu-item data-wcag-class="wcag_tts">
+            <div wcag-value="1">Use text to speech</div>
+            <div wcag-value="0">Disable text to speech</div>
+        </div>
+        <div wcag-menu-item data-wcag-class="wcag_focus_highlight">
+            <div wcag-value="1">Use highlight focus indicators</div>
+            <div wcag-value="0">Disable highlight focus indicators</div>
+        </div>
+    </div>
+    <div id="the_menu" class="horizontal">
+        <a id="main_link_menu" href="#the_content" class="skip-link">Skip to content</a>
+        <a href="#donations">Donations</a>
+        <a href="#about_us">About Us</a>
+    </div>
+    <div id="the_content" class="vertical" tabindex="-1">
+        <div id="donations" class="vertical" tabindex="0">
+            <h2 class="text_font">Donations</h2>
+            <p>Some extra information about donations</p>
+            <button>Donate</button>
+            <a href="#main_link_menu" class="skip-link">Back to main menu</a>
+        </div>
+        <div id="about_us" class="vertical" tabindex="0">
+            <h2>About Us</h2>
+            <p>Some extra information about us</p>
+            <button>Read more <strong>about us</strong></button>
+            <a href="#main_link_menu" class="skip-link">Back to main menu</a>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,11 @@
+<div
+  role="button"
+  tabindex="0"
+  (click)="doSomething()"
+  (keydown.enter)="doSomething()"
+  (keydown.space)="doSomething()"
+>
+  Click me
+</div>
+
+<button (click)="doSomething()">Click me</button>
