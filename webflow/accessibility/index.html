@@ -6,11 +6,25 @@
 <head>
     <style>
         :root {
+            --_primitive-collection---open_sans: 'Courier New', Courier, monospace;
+            --_primitive-collection---dislexia_font: 'Times New Roman', Times, serif;
             --_theme-collection---font_size_m: 27px;
+            --_fonts-collection---font_normal: var(--_primitive-collection---open_sans);
+
+            --_primitive-collection---purple_color: #8200b3;
+            --_primitive-collection---purple_v2: #ab74ed;
+            --_primitive-collection---purple_lighter: #9d00d8;
+            --_primitive-collection---purple_color_alpha: #8200b3cc;
+            --_primitive-collection---yellow_66: #ffe852;
+            --_primitive-collection---orange_57: #f07e33;
+            --_primitive-collection---orange_2: #ff8a48;
+            --_primitive-collection---blue_turquaise: #01afc7;
         }
+
         .text_font {
             font-size: var(--_theme-collection---font_size_m);
         }
+
         .vertical {
             display: flex;
             flex-direction: column;
@@ -22,8 +36,34 @@
             flex-direction: row;
             gap: 10px;
         }
+
+        body {
+            font-family: var(--_fonts-collection---font_normal);
+            background-color: var(--_primitive-collection---yellow_66);
+        }
     </style>
     <style>
+        /*https://pinetools.com/greyscale-desaturate-color*/
+        .wcag_greyscale_1 {
+            --_primitive-collection---purple_color: #595959;
+            --_primitive-collection---purple_v2: #b0b0b0;
+            --_primitive-collection---purple_lighter: #6c6c6c;
+            --_primitive-collection---purple_color_alpha: #666666;
+            --_primitive-collection---yellow_66: #a8a8a8;
+            --_primitive-collection---orange_57: #919191;
+            --_primitive-collection---orange_2: #a3a3a3;
+            --_primitive-collection---blue_turquaise: #646464;
+
+            --_theme-collection---color_primary_1: var(--_primitive-collection---yellow_66);
+            --_theme-collection---color_primary_2: var(--_primitive-collection---orange_2);
+            --_theme-collection---color_primary_3: var(--_primitive-collection---blue_turquaise);
+            --_theme-collection---color_primary_4: var(--_primitive-collection---purple_v2);
+
+        }
+        .wcag_font_dislexia_1 {
+            --_fonts-collection---font_normal: var(--_primitive-collection---dislexia_font);
+        }
+
         .wcag_font_size_1 {
             --bigger_text_offset: 10px;
             --_theme-collection---font_size_xs: calc(13px + var(--bigger_text_offset));
@@ -44,6 +84,7 @@
             --_theme-collection---font_size_xl: calc(50px + var(--bigger_text_offset));
             --_theme-collection---font_line_height_xl: calc(50px + var(--bigger_text_offset));
         }
+
         .wcag_focus_highlight_1 *:focus {
             outline: none;
         }
@@ -54,13 +95,16 @@
             border-radius: 2px;
             box-shadow: 0 0 0 6px rgba(0, 95, 204, 0.3);
         }
+
         .skip-link {
             position: absolute;
             left: -100vw;
         }
+
         .skip-link:focus {
             position: static;
         }
+
         [wcag-menu-item]>* {
             display: inline;
             -webkit-user-select: none;
@@ -233,6 +277,14 @@
         <div wcag-menu-item data-wcag-class="wcag_focus_highlight">
             <div wcag-value="1">Use highlight focus indicators</div>
             <div wcag-value="0">Disable highlight focus indicators</div>
+        </div>
+        <div wcag-menu-item data-wcag-class="wcag_font_dislexia">
+            <div wcag-value="1">Use dislexia friendly font</div>
+            <div wcag-value="0">Use normal font</div>
+        </div>
+        <div wcag-menu-item data-wcag-class="wcag_greyscale">
+            <div wcag-value="1">Use grey scale</div>
+            <div wcag-value="0">Use color full</div>
         </div>
     </div>
     <div id="the_menu" class="horizontal">

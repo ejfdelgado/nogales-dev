@@ -26,5 +26,14 @@ docker exec -it 8c032cc8e6a6 /bin/bash
 docker logs c2eaf988af42
 zip -r all.zip /config
 
-vi /config/peer70/peer70.conf
+# Also can login via gcp console web page
+
+# This is the last:
+
+vi /config/peer99/peer99.conf
+
+Copy to:
+/home/ejfdelgado/desarrollo/nogales-dev/vpn-terraform/temp
+
+Insert the text into the column "config"
 ```
