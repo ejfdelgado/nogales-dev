@@ -15,3 +15,8 @@ df -h && docker rmi -f $(docker images -aq)
 Deployment:
 
 CREATE EXTENSION IF NOT EXISTS pg_cron;
+
+# Webflow
+
+- Use font_normal.
+- Use font sizes from t-shirt sizes xs, s, m...
