@@ -18,5 +18,7 @@ CREATE EXTENSION IF NOT EXISTS pg_cron;
 
 # Webflow
 
-- Use font_normal.
-- Use font sizes from t-shirt sizes xs, s, m...
+- Use button go to back.
+- Go to content.
+- Use font_normal for font-family.
+- Use font sizes from t-shirt sizes: xs, s, m...
