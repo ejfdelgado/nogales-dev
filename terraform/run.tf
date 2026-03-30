@@ -99,7 +99,26 @@ resource "google_cloud_run_v2_service" "assessment" {
         name  = "BUCKET_PRIVATE"
         value = "${var.environment}-nogales-private"
       }
-
+      env {
+        name  = "PROJECT_ID"
+        value = var.project_name
+      }
+      env {
+        name  = "PROJECT_NUMBER"
+        value = data.google_project.project.number
+      }
+      env {
+        name  = "PROJECT_REGION"
+        value = var.region
+      }
+      env {
+        name  = "TASK_QUEUE_CREATE_CLIENT"
+        value = "${var.environment}-client-creation"
+      }
+      env {
+        name  = "CLOUD_RUN_CREATE_CLIENT_URL"
+        value = google_cloud_run_v2_service.assessment.uri
+      }
       resources {
         limits = {
           # 512Mi
