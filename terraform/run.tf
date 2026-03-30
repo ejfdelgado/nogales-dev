@@ -119,6 +119,11 @@ resource "google_cloud_run_v2_service" "assessment" {
         name  = "CLOUD_RUN_CREATE_CLIENT_URL"
         value = "https://${var.environment}-assessment-${data.google_project.project.number}.${var.region}.run.app"
       }
+      env {
+        name  = "USE_QUEUE"
+        value = "1"
+      }
+      
       resources {
         limits = {
           # 512Mi
