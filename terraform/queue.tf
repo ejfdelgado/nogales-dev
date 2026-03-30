@@ -21,3 +21,12 @@ resource "google_cloud_tasks_queue" "client_creation" {
   depends_on = [google_cloud_run_v2_service.assessment]
 }
 
+# 2. Grant Cloud Tasks Permission to Invoke the Function
+resource "google_cloud_run_v2_service_iam_member" "client_creation_assessment_caller" {
+  project  = google_cloud_run_v2_service.assessment.project
+  location = google_cloud_run_v2_service.assessment.location
+  name     = google_cloud_run_v2_service.assessment.name
+  role     = "roles/run.invoker"
+  
+  member   = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-cloudtasks.iam.gserviceaccount.com"
+}

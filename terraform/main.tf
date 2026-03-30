@@ -22,6 +22,8 @@ provider "google-beta" {
   region  = var.region
 }
 
+data "google_project" "project" {}
+
 # Enables the Cloud Run API
 /*
 resource "google_project_service" "run_api" {
