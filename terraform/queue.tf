@@ -30,3 +30,11 @@ resource "google_cloud_run_v2_service_iam_member" "client_creation_assessment_ca
   
   member   = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-cloudtasks.iam.gserviceaccount.com"
 }
+
+
+# Grant the Development SA permission to "act as" service accounts in the project
+resource "google_project_iam_member" "cloud_run_sa_can_use_task_queue" {
+  project = var.project_name
+  role    = "roles/iam.serviceAccountUser"
+  member  = "serviceAccount:development@${var.project_name}.iam.gserviceaccount.com"
+}

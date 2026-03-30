@@ -117,7 +117,7 @@ resource "google_cloud_run_v2_service" "assessment" {
       }
       env {
         name  = "CLOUD_RUN_CREATE_CLIENT_URL"
-        value = google_cloud_run_v2_service.assessment.uri
+        value = "https://${var.environment}-assessment-${data.google_project.project.number}.${var.region}.run.app"
       }
       resources {
         limits = {
