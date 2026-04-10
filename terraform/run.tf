@@ -123,6 +123,18 @@ resource "google_cloud_run_v2_service" "assessment" {
         name  = "USE_QUEUE"
         value = "1"
       }
+      env {
+        name = "PASS_TO_ENCODE"
+        value = local.secrets.link_key_pass
+      }
+      env {
+        name = "DEFAULT_ASSESSMENT_USER_CREATOR"
+        value = local.secrets.default_assessment_user_creator
+      }
+      env {
+        name = "EMAIL_TARGET_DOMAIN"
+        value = var.assessment_domain
+      }
       
       resources {
         limits = {

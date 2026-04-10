@@ -196,3 +196,9 @@ variable "assessment_cors" {
   type        = string
   default     = ""
 }
+
+variable "assessment_domain" {
+  description = "domains for assessment"
+  type        = string
+  default     = ""
+}
