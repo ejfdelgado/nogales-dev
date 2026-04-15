@@ -293,6 +293,7 @@
                 };
 
                 try {
+                    setLoadingIndicator(true);
                     const res = await fetch(`${env.endpoint}/srv/email/send`, {
                         method: "POST",
                         headers: {
@@ -362,20 +363,34 @@
             });
         }
 
+        function mapPopUpContent(id, payload) {
+            const reference = document.getElementById(id);
+            reference.querySelectorAll('[popup-content]').forEach(element => {
+                const label = element.getAttribute('popup-content');
+                if (label in payload) {
+                    element.innerHTML = payload[label];
+                }
+            });
+        }
+
         function showSuccessPopUp(payload) {
             setLoadingIndicator(false);
             setElementVisibility(POPUP_IDS.back, true);
             setElementVisibility(POPUP_IDS.alert, true);
             // attach event listeners for buttons
             activatePopUp(POPUP_IDS.alert);
-            console.log(JSON.stringify(payload));
+            // map content
+            mapPopUpContent(POPUP_IDS.alert, payload);
         }
 
         function showErrorPopUp(payload) {
             setLoadingIndicator(false);
             setElementVisibility(POPUP_IDS.back, true);
             setElementVisibility(POPUP_IDS.alert, true);
-            console.log(JSON.stringify(payload));
+            // attach event listeners for buttons
+            activatePopUp(POPUP_IDS.alert);
+            // map content
+            mapPopUpContent(POPUP_IDS.alert, payload);
         }
 
         function closeAllPopUps() {
