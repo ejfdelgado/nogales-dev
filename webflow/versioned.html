@@ -244,16 +244,24 @@
     <script>
         const ENV_ALL = {
             "dev": {
+                "recipient": "edgar.jose.fernando.delgado@gmail.com",
                 "endpoint": "http://localhost:8081"
             },
             "stg": {
+                "recipient": "edgar.jose.fernando.delgado@gmail.com",
                 "endpoint": "https://stg-assessment-284609972807.us-central1.run.app"
             },
             "pro": {
+                "recipient": "info@casadelafamilia.org",
                 "endpoint": "https://pro-assessment-284609972807.us-central1.run.app"
             },
         };
         const env = ENV_ALL["stg"];
+
+        function getTimestamp() {
+            const now = new Date();
+            return `${now.getDate()}-${now.getMonth() + 1}-${now.getFullYear()} / ${now.getUTCHours()}:${now.getUTCMinutes()}:${now.getUTCSeconds()}`;
+        }
 
         function configureContactUsForm() {
             const parentForm = document.getElementById('contact-us-form');
@@ -275,15 +283,10 @@
                     //debug: 1,
                     source: "bucket-private",
                     body: {
-                        to: ["edgar.jose.fernando.delgado@gmail.com"],
-                        //template: "/assets/templates/mails/test.html",
+                        to: [env.recipient],
                         template: "email/contact_us.html",
-                        subject: "This is my subject",
+                        subject: "CDLF Contact Us Form:",
                         params: {
-                            data: {
-                                title: "This is my title",
-                                content: "This is my content"
-                            },
                             form: formDataFields,
                         },
                     }
@@ -305,7 +308,15 @@
                     // Show Webflow success message
                     form.style.display = "none";
                     document.querySelector(".w-form-done").style.display = "block";
+                    showSuccessPopUp({
+                        title: "Message sent",
+                        message: "Thanks for your message.",
+                    });
                 } catch (err) {
+                    showErrorPopUp({
+                        title: "Oohps",
+                        message: "Please try later.",
+                    });
                     document.querySelector(".w-form-fail").style.display = "block";
                     console.error(err);
                 }
@@ -315,6 +326,63 @@
         document.addEventListener("DOMContentLoaded", () => {
             configureContactUsForm();
         });
+    </script>
+    <script>
+        const POPUP_IDS = {
+            alert: 'popup_alert',
+            error: 'popup_alert',
+            back: 'popup_back',
+            loading: 'popup_loading',
+        };
+        function setElementVisibility(id, val) {
+            const reference = document.getElementById(id);
+            if (val) {
+                reference.style.setProperty('display', 'block', 'important');
+            } else {
+                reference.style.setProperty('display', 'none', 'important');
+            }
+        }
+        function setLoadingIndicator(val) {
+            setElementVisibility(POPUP_IDS.back, val);
+            setElementVisibility(POPUP_IDS.loading, val);
+        }
+
+        function activatePopUp(id) {
+            const reference = document.getElementById(id);
+            reference.querySelectorAll('[popup-action]').forEach(element => {
+                const handler = (event) => {
+                    const clicked = event.currentTarget;
+                    const action = clicked.getAttribute('popup-action');
+                    if (action == "close") {
+                        closeAllPopUps();
+                    }
+                    element.removeEventListener('click', handler);
+                };
+                element.addEventListener('click', handler);
+            });
+        }
+
+        function showSuccessPopUp(payload) {
+            setLoadingIndicator(false);
+            setElementVisibility(POPUP_IDS.back, true);
+            setElementVisibility(POPUP_IDS.alert, true);
+            // attach event listeners for buttons
+            activatePopUp(POPUP_IDS.alert);
+            console.log(JSON.stringify(payload));
+        }
+
+        function showErrorPopUp(payload) {
+            setLoadingIndicator(false);
+            setElementVisibility(POPUP_IDS.back, true);
+            setElementVisibility(POPUP_IDS.alert, true);
+            console.log(JSON.stringify(payload));
+        }
+
+        function closeAllPopUps() {
+            setElementVisibility(POPUP_IDS.back, false);
+            setElementVisibility(POPUP_IDS.loading, false);
+            setElementVisibility(POPUP_IDS.alert, false);
+        }
     </script>
 </head>
 
