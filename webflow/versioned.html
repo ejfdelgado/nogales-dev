@@ -258,6 +258,29 @@
         };
         const env = ENV_ALL["stg"];
 
+        /**
+         * en-us (default)
+         * es-mx
+         * */
+        function getLanguage() {
+            try {
+                return document
+                    .querySelector('[hreflang].w--current')
+                    .getAttribute("hreflang")
+                    .toLocaleLowerCase();
+            } catch (err) {
+                return "en-us";
+            }
+        }
+
+        function translate(key, map) {
+            const lan = getLanguage();
+            if (key in map[lan]) {
+                return map[lan][key];
+            }
+            return key;
+        }
+
         function getTimestamp() {
             const now = new Date();
             return `${now.getDate()}-${now.getMonth() + 1}-${now.getFullYear()} / ${now.getUTCHours()}:${now.getUTCMinutes()}:${now.getUTCSeconds()}`;
@@ -302,21 +325,31 @@
                         body: JSON.stringify(payload),
                     });
 
-                    console.log(res);
-
                     if (!res.ok) throw new Error("Request failed");
 
                     // Show Webflow success message
                     form.style.display = "none";
                     document.querySelector(".w-form-done").style.display = "block";
                     showSuccessPopUp({
-                        title: "Message sent",
-                        message: "Thanks for your message.",
+                        "en-us": {
+                            title: "Message sent",
+                            message: "Thanks for your message."
+                        },
+                        "es-mx": {
+                            title: "Mensaje enviado",
+                            message: "Gracias por su mensaje."
+                        }
                     });
                 } catch (err) {
                     showErrorPopUp({
-                        title: "Oohps",
-                        message: "Please try later.",
+                        "en-us": {
+                            title: "Oops!",
+                            message: "Please try later."
+                        },
+                        "es-mx": {
+                            title: "Ups!",
+                            message: "Por favor reintenta más tarde."
+                        }
                     });
                     document.querySelector(".w-form-fail").style.display = "block";
                     console.error(err);
@@ -363,7 +396,9 @@
             });
         }
 
-        function mapPopUpContent(id, payload) {
+        function mapPopUpContent(id, payloadMulti) {
+            const lang = getLanguage();
+            const payload = payloadMulti[lang];
             const reference = document.getElementById(id);
             reference.querySelectorAll('[popup-content]').forEach(element => {
                 const label = element.getAttribute('popup-content');
