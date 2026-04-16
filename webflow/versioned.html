@@ -286,80 +286,41 @@
             return `${now.getDate()}-${now.getMonth() + 1}-${now.getFullYear()} / ${now.getUTCHours()}:${now.getUTCMinutes()}:${now.getUTCSeconds()}`;
         }
 
-        function configureContactUsForm() {
-            const parentForm = document.getElementById('contact-us-form');
+        function activateForm(parentId, formFunction, successMessage, errorMessage) {
+            const parentForm = document.getElementById(parentId);
             if (!parentForm) {
                 return;
             }
-
             const form = parentForm.querySelector("form");
             if (!form) {
                 return;
             }
-
-            form.addEventListener("submit", async (e) => {
+            const eventFunction = async (e) => {
                 e.preventDefault();
 
                 const formData = new FormData(form);
                 const formDataFields = Object.fromEntries(formData.entries());
-                const payload = {
-                    //debug: 1,
-                    source: "bucket-private",
-                    body: {
-                        to: [env.recipient],
-                        template: "email/contact_us.html",
-                        subject: "CDLF Contact Us Form " + getTimestamp(),
-                        params: {
-                            form: formDataFields,
-                        },
-                    }
-                };
-
                 try {
                     setLoadingIndicator(true);
-                    const res = await fetch(`${env.endpoint}/srv/email/send`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(payload),
-                    });
 
-                    if (!res.ok) throw new Error("Request failed");
+                    const response = await formFunction(formDataFields);
+                    if (response.successMessage) {
+                        successMessage = response.successMessage;
+                    }
 
                     // Show Webflow success message
                     form.style.display = "none";
-                    document.querySelector(".w-form-done").style.display = "block";
-                    showSuccessPopUp({
-                        "en-us": {
-                            title: "Message sent",
-                            message: "Thanks for your message."
-                        },
-                        "es-mx": {
-                            title: "Mensaje enviado",
-                            message: "Gracias por su mensaje."
-                        }
-                    });
+                    parentForm.querySelector(".w-form-done").style.display = "block";
+
+                    showSuccessPopUp(successMessage);
                 } catch (err) {
-                    showErrorPopUp({
-                        "en-us": {
-                            title: "Oops!",
-                            message: "Please try later."
-                        },
-                        "es-mx": {
-                            title: "Ups!",
-                            message: "Por favor reintenta más tarde."
-                        }
-                    });
-                    document.querySelector(".w-form-fail").style.display = "block";
+                    showErrorPopUp(errorMessage);
+                    parentForm.querySelector(".w-form-fail").style.display = "block";
                     console.error(err);
                 }
-            });
+            };
+            form.addEventListener("submit", eventFunction);
         }
-
-        document.addEventListener("DOMContentLoaded", () => {
-            configureContactUsForm();
-        });
     </script>
     <script>
         const POPUP_IDS = {
@@ -433,6 +394,55 @@
             setElementVisibility(POPUP_IDS.loading, false);
             setElementVisibility(POPUP_IDS.alert, false);
         }
+    </script>
+    <script>
+        function configureContactUsForm() {
+            activateForm('contact-us-form', async (formDataFields) => {
+                const payload = {
+                    //debug: 1,
+                    source: "bucket-private",
+                    body: {
+                        to: [env.recipient],
+                        template: "email/contact_us.html",
+                        subject: "CDLF Contact Us Form " + getTimestamp(),
+                        params: {
+                            form: formDataFields,
+                        },
+                    }
+                };
+                const res = await fetch(`${env.endpoint}/srv/email/send`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(payload),
+                });
+                if (!res.ok) throw new Error("Request failed");
+                return {};
+            }, {
+                "en-us": {
+                    title: "Message sent",
+                    message: "Thanks for your message."
+                },
+                "es-mx": {
+                    title: "Mensaje enviado",
+                    message: "Gracias por su mensaje."
+                }
+            }, {
+                "en-us": {
+                    title: "Oops!",
+                    message: "Please try later."
+                },
+                "es-mx": {
+                    title: "Ups!",
+                    message: "Por favor reintenta más tarde."
+                }
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            configureContactUsForm();
+        });
     </script>
 </head>
 
