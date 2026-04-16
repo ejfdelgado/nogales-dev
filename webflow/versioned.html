@@ -312,9 +312,11 @@
                     form.style.display = "none";
                     parentForm.querySelector(".w-form-done").style.display = "block";
 
-                    showSuccessPopUp(successMessage);
+                    const selected = await showSuccessPopUp(successMessage);
+                    console.log(`selected = ${selected}`);
                 } catch (err) {
-                    showErrorPopUp(errorMessage);
+                    const selected = await showErrorPopUp(errorMessage);
+                    console.log(`selected = ${selected}`);
                     parentForm.querySelector(".w-form-fail").style.display = "block";
                     console.error(err);
                 }
@@ -325,6 +327,7 @@
     <script>
         const POPUP_IDS = {
             alert: 'popup_alert',
+            confirm: 'popup_confirm',
             error: 'popup_alert',
             back: 'popup_back',
             loading: 'popup_loading',
@@ -342,18 +345,25 @@
             setElementVisibility(POPUP_IDS.loading, val);
         }
 
-        function activatePopUp(id) {
+        async function activatePopUp(id) {
             const reference = document.getElementById(id);
-            reference.querySelectorAll('[popup-action]').forEach(element => {
-                const handler = (event) => {
-                    const clicked = event.currentTarget;
-                    const action = clicked.getAttribute('popup-action');
-                    if (action == "close") {
-                        closeAllPopUps();
-                    }
-                    element.removeEventListener('click', handler);
-                };
-                element.addEventListener('click', handler);
+            // Clean previous
+            const copyChildren = true;
+            const newEl = reference.cloneNode(copyChildren);
+            reference.parentNode.replaceChild(newEl, reference);
+            return new Promise((resolve) => {
+                newEl.querySelectorAll('[popup-action]').forEach(element => {
+                    const handler = (event) => {
+                        const clicked = event.currentTarget;
+                        const action = clicked.getAttribute('popup-action');
+                        if (action == "close") {
+                            closeAllPopUps();
+                        }
+                        resolve(action);
+                        element.removeEventListener('click', handler);
+                    };
+                    element.addEventListener('click', handler);
+                });
             });
         }
 
@@ -369,24 +379,37 @@
             });
         }
 
-        function showSuccessPopUp(payload) {
+        async function showSuccessPopUp(payload) {
             setLoadingIndicator(false);
             setElementVisibility(POPUP_IDS.back, true);
-            setElementVisibility(POPUP_IDS.alert, true);
-            // attach event listeners for buttons
-            activatePopUp(POPUP_IDS.alert);
             // map content
             mapPopUpContent(POPUP_IDS.alert, payload);
+            // make it visible
+            setElementVisibility(POPUP_IDS.alert, true);
+            // attach event listeners for buttons
+            return activatePopUp(POPUP_IDS.alert);
         }
 
-        function showErrorPopUp(payload) {
+        async function showErrorPopUp(payload) {
             setLoadingIndicator(false);
             setElementVisibility(POPUP_IDS.back, true);
-            setElementVisibility(POPUP_IDS.alert, true);
-            // attach event listeners for buttons
-            activatePopUp(POPUP_IDS.alert);
             // map content
             mapPopUpContent(POPUP_IDS.alert, payload);
+            // make it visible
+            setElementVisibility(POPUP_IDS.alert, true);
+            // attach event listeners for buttons
+            return activatePopUp(POPUP_IDS.alert);
+        }
+
+        async function showConfirmPopUp(payload) {
+            setLoadingIndicator(false);
+            setElementVisibility(POPUP_IDS.back, true);
+            // map content
+            mapPopUpContent(POPUP_IDS.confirm, payload);
+            // make it visible
+            setElementVisibility(POPUP_IDS.confirm, true);
+            // attach event listeners for buttons
+            return activatePopUp(POPUP_IDS.confirm);
         }
 
         function closeAllPopUps() {
@@ -422,20 +445,24 @@
             }, {
                 "en-us": {
                     title: "Message sent",
-                    message: "Thanks for your message."
+                    message: "Thanks for your message.",
+                    accept: "Got it",
                 },
                 "es-mx": {
                     title: "Mensaje enviado",
-                    message: "Gracias por su mensaje."
+                    message: "Gracias por su mensaje.",
+                    accept: "Cerrar",
                 }
             }, {
                 "en-us": {
                     title: "Oops!",
-                    message: "Please try later."
+                    message: "Please try later.",
+                    accept: "Got it",
                 },
                 "es-mx": {
                     title: "Ups!",
-                    message: "Por favor reintenta más tarde."
+                    message: "Por favor reintenta más tarde.",
+                    accept: "Cerrar",
                 }
             });
         }
