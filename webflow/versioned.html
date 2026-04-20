@@ -289,10 +289,12 @@
         function activateForm(parentId, formFunction, successMessage, errorMessage) {
             const parentForm = document.getElementById(parentId);
             if (!parentForm) {
+                console.log(`Warning: No parent form with id "${parentId}"`);
                 return;
             }
             const form = parentForm.querySelector("form");
             if (!form) {
+                console.log(`Error: The div with id "${parentId}" has no form inner.`);
                 return;
             }
             const eventFunction = async (e) => {
@@ -467,8 +469,57 @@
             });
         }
 
+        function configureVolunteersForm() {
+            activateForm('volunteers-form', async (formDataFields) => {
+                const payload = {
+                    //debug: 1,
+                    source: "bucket-private",
+                    body: {
+                        to: [env.recipient],
+                        template: "email/volunteers.html",
+                        subject: "CDLF Volunteer Form " + getTimestamp(),
+                        params: {
+                            form: formDataFields,
+                        },
+                    }
+                };
+                const res = await fetch(`${env.endpoint}/srv/email/send`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(payload),
+                });
+                if (!res.ok) throw new Error("Request failed");
+                return {};
+            }, {
+                "en-us": {
+                    title: "Message sent",
+                    message: "Thanks for register in our talent pool.",
+                    accept: "Got it",
+                },
+                "es-mx": {
+                    title: "Mensaje enviado",
+                    message: "Gracias por registrarse en nuestro banco de talentos.",
+                    accept: "Cerrar",
+                }
+            }, {
+                "en-us": {
+                    title: "Oops!",
+                    message: "Please try later.",
+                    accept: "Got it",
+                },
+                "es-mx": {
+                    title: "Ups!",
+                    message: "Por favor reintenta más tarde.",
+                    accept: "Cerrar",
+                }
+            });
+        }
+
         document.addEventListener("DOMContentLoaded", () => {
             configureContactUsForm();
+            configureVolunteersForm();
         });
     </script>
 </head>
