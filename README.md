@@ -41,8 +41,16 @@ ssh ejfdelgado@34.171.61.38
 Stg:
 ssh ejfdelgado@104.197.163.219
 docker ps
-docker exec -it b0ffcefbc1af /bin/bash
-docker logs -f f0d2b4503753
+docker exec -it 791ab0586308 /bin/bash
+docker logs -f 791ab0586308
+
+gcloud compute instances get-serial-port-output stg-nogales-videocall --zone=us-central1-c
+
+sudo journalctl -u google-startup-scripts.service
+sudo journalctl -u google-startup-scripts.service -n 100
+
+/tmp/app/cloud-sql-proxy --port=5432 local-volt-431316-m2:us-central1:stg-general &
+
 
 df -h && docker rmi -f $(docker images -aq)
 # Removes all images but keeps images used in the last 7 days

@@ -82,6 +82,8 @@ spec:
           value: ${var.environment}-nogales-public
         - name: BUCKET_PRIVATE
           value: ${var.environment}-nogales-private
+        - name: INSTANCE_CONNECTION_NAME
+          value: ${google_sql_database_instance.general.connection_name}
         - name: POSTGRES_HOST
           value: 127.0.0.1
         - name: POSTGRES_PORT
