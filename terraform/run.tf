@@ -3,6 +3,9 @@ resource "google_cloud_run_v2_service" "assessment" {
   name     = "${var.environment}-assessment"
   location = var.region
   template {
+    annotations = {
+        "run.googleapis.com/cloudsql-instances" = google_sql_database_instance.general.connection_name
+    }
     max_instance_request_concurrency = 20
     containers {
       image = var.assessment_image
