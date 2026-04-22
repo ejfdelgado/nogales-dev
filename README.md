@@ -41,8 +41,8 @@ ssh ejfdelgado@34.171.61.38
 Stg:
 ssh ejfdelgado@104.197.163.219
 docker ps
-docker exec -it 092f96adacaf /bin/bash
-docker logs -f e4e8079edbb8
+docker exec -it f0d2b4503753 /bin/bash
+docker logs -f f0d2b4503753
 
 df -h && docker rmi -f $(docker images -aq)
 # Removes all images but keeps images used in the last 7 days
