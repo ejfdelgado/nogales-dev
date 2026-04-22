@@ -56,7 +56,8 @@ resource "google_cloud_run_v2_service" "assessment" {
       }
       env {
         name  = "POSTGRES_HOST"
-        value = local.secrets.postgress.host
+        #value = local.secrets.postgress.host
+        value = "/cloudsql/${google_sql_database_instance.general.connection_name}"
       }
       env {
         name  = "POSTGRES_PORT"
