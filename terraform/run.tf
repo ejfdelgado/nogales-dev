@@ -3,9 +3,6 @@ resource "google_cloud_run_v2_service" "assessment" {
   name     = "${var.environment}-assessment"
   location = var.region
   template {
-    annotations = {
-        "run.googleapis.com/cloudsql-instances" = google_sql_database_instance.general.connection_name
-    }
     max_instance_request_concurrency = 20
     containers {
       image = var.assessment_image
@@ -147,6 +144,19 @@ resource "google_cloud_run_v2_service" "assessment" {
           # '1', '2', '4', and '8' 1000m 250m 500m
           cpu = "2"
         }
+      }
+      volume_mounts {
+        mount_path = "/cloudsql"
+        name       = "cloudsql"
+      }
+    }
+    volumes {
+      name = "cloudsql"
+
+      cloud_sql_instance {
+        instances = [
+            google_sql_database_instance.general.connection_name,
+          ]
       }
     }
     scaling {

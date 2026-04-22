@@ -20,14 +20,14 @@ resource "google_sql_database_instance" "general" {
 
     ip_configuration {
       # Set to false to disable public IP
-      ipv4_enabled = false 
+      ipv4_enabled = true 
 
       # This allows to have private access
       private_network = google_compute_network.nogales-network.id
       
       authorized_networks {
-        name  = google_compute_network.nogales-network.id
-        value = "0.0.0.0/0"  
+        name  = "edgar_delgado"
+        value = "186.102.25.212"  
       }
     }
 
