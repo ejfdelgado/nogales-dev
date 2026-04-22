@@ -29,6 +29,18 @@ resource "google_sql_database_instance" "general" {
         name  = "edgar_delgado"
         value = "186.102.25.212"  
       }
+      authorized_networks {
+        name  = "daniel_triana"
+        value = "186.102.25.212"  
+      }
+      authorized_networks {
+        name  = "marianni_gomez"
+        value = "186.102.25.212"  
+      }
+      authorized_networks {
+        name  = "rod"
+        value = "186.102.25.212"  
+      }
     }
 
     backup_configuration {
