@@ -45,6 +45,20 @@ resource "google_compute_firewall" "https-rule" {
   source_ranges = ["0.0.0.0/0"]
 }
 
+resource "google_compute_firewall" "allow_sql_egress" {
+  name      = "allow-sql-egress"
+  network   = google_compute_network.nogales-network.name
+  direction = "EGRESS"
+
+  allow {
+    protocol = "tcp"
+    # 5432 is the postgress port
+    ports    = ["5432"]
+  }
+
+  destination_ranges = [google_compute_global_address.private_ip_range.address]
+}
+
 resource "google_compute_address" "nogales_private_ip" {
   name         = "${var.environment}-nogales-private-ip"
   subnetwork   = google_compute_subnetwork.nogales-subnetwork.name
