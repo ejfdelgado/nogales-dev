@@ -42,6 +42,16 @@ videocall_script=<<-EOT
       # Removes all images but keeps images used in the last 7 days
       #docker image prune -af --filter "until=168h"
 
+      # Postgres private connection
+      curl -o /usr/local/bin/cloud-sql-proxy \
+      https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.8.0/cloud-sql-proxy.linux.amd64
+      chmod +x /usr/local/bin/cloud-sql-proxy
+
+      # Start proxy on localhost:5432
+      /usr/local/bin/cloud-sql-proxy \
+      --port=5432 \
+      local-volt-431316-m2:us-central1:stg-general &
+
       # Apply changes immediately
       sysctl --system
 EOT

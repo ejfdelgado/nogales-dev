@@ -83,7 +83,7 @@ spec:
         - name: BUCKET_PRIVATE
           value: ${var.environment}-nogales-private
         - name: POSTGRES_HOST
-          value: ${local.secrets.postgress.host}
+          value: 127.0.0.1
         - name: POSTGRES_PORT
           value: ${local.secrets.postgress.port}
         - name: POSTGRES_DB
@@ -172,14 +172,15 @@ EOT
   }
 
   service_account {
-    email = "${var.email_gce_service_account}"
+    email = google_service_account.videocall.email
     scopes = [
       "https://www.googleapis.com/auth/devstorage.read_only",
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring.write",
       "https://www.googleapis.com/auth/service.management.readonly",
       "https://www.googleapis.com/auth/servicecontrol",
-      "https://www.googleapis.com/auth/trace.append"
+      "https://www.googleapis.com/auth/trace.append",
+      "cloud-platform"
     ]
   }
 
