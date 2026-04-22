@@ -21,3 +21,18 @@ gcloud auth print-access-token | docker login -u oauth2accesstoken --password-st
 ```
 docker push us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/n8n:2.17.5
 ```
+
+2. Prepare env variables
+2.1. Create the N8N_ENCRYPTION_KEY
+```
+openssl rand -hex 32
+```
+
+3. Prepare database schema
+
+3.1. Create schema "rag" and "n8n"
+
+3.2. Allow vector feature on postgres
+```
+CREATE EXTENSION IF NOT EXISTS vector;
+```
