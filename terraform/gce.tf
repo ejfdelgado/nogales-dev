@@ -173,6 +173,7 @@ EOT
 
   service_account {
     email = google_service_account.videocall.email
+    #email = var.email_gce_service_account
     scopes = [
       "https://www.googleapis.com/auth/devstorage.read_only",
       "https://www.googleapis.com/auth/logging.write",
@@ -180,7 +181,7 @@ EOT
       "https://www.googleapis.com/auth/service.management.readonly",
       "https://www.googleapis.com/auth/servicecontrol",
       "https://www.googleapis.com/auth/trace.append",
-      "cloud-platform"
+      "https://www.googleapis.com/auth/cloud-platform"
     ]
   }
 
@@ -189,6 +190,8 @@ EOT
     enable_secure_boot          = false
     enable_vtpm                 = true
   }
+
+  depends_on = [google_project_iam_member.videocall_instance_sa_roles]
 
   tags = ["ssh", "http-server", "https-server", "mediasoup-server"]
   zone = var.zone
