@@ -27,7 +27,7 @@ resource "google_sql_database_instance" "general" {
       
       authorized_networks {
         name  = "edgar_delgado"
-        value = "186.102.25.212"  
+        value = "186.102.4.212"  
       }
       authorized_networks {
         name  = "daniel_triana"

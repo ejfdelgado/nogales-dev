@@ -42,7 +42,7 @@ Stg:
 ssh ejfdelgado@104.197.163.219
 docker ps
 docker exec -it 791ab0586308 /bin/bash
-docker logs -f 791ab0586308
+docker logs -f 9c90dcb3e2a6
 
 gcloud compute instances get-serial-port-output stg-nogales-videocall --zone=us-central1-c
 

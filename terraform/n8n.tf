@@ -8,7 +8,30 @@ resource "google_compute_managed_ssl_certificate" "n8n" {
   }
 }
 
+resource "google_compute_address" "n8n_ip" {
+  name   = "${var.environment}-nogales-n8n-ip"
+  region = var.region
+}
+
+resource "google_compute_address" "auto_assigned_private_ip" {
+  name         = "${var.environment}-auto-assigned-private-ip"
+  subnetwork   = google_compute_subnetwork.nogales-subnetwork.name
+  address_type = "INTERNAL"
+  region       = var.region
+  address      = "10.2.0.6"
+}
+
+
+resource "google_compute_address" "n8n_private_ip" {
+  name         = "${var.environment}-n8n-private-ip"
+  subnetwork   = google_compute_subnetwork.nogales-subnetwork.name
+  address_type = "INTERNAL"
+  region       = var.region
+  address      = "10.2.0.7"
+}
+
 resource "google_compute_instance" "n8n_master" {
+  #count = 0
   name     = "${var.environment}-nogales-n8n-master"
   allow_stopping_for_update = true
 
@@ -100,14 +123,14 @@ EOT
 
   network_interface {
     access_config {
-      nat_ip       = google_compute_address.videcall_ip.address
+      nat_ip       = google_compute_address.n8n_ip.address
       network_tier = "PREMIUM"
     }
     queue_count = 0
     stack_type  = "IPV4_ONLY"
     network     = google_compute_network.nogales-network.id
     subnetwork  = google_compute_subnetwork.nogales-subnetwork.id
-    network_ip  = google_compute_address.nogales_private_ip.address
+    network_ip  = google_compute_address.n8n_private_ip.address
   }
 
   scheduling {
@@ -139,6 +162,8 @@ EOT
   depends_on = [
     google_service_account.n8n,
     google_project_iam_member.n8n_instance_sa_roles,
+    google_compute_address.n8n_ip,
+    google_compute_address.n8n_private_ip,
   ]
 
   tags = ["ssh", "http-server", "https-server"]
