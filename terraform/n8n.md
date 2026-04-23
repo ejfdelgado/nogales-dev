@@ -43,14 +43,64 @@ CREATE EXTENSION IF NOT EXISTS vector;
 docker exec -it -u root 39b9d987713d /bin/sh
 ```
 
-4.2. Perform the needed changes
+4.2. Perform the needed changes (Option 1)
 ```
 cd /usr/local/bin && mkdir google && cd google
+
 wget -O /usr/local/bin/google/cloud-sql-proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.8.0/cloud-sql-proxy.linux.amd64
+
 chmod 755 /usr/local/bin/google/cloud-sql-proxy
 ```
 
 4.3. 
 ```
 docker commit 39b9d987713d us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/n8n:2.17.5.1
+```
+
+4.4.
+```
+/tmp/app/cloud-sql-proxy --port=5432 "$INSTANCE_CONNECTION_NAME" &
+```
+
+5. Perform the needed changes (Option 2)
+
+5.1. Create the file custom-entrypoint.sh:
+```
+#!/bin/sh
+set -e
+
+# Start Cloud SQL Proxy in background
+/usr/local/bin/google/cloud-sql-proxy --port=5432 "$INSTANCE_CONNECTION_NAME" &
+
+# Wait for proxy to be ready
+sleep 2
+
+# Run the original n8n entrypoint
+exec /docker-entrypoint.sh "$@"
+
+5.2. Create the file Dockerfile
+```
+FROM n8nio/n8n:2.17.5
+
+USER root
+
+# Copy your Cloud SQL Proxy binary
+RUN mkdir -p /usr/local/bin/google
+RUN wget -O /usr/local/bin/google/cloud-sql-proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.8.0/cloud-sql-proxy.linux.amd64
+
+# Copy custom entrypoint
+COPY custom-entrypoint.sh /custom-entrypoint.sh
+
+RUN chmod 755 /usr/local/bin/google/cloud-sql-proxy && \
+    chmod 755 /custom-entrypoint.sh
+
+USER node
+
+ENTRYPOINT ["/custom-entrypoint.sh"]
+CMD []
+```
+
+5.3. Build it
+```
+docker build -t us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/n8n:2.17.5.2 .
 ```
