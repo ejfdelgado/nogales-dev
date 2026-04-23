@@ -74,12 +74,6 @@ spec:
           value: 127.0.0.1
         - name: DB_POSTGRESDB_PORT
           value: 5432
-        - name: POSTGRES_USER
-          value: ${local.secrets.n8n.postgress.user}
-        - name: POSTGRES_PASSWORD
-          value: ${local.secrets.n8n.postgress.pass}
-        - name: POSTGRES_DB
-          value: n8n
         - name: DB_POSTGRESDB_USER
           value: ${local.secrets.n8n.postgress.user}
         - name: DB_POSTGRESDB_PASSWORD
@@ -89,7 +83,7 @@ spec:
         - name: INSTANCE_CONNECTION_NAME
           value: ${google_sql_database_instance.general.connection_name}
         - name: EXECUTIONS_MODE
-          value: queue
+          value: regular
       securityContext:
         privileged: true
       stdin: false
