@@ -30,6 +30,22 @@ resource "google_compute_address" "n8n_private_ip" {
   address      = "10.2.0.7"
 }
 
+resource "google_compute_firewall" "n8n_server" {
+  name    = "${var.environment}-n8n-server"
+  network = google_compute_network.nogales-network.name
+
+
+  allow {
+    protocol = "tcp"
+    ports    = ["5678"]
+  }
+
+  # Restrict to specific source IPs if possible
+  source_ranges = ["0.0.0.0/0"]
+
+  target_tags = ["n8n-server"]
+}
+
 resource "google_compute_instance" "n8n_master" {
   #count = 0
   name     = "${var.environment}-nogales-n8n-master"
@@ -81,12 +97,8 @@ spec:
           value: ${local.secrets.n8n.N8N_BASIC_AUTH_PASSWORD}
         - name: GENERIC_TIMEZONE
           value: America/Los_Angeles
-        - name: N8N_HOST
-          value: localhost
         - name: N8N_PORT
           value: 5678
-        - name: N8N_PROTOCOL
-          value: http
         - name: N8N_ENCRYPTION_KEY
           value: ${local.secrets.n8n.N8N_ENCRYPTION_KEY}
         - name: N8N_LICENSE_KEY
@@ -107,6 +119,12 @@ spec:
           value: ${google_sql_database_instance.general.connection_name}
         - name: EXECUTIONS_MODE
           value: regular
+        - name: N8N_SECURE_COOKIE
+          value: false
+        - name: N8N_HOST
+          value: localhost
+        - name: N8N_PROTOCOL
+          value: http
       securityContext:
         privileged: true
       stdin: false
@@ -166,6 +184,6 @@ EOT
     google_compute_address.n8n_private_ip,
   ]
 
-  tags = ["ssh", "http-server", "https-server"]
+  tags = ["ssh", "http-server", "https-server", "n8n-server"]
   zone = var.zone
 }
