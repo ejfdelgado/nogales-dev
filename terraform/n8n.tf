@@ -66,14 +66,30 @@ spec:
           value: http
         - name: N8N_ENCRYPTION_KEY
           value: ${local.secrets.n8n.N8N_ENCRYPTION_KEY}
+        - name: N8N_LICENSE_KEY
+          value: ${local.secrets.n8n.N8N_LICENSE_KEY}
+        - name: DB_TYPE
+          value: postgresdb
+        - name: DB_POSTGRESDB_HOST
+          value: 127.0.0.1
+        - name: DB_POSTGRESDB_PORT
+          value: 5432
         - name: POSTGRES_USER
           value: ${local.secrets.n8n.postgress.user}
         - name: POSTGRES_PASSWORD
           value: ${local.secrets.n8n.postgress.pass}
         - name: POSTGRES_DB
           value: n8n
-        - name: N8N_LICENSE_KEY
-          value: ${local.secrets.n8n.N8N_LICENSE_KEY}
+        - name: DB_POSTGRESDB_USER
+          value: ${local.secrets.n8n.postgress.user}
+        - name: DB_POSTGRESDB_PASSWORD
+          value: ${local.secrets.n8n.postgress.pass}
+        - name: DB_POSTGRESDB_DATABASE
+          value: n8n
+        - name: INSTANCE_CONNECTION_NAME
+          value: ${google_sql_database_instance.general.connection_name}
+        - name: EXECUTIONS_MODE
+          value: queue
       securityContext:
         privileged: true
       stdin: false
@@ -109,7 +125,6 @@ EOT
 
   service_account {
     email = google_service_account.n8n.email
-    #email = var.email_gce_service_account
     scopes = [
       "https://www.googleapis.com/auth/devstorage.read_only",
       "https://www.googleapis.com/auth/logging.write",
