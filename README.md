@@ -51,6 +51,9 @@ sudo journalctl -u google-startup-scripts.service -n 100
 
 /tmp/app/cloud-sql-proxy --port=5432 local-volt-431316-m2:us-central1:stg-general &
 
+curl -o /tmp/app/cloud-sql-proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.8.0/cloud-sql-proxy.linux.amd64
+
+wget -O /usr/local/bin/google/cloud-sql-proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.8.0/cloud-sql-proxy.linux.amd64
 
 df -h && docker rmi -f $(docker images -aq)
 # Removes all images but keeps images used in the last 7 days

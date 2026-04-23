@@ -36,3 +36,21 @@ openssl rand -hex 32
 ```
 CREATE EXTENSION IF NOT EXISTS vector;
 ```
+
+4. Adjusting the docker image including the way to access database via private network.
+4.1. Get into the docker image
+```
+docker exec -it -u root 39b9d987713d /bin/sh
+```
+
+4.2. Perform the needed changes
+```
+cd /usr/local/bin && mkdir google && cd google
+wget -O /usr/local/bin/google/cloud-sql-proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.8.0/cloud-sql-proxy.linux.amd64
+chmod 755 /usr/local/bin/google/cloud-sql-proxy
+```
+
+4.3. 
+```
+docker commit 39b9d987713d us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/n8n:2.17.5.1
+```
