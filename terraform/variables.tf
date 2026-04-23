@@ -202,3 +202,15 @@ variable "assessment_domain" {
   type        = string
   default     = ""
 }
+
+variable "n8n_image" {
+  description = "n8n_image"
+  type        = string
+  default     = ""
+}
+
+variable "n8n_disktype" {
+  description = "n8n_disktype"
+  type        = string
+  default     = "2000"
+}

@@ -1,11 +1,14 @@
 environment = "pro"
 credentials_path="/tmp/app/credentials/local-volt-431316-m2-4fe954a04994.json"
 email_gce_service_account="284609972807-compute@developer.gserviceaccount.com"
+
 docker_image_speedmeter = "us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_speedmeter:0.1.0"
 assessment_image = "us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_assessment_front_back:1.45.2"
 videocall_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_videocall_front_back:2.18.12"
 turn_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_turn:1.3.0"
 wordpress_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/wordpress:3.0.8"
+n8n_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/n8n:2.17.5.3"
+
 heymarket_end_point="https://api.heymarket.com"
 assessment_cors="https://test.solvista.me;https://stg-assessment-284609972807.us-central1.run.app;https://apps.solvista.me;https://casa-de-la-familia-3c766f.design.webflow.com"
 assessment_domain="https://test.solvista.me"
