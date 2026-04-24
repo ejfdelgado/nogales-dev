@@ -34,14 +34,15 @@ resource "google_compute_firewall" "n8n_server" {
   name    = "${var.environment}-n8n-server"
   network = google_compute_network.nogales-network.name
 
-
   allow {
     protocol = "tcp"
     ports    = ["5678"]
   }
 
-  # Restrict to specific source IPs if possible
+  # Leave it public for now
   source_ranges = ["0.0.0.0/0"]
+  # Private subnet + GCP health check prober ranges only
+  # source_ranges = ["10.2.0.0/24", "35.191.0.0/16", "130.211.0.0/22"]
 
   target_tags = ["n8n-server"]
 }
@@ -207,11 +208,72 @@ resource "google_compute_health_check" "n8n" {
   timeout_sec        = 10
   check_interval_sec = 10
 
-  https_health_check {
-    port         = 443
+  http_health_check {
+    port         = 5678
+    request_path = "/healthz"
   }
 
   log_config {
     enable = false
   }
+}
+
+resource "google_compute_backend_service" "n8n" {
+  name     = "${var.environment}-n8n"
+
+  protocol              = "HTTPS"
+  port_name             = "https"
+  timeout_sec           = 7200
+  enable_cdn            = true
+
+  cdn_policy {
+    cache_mode                    = "CACHE_ALL_STATIC"
+    default_ttl                   = 43200 # in seconds
+    max_ttl                       = 43200 # in seconds
+    client_ttl                    = 43200 # in seconds
+    negative_caching              = true
+    serve_while_stale             = 86400
+    cache_key_policy {
+      include_protocol            = true
+      include_host                = true
+      include_query_string        = true
+    }
+  }
+
+  backend {
+    group = google_compute_instance_group.n8n_group.self_link
+  }
+
+  health_checks = [
+    google_compute_health_check.n8n.self_link
+    ]
+}
+
+resource "google_compute_url_map" "n8n" {
+  name        = "${var.environment}-n8n"
+
+  default_service = google_compute_backend_service.n8n.id
+
+  host_rule {
+    hosts        = [
+      var.environment == "pro" ? "n8n.solvista.me." : "n8n-stg.solvista.me"
+      ]
+    path_matcher = "allpaths"
+  }
+
+  path_matcher {
+    name            = "allpaths"
+    default_service = google_compute_backend_service.n8n.id
+
+    path_rule {
+      paths   = ["/*"]
+      service = google_compute_backend_service.n8n.id
+    }
+  }
+}
+
+resource "google_compute_target_https_proxy" "n8n" {
+  name             = "${var.environment}-n8n"
+  url_map          = google_compute_url_map.n8n.id
+  ssl_certificates = [google_compute_managed_ssl_certificate.n8n.id]
 }
