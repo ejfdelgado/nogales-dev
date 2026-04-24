@@ -277,3 +277,9 @@ resource "google_compute_target_https_proxy" "n8n" {
   url_map          = google_compute_url_map.n8n.id
   ssl_certificates = [google_compute_managed_ssl_certificate.n8n.id]
 }
+
+resource "google_compute_global_forwarding_rule" "n8n" {
+  name       = "${var.environment}-n8n"
+  target     = google_compute_target_https_proxy.n8n.id
+  port_range = 443
+}
