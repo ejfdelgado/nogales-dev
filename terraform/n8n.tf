@@ -47,7 +47,6 @@ resource "google_compute_firewall" "n8n_server" {
 }
 
 resource "google_compute_instance" "n8n_master" {
-  #count = 0
   name     = "${var.environment}-nogales-n8n-master"
   allow_stopping_for_update = true
 
@@ -186,4 +185,33 @@ EOT
 
   tags = ["ssh", "http-server", "https-server", "n8n-server"]
   zone = var.zone
+}
+
+# Group
+resource "google_compute_instance_group" "n8n_group" {
+  name        = "${var.environment}-n8n-group"
+  zone        = var.zone
+  instances   = [google_compute_instance.n8n_master.self_link]
+
+  named_port {
+    name = "https"
+    port = "443"
+  }
+
+  network     = google_compute_network.nogales-network.id
+}
+
+# Health check
+resource "google_compute_health_check" "n8n" {
+  name = "${var.environment}-n8n-health-check"
+  timeout_sec        = 10
+  check_interval_sec = 10
+
+  https_health_check {
+    port         = 443
+  }
+
+  log_config {
+    enable = false
+  }
 }
