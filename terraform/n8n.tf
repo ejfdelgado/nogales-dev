@@ -1,4 +1,10 @@
 
+# Remeber:
+# Go to Godaddy
+# Add an A record on DNS with	video-stg	34.111.31.83
+# The check:
+# dig n8n-stg.solvista.me +short
+
 resource "google_compute_managed_ssl_certificate" "n8n" {
   name    = "${var.environment}-n8n-cert"
   managed {
@@ -272,4 +278,16 @@ resource "google_compute_global_forwarding_rule" "n8n" {
   name       = "${var.environment}-n8n"
   target     = google_compute_target_https_proxy.n8n.id
   port_range = 443
+}
+
+# GCP needs port 80 reachable for cert provisioning
+resource "google_compute_target_http_proxy" "n8n_http" {
+  name    = "${var.environment}-n8n-http"
+  url_map = google_compute_url_map.n8n.id
+}
+
+resource "google_compute_global_forwarding_rule" "n8n_http" {
+  name       = "${var.environment}-n8n-http"
+  target     = google_compute_target_http_proxy.n8n_http.id
+  port_range = 80
 }
