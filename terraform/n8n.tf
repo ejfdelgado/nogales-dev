@@ -120,11 +120,15 @@ spec:
         - name: EXECUTIONS_MODE
           value: regular
         - name: N8N_SECURE_COOKIE
-          value: false
+          value: true
         - name: N8N_HOST
-          value: localhost
+          value: ${var.environment == "pro" ? "n8n.solvista.me" : "n8n-stg.solvista.me"}
         - name: N8N_PROTOCOL
-          value: http
+          value: https
+        - name: N8N_EDITOR_BASE_URL
+          value: https://${var.environment == "pro" ? "n8n.solvista.me" : "n8n-stg.solvista.me"}
+        - name: WEBHOOK_URL
+          value: https://${var.environment == "pro" ? "n8n.solvista.me" : "n8n-stg.solvista.me"}/
       securityContext:
         privileged: true
       stdin: false
@@ -195,8 +199,8 @@ resource "google_compute_instance_group" "n8n_group" {
   instances   = [google_compute_instance.n8n_master.self_link]
 
   named_port {
-    name = "https"
-    port = "443"
+    name = "http"
+    port = "5678"
   }
 
   network     = google_compute_network.nogales-network.id
@@ -221,24 +225,10 @@ resource "google_compute_health_check" "n8n" {
 resource "google_compute_backend_service" "n8n" {
   name     = "${var.environment}-n8n"
 
-  protocol              = "HTTPS"
-  port_name             = "https"
+  protocol              = "HTTP"
+  port_name             = "http"
   timeout_sec           = 7200
-  enable_cdn            = true
-
-  cdn_policy {
-    cache_mode                    = "CACHE_ALL_STATIC"
-    default_ttl                   = 43200 # in seconds
-    max_ttl                       = 43200 # in seconds
-    client_ttl                    = 43200 # in seconds
-    negative_caching              = true
-    serve_while_stale             = 86400
-    cache_key_policy {
-      include_protocol            = true
-      include_host                = true
-      include_query_string        = true
-    }
-  }
+  enable_cdn            = false
 
   backend {
     group = google_compute_instance_group.n8n_group.self_link
