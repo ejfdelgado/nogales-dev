@@ -1,7 +1,8 @@
 
 # Remeber:
+# Identify the Load Balancer on gcp, check the Frontend HTTPS IP
 # Go to Godaddy
-# Add an A record on DNS with	video-stg	34.111.31.83
+# Add an A record on DNS with	video-stg	<frontend_ip>
 # The check:
 # dig n8n-stg.solvista.me +short
 
