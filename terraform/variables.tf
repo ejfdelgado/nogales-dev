@@ -212,7 +212,6 @@ variable "n8n_image" {
 variable "n8n_disktype" {
   description = "n8n_disktype"
   type        = string
-  default     = "2000"
 }
 
 variable "n8n_machine_type" {

@@ -31,6 +31,7 @@ max_node_memory="9000"
 soup_max_worker_load="4"
 #videocall_disktype="hyperdisk-balanced"
 videocall_disktype="pd-balanced"
+n8n_disktype="pd-balanced"
 # Magic number
 # 26214400 = 1024*1024*25
 # 23068672 = 1024*1024*22
