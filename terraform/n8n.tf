@@ -71,7 +71,10 @@ resource "google_compute_instance" "n8n_master" {
     goog-ec-src  = "vm_add-tf"
   }
 
-  machine_type = var.environment == "pro" ? "n1-highcpu-16" : "n2-standard-2"
+  # n2-standard-4	4vCPU	16GB	~$140/mo
+  # n2-standard-8	8vCPU	32GB	~$280/mo
+  # e2-standard-4	4vCPU	16GB	~$100/mo
+  machine_type = var.n8n_machine_type
 
   metadata = {
     ssh-keys = join("\n", [
@@ -85,7 +88,7 @@ spec:
       name:  n8n_master_server
       resources:
         limits:
-          memory: "10Gi"
+          memory: "${var.n8n_memory_limit}"
       env:
         - name: N8N_BASIC_AUTH_ACTIVE
           value: true

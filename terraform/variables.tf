@@ -214,3 +214,13 @@ variable "n8n_disktype" {
   type        = string
   default     = "2000"
 }
+
+variable "n8n_machine_type" {
+  description = "n8n_machine_type"
+  type        = string
+}
+
+variable "n8n_memory_limit" {
+  description = "n8n_memory_limit"
+  type        = string
+}
