@@ -223,3 +223,13 @@ variable "n8n_memory_limit" {
   description = "n8n_memory_limit"
   type        = string
 }
+
+variable "videocall_machine_type" {
+  description = "videocall_machine_type"
+  type        = string
+}
+
+variable "videocall_memory_limit" {
+  description = "videocall_memory_limit"
+  type        = string
+}

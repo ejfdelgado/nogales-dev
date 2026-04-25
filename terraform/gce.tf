@@ -41,8 +41,8 @@ resource "google_compute_instance" "videocall" {
   # custom-4-3840
   # --------------
   # c4-highcpu-8 = 4vcpu 16G = 250usd
-  # n1-highcpu-16 = 8vcpu 16G = 290usd (causes error)
-  machine_type = var.environment == "pro" ? "n1-highcpu-16" : "n2-standard-2"
+  # n1-highcpu-16 = 8vcpu 16G = 290usd
+  machine_type = var.videocall_machine_type
 
   metadata = {
     ssh-keys = join("\n", [
@@ -56,7 +56,7 @@ spec:
       name:  nogalesserver
       resources:
         limits:
-          memory: "10Gi"
+          memory: "${var.videocall_memory_limit}"
       env:
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: ${var.credentials_path}

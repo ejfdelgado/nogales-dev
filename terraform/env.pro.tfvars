@@ -12,6 +12,9 @@ n8n_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/n8n:2.17.5.3"
 n8n_machine_type="n2-standard-4"
 n8n_memory_limit="14Gi"
 
+videocall_machine_type="n1-highcpu-16"
+videocall_memory_limit="12Gi"
+
 heymarket_end_point="https://api.heymarket.com"
 assessment_cors="https://test.solvista.me;https://stg-assessment-284609972807.us-central1.run.app;https://apps.solvista.me;https://casa-de-la-familia-3c766f.design.webflow.com"
 assessment_domain="https://test.solvista.me"
