@@ -1,5 +1,5 @@
 resource "google_service_account" "videocall" {
-  account_id   = "videocall-sa"
+  account_id   = "${var.environment}-videocall-sa"
   display_name = "videocall Service Account"
 }
 
@@ -12,7 +12,7 @@ resource "google_project_iam_member" "videocall_instance_sa_roles" {
 }
 
 resource "google_service_account" "n8n" {
-  account_id   = "n8n-sa"
+  account_id   = "${var.environment}-n8n-sa"
   display_name = "n8n Service Account"
 }
 

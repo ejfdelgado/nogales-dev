@@ -257,15 +257,6 @@ resource "google_compute_backend_service" "videocallbkservice" {
     ]
 }
 
-resource "google_compute_managed_ssl_certificate" "default" {
-  name    = "${var.environment}-videocall-cert"
-  managed {
-    domains = [
-      var.environment == "pro" ? "video.solvista.me." : "video-stg.solvista.me"
-      ]
-  }
-}
-
 resource "google_compute_url_map" "videocallmap" {
   name        = "${var.environment}-videocall-map"
 

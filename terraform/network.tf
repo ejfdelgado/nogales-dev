@@ -46,7 +46,7 @@ resource "google_compute_firewall" "https-rule" {
 }
 
 resource "google_compute_firewall" "allow_sql_egress" {
-  name      = "allow-sql-egress"
+  name      = "${var.environment}-allow-sql-egress"
   network   = google_compute_network.nogales-network.name
   direction = "EGRESS"
 

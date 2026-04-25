@@ -25,21 +25,12 @@ resource "google_sql_database_instance" "general" {
       # This allows to have private access
       private_network = google_compute_network.nogales-network.id
       
-      authorized_networks {
-        name  = "edgar_delgado"
-        value = "186.102.4.212"  
-      }
-      authorized_networks {
-        name  = "daniel_triana"
-        value = "186.102.25.212"  
-      }
-      authorized_networks {
-        name  = "marianni_gomez"
-        value = "186.102.25.212"  
-      }
-      authorized_networks {
-        name  = "rod"
-        value = "186.102.25.212"  
+      dynamic "authorized_networks" {
+        for_each = var.environment != "pro" ? [1] : []
+        content {
+          name  = "all"
+          value = "0.0.0.0/0"
+        }
       }
     }
 
