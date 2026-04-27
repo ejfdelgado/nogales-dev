@@ -130,6 +130,18 @@ spec:
           value: https://${var.environment == "pro" ? "n8n.solvista.me" : "n8n-stg.solvista.me"}
         - name: WEBHOOK_URL
           value: https://${var.environment == "pro" ? "n8n.solvista.me" : "n8n-stg.solvista.me"}/
+        - name: N8N_SMTP_HOST
+          value: smtp.sendgrid.net
+        - name: N8N_SMTP_PORT
+          value: 587
+        - name: N8N_SMTP_USER
+          value: apikey
+        - name: N8N_SMTP_PASS
+          value: ${local.secrets.sendgrid_apikey}
+        - name: N8N_SMTP_SENDER
+          value: no_reply@nogalespsychological.com
+        - name: N8N_SMTP_SSL
+          value: false
       securityContext:
         privileged: true
       stdin: false
