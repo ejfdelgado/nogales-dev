@@ -42,3 +42,24 @@ resource "google_project_iam_member" "n8n_instance_sa_roles" {
   role    = each.value
   member  = "serviceAccount:${google_service_account.n8n.email}"
 }
+
+# github
+
+resource "google_service_account" "github" {
+  account_id   = "${var.environment}-github-sa"
+  display_name = "github Service Account"
+}
+
+resource "google_project_iam_member" "github_instance_sa_roles" {
+  for_each = toset(local.github_sa_roles)
+
+  project = var.project_name
+  role    = each.value
+  member  = "serviceAccount:${google_service_account.github.email}"
+}
+
+resource "google_storage_bucket_iam_member" "github_credentials_access" {
+  bucket = google_storage_bucket.github_credentials.name
+  role   = "roles/storage.objectViewer"
+  member = "serviceAccount:${google_service_account.github.email}"
+}

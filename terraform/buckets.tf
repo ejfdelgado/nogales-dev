@@ -19,6 +19,13 @@ resource "google_storage_bucket" "processor_private" {
   uniform_bucket_level_access = true
 }
 
+resource "google_storage_bucket" "github_credentials" {
+  name                        = "${var.environment}-nogales-github-credentials"
+  location                    = "US"
+  storage_class               = "STANDARD"
+  uniform_bucket_level_access = true
+}
+
 resource "google_storage_bucket" "wordpress_1" {
   count       = var.environment == "pro" ? 1 : 0
   name                        = "${var.environment}-wordpress-1"

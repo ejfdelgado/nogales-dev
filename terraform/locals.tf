@@ -30,4 +30,7 @@ locals {
     "roles/cloudtrace.agent",             # trace.append
     "roles/cloudsql.client",
   ]
+  github_sa_roles = [
+    "roles/artifactregistry.writer",          # push and pull docker images
+  ]
 }
