@@ -9,6 +9,7 @@ locals {
     "roles/serviceusage.serviceUsageConsumer", # servicecontrol
     "roles/cloudtrace.agent",             # trace.append
     "roles/cloudsql.client",
+    "roles/firebaseauth.admin",           # verify token
   ]
   assessment_sa_roles = [
     "roles/storage.objectViewer",          # devstorage.read_only
@@ -18,6 +19,7 @@ locals {
     "roles/cloudtrace.agent",             # trace.append
     "roles/cloudsql.client",              # database access
     "roles/cloudtasks.enqueuer",           # enqueue Cloud Tasks
+    "roles/firebaseauth.admin",           # verify token
   ]
   n8n_sa_roles = [
     "roles/artifactregistry.reader",       # pull docker images
