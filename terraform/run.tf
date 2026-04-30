@@ -11,10 +11,6 @@ resource "google_cloud_run_v2_service" "assessment" {
         value = "error"
       }
       env {
-        name  = "GOOGLE_APPLICATION_CREDENTIALS"
-        value = var.credentials_path
-      }
-      env {
         name  = "USE_SECURE"
         value = "no"
       }
@@ -163,6 +159,7 @@ resource "google_cloud_run_v2_service" "assessment" {
       min_instance_count = 0
       max_instance_count = 1
     }
+    service_account = google_service_account.assessment.email
   }
   # Allow unauthenticated invocations
   traffic {
@@ -172,14 +169,25 @@ resource "google_cloud_run_v2_service" "assessment" {
 
   ingress = "INGRESS_TRAFFIC_ALL"  # Allows all traffic, including unauthenticated
   deletion_protection = false
+
+  depends_on = [
+    google_service_account.assessment,
+    google_project_iam_member.assessment_instance_sa_roles,
+  ]
 }
 
-resource "google_cloud_run_service_iam_member" "no_auth" {
-  service     = google_cloud_run_v2_service.assessment.name
-  location    = google_cloud_run_v2_service.assessment.location
-  role        = "roles/run.invoker"
-  member      = "allUsers"  # Allows all users to invoke the service
-  depends_on = [google_cloud_run_v2_service.assessment]
+# This defines who can call the cloud run
+resource "google_cloud_run_v2_service_iam_member" "no_auth" {
+  project  = google_cloud_run_v2_service.assessment.project
+  location = google_cloud_run_v2_service.assessment.location
+  name     = google_cloud_run_v2_service.assessment.name
+  role     = "roles/run.invoker"
+  member   = "allUsers"
+  depends_on = [
+    google_cloud_run_v2_service.assessment,
+    google_service_account.assessment,
+    google_project_iam_member.assessment_instance_sa_roles,
+  ]
 }
 
 /*
