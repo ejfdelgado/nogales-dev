@@ -16,7 +16,8 @@ locals {
     "roles/monitoring.metricWriter",       # monitoring.write
     "roles/serviceusage.serviceUsageConsumer", # servicecontrol
     "roles/cloudtrace.agent",             # trace.append
-    "roles/cloudsql.client",
+    "roles/cloudsql.client",              # database access
+    "roles/cloudtasks.enqueuer",           # enqueue Cloud Tasks
   ]
   n8n_sa_roles = [
     "roles/artifactregistry.reader",       # pull docker images

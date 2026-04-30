@@ -64,12 +64,6 @@ variable "turn_image" {
   default     = ""
 }
 
-variable "credentials_path" {
-  description = "Credentials path"
-  type        = string
-  default     = ""
-}
-
 variable "postgres_version" {
   description = "postgres_version"
   type        = string
@@ -80,12 +74,6 @@ variable "mysql_version" {
   description = "mysql_version"
   type        = string
   default     = "MYSQL_8_4"
-}
-
-variable "email_gce_service_account" {
-  description = "email_gce_service_account"
-  type        = string
-  default     = ""
 }
 
 variable "email_sender" {
