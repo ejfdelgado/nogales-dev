@@ -2,6 +2,14 @@
 resource "google_cloud_run_v2_service" "assessment" {
   name     = "${var.environment}-assessment"
   location = var.region
+
+  labels = {
+    environment = var.environment
+    application = "nogales"
+    service     = "assessment"
+    managed-by  = "terraform"
+  }
+
   template {
     max_instance_request_concurrency = 20
     containers {

@@ -69,6 +69,10 @@ resource "google_compute_instance" "n8n_master" {
   labels = {
     container-vm = "cos-stable-113-18244-85-29"
     goog-ec-src  = "vm_add-tf"
+    environment  = var.environment
+    application  = "nogales"
+    service      = "n8n"
+    managed-by   = "terraform"
   }
 
   # n2-standard-4	4vCPU	16GB	~$140/mo

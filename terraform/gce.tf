@@ -27,6 +27,10 @@ resource "google_compute_instance" "videocall" {
   labels = {
     container-vm = "cos-stable-113-18244-85-29"
     goog-ec-src  = "vm_add-tf"
+    environment  = var.environment
+    application  = "nogales"
+    service      = "videocall"
+    managed-by   = "terraform"
   }
 
   # n1-standard-1 = 3.7G = 36 usd/month
