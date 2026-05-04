@@ -2,6 +2,13 @@ resource "google_cloud_run_v2_service" "speedmeter" {
   name     = "${var.environment}-speedmeter"
   location = var.region
 
+  labels = {
+    environment = var.environment
+    application = "nogales"
+    service     = "speedmeter"
+    managed-by  = "terraform"
+  }
+
   template {
     scaling {
       min_instance_count = 0
