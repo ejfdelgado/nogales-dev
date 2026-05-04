@@ -1,5 +1,8 @@
 environment = "pro"
 
+#############################################
+# DOCKER IMAGES
+#############################################
 docker_image_speedmeter = "us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_speedmeter:0.1.2"
 assessment_image = "us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_assessment_front_back:1.48.1"
 videocall_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_videocall_front_back:2.19.1"
@@ -7,32 +10,36 @@ turn_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_turn
 wordpress_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/wordpress:3.0.8"
 n8n_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/n8n:2.17.5.3"
 
+#############################################
+# ASSESSMENT
+#############################################
+assessment_cors="https://test.solvista.me;https://stg-assessment-284609972807.us-central1.run.app;https://apps.solvista.me;https://casa-de-la-familia-3c766f.design.webflow.com"
+assessment_domain="https://test.solvista.me"
+
+#############################################
+# N8N
+#############################################
+n8n_disktype="pd-balanced"
 n8n_machine_type="n2-standard-4"
 n8n_memory_limit="14Gi"
 
-videocall_machine_type="n1-highcpu-16"
-videocall_memory_limit="12Gi"
-
-heymarket_end_point="https://api.heymarket.com"
-assessment_cors="https://test.solvista.me;https://stg-assessment-284609972807.us-central1.run.app;https://apps.solvista.me;https://casa-de-la-familia-3c766f.design.webflow.com"
-assessment_domain="https://test.solvista.me"
-# 1vcpu 3.75 GB = 3840/1024 = $66.31
-#sql_type="db-custom-1-3840"
-# 2vcpu 3.75 GB = 3840/1024 = $96.46
-sql_type="db-custom-2-3840"
-# 2vcpu 8GB = 8192 / 1024 = $118
-#sql_type="db-custom-2-8192"
+#############################################
+# VIDEO CALL
+#############################################
 videocall_soup_ip="34.171.61.38"
 videocall_autorecovery="0"
+# n1-highcpu-16 = 16 vCPUs, 14.4 GB Memory
+videocall_machine_type="n1-highcpu-16"
+videocall_memory_limit="12Gi"
 # value in MB -> here around 9GB
 max_node_memory="9000"
-# Always this muts be 32, it is the maximum of concurrent calls.
+# After multiply it tells the maximum of concurrent calls.
 # 2(soup_max_worker_load)x16(vcpu)=32
 # 4(soup_max_worker_load)x8(vcpu)=32
+# 4(soup_max_worker_load)x16(vcpu)=64 * (current)
 soup_max_worker_load="4"
 #videocall_disktype="hyperdisk-balanced"
 videocall_disktype="pd-balanced"
-n8n_disktype="pd-balanced"
 # Magic number
 # 26214400 = 1024*1024*25
 # 23068672 = 1024*1024*22
@@ -61,3 +68,18 @@ videocall_script=<<-EOT
       # Apply changes immediately
       sysctl --system
 EOT
+
+#############################################
+# DATABASE
+#############################################
+# 1vcpu 3.75 GB = 3840/1024 = $66.31
+#sql_type="db-custom-1-3840"
+# 2vcpu 3.75 GB = 3840/1024 = $96.46
+sql_type="db-custom-2-3840"
+# 2vcpu 8GB = 8192 / 1024 = $118
+#sql_type="db-custom-2-8192"
+
+#############################################
+# OTHERS
+#############################################
+heymarket_end_point="https://api.heymarket.com"
