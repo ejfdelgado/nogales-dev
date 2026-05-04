@@ -63,9 +63,9 @@ spec:
           memory: "${var.videocall_memory_limit}"
       env:
         - name: PORT
-          value: 443
+          value: 80
         - name: USE_SECURE
-          value: yes
+          value: no
         - name: ENV
           value: pro
         - name: TRAIN_SERVER
@@ -200,8 +200,8 @@ resource "google_compute_instance_group" "videocallgroup" {
   instances   = [google_compute_instance.videocall.self_link]
 
   named_port {
-    name = "https"
-    port = "443"
+    name = "http"
+    port = "80"
   }
 
   network     = google_compute_network.nogales-network.id
@@ -213,7 +213,7 @@ resource "google_compute_health_check" "videocall" {
   check_interval_sec = 10
 
   https_health_check {
-    port         = 443
+    port         = 80
   }
 
   log_config {
@@ -224,8 +224,8 @@ resource "google_compute_health_check" "videocall" {
 resource "google_compute_backend_service" "videocallbkservice" {
   name     = "${var.environment}-videocall-bksrv"
 
-  protocol              = "HTTPS"
-  port_name             = "https"
+  protocol              = "HTTP"
+  port_name             = "http"
   timeout_sec           = 7200
   enable_cdn            = true
 
