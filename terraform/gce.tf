@@ -212,8 +212,8 @@ resource "google_compute_health_check" "videocall" {
   timeout_sec        = 10
   check_interval_sec = 10
 
-  https_health_check {
-    port         = 80
+  http_health_check {
+    port = 80
   }
 
   log_config {
