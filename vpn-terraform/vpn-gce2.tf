@@ -5,7 +5,7 @@
 #docker exec -it 58427691c63d /bin/bash
 
 resource "google_compute_instance" "single_vpn" {
-  count        = 1
+  count        = var.environment == "pro" ? 1 : 0
   name         = "${var.environment}-nogales-single-vpn"
   # n1-standard-1 => $35.67/ mo
   machine_type = "n1-standard-1"
@@ -23,6 +23,13 @@ resource "google_compute_instance" "single_vpn" {
     source      = google_compute_disk.stateful_disks[0].id
     device_name = "data-disk"
     mode        = "READ_WRITE"
+  }
+
+  labels = {
+    environment  = var.environment
+    application  = "nogales"
+    service      = "vpn"
+    managed-by   = "terraform"
   }
 
   network_interface {
@@ -107,8 +114,10 @@ EOT
   }
 
   service_account {
-    email  = "default"
-    scopes = ["cloud-platform"]
+    email  = var.email_gce_service_account
+    scopes = [
+      "https://www.googleapis.com/auth/cloud-platform"
+    ]
   }
 
   tags = ["ssh", "allow-ssh"]
@@ -116,11 +125,11 @@ EOT
 
 
 resource "google_compute_managed_ssl_certificate" "vpn_certificate" {
-  #count = var.environment == "pro" ? 1 : 0
+  count = var.environment == "pro" ? 1 : 0
   name    = "${var.environment}-vpn-cert"
   managed {
     domains = [
-      var.environment == "pro" ? "vpn.solvista.me." : "vpn-stg.solvista.me"
+      var.environment == "pro" ? "vpn.solvista.me." : "vpn-stg.solvista.me."
       ]
   }
 }
