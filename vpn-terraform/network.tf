@@ -27,7 +27,7 @@ resource "google_compute_firewall" "vpn-ssh-rule" {
 }
 
 resource "google_compute_firewall" "allow-ssh" {
-  name    = "allow-ssh"
+  name    = var.environment == "pro" ? "allow-ssh" : "${var.environment}-allow-ssh"
   network = google_compute_network.nogales-vpn-network.name
   allow {
     protocol = "tcp"

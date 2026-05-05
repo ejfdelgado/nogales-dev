@@ -5,7 +5,6 @@
 #docker exec -it 58427691c63d /bin/bash
 
 resource "google_compute_instance" "single_vpn" {
-  count        = var.environment == "pro" ? 1 : 0
   name         = "${var.environment}-nogales-single-vpn"
   # n1-standard-1 => $35.67/ mo
   machine_type = "n1-standard-1"
@@ -114,7 +113,7 @@ EOT
   }
 
   service_account {
-    email  = var.email_gce_service_account
+    email  = google_service_account.vpn.email
     scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
     ]
@@ -125,7 +124,6 @@ EOT
 
 
 resource "google_compute_managed_ssl_certificate" "vpn_certificate" {
-  count = var.environment == "pro" ? 1 : 0
   name    = "${var.environment}-vpn-cert"
   managed {
     domains = [
