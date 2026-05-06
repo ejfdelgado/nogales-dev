@@ -256,7 +256,16 @@
                 "endpoint": "https://pro-assessment-284609972807.us-central1.run.app"
             },
         };
-        const env = ENV_ALL["stg"];
+        const DOMAIN_MAPPING = {
+            "casa-de-la-familia-3c766f.webflow.io": "stg",
+            "casadelafamilia.org": "pro",
+        };
+        let env = ENV_ALL["stg"];
+        if (location.hostname in DOMAIN_MAPPING) {
+            const currentEnv = DOMAIN_MAPPING[location.hostname];
+            console.log(`using custom environment with ${currentEnv}`);
+            env = ENV_ALL[currentEnv];
+        }
 
         /**
          * en-us (default)
