@@ -62,19 +62,3 @@ resource "google_compute_global_forwarding_rule" "https_rule" {
   ip_address            = google_compute_global_address.static_ip.address
 }
 
-variable "static_file_list" {
-  type = map(string)
-  default = {
-    #"camera/index.html" = "camera/index.html",
-    #"camera/js/index.js" = "camera/js/index.js",
-    "404.html" = "404.html"
-  }
-}
-
-resource "google_storage_bucket_object" "static_site" {
-  for_each      = var.static_file_list
-  name          = each.value
-  source        = "${var.static_file_root}/${each.key}"
-  bucket        = google_storage_bucket.static_site.id
-  cache_control = "no-store, no-cache, must-revalidate, max-age=0"
-}

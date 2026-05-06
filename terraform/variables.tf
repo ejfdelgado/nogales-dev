@@ -124,12 +124,6 @@ variable "webrtc_config" {
   default     = "./credentials/webrtcconfig.all.json"
 }
 
-variable "static_file_root" {
-  description = "static_file_root"
-  type        = string
-  default     = "/home/ejfdelgado/desarrollo/nogales-dev/static-site"
-}
-
 variable "videocall_soup_ip" {
   description = "videocall_soup_ip"
   type        = string
