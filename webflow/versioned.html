@@ -522,6 +522,32 @@
             configureVolunteersForm();
         });
     </script>
+    <script>
+        function configureDonations() {
+            const buttonIds = [
+                "donate_25",
+                "donate_50",
+                "donate_100",
+                "donate_500",
+                "donate_other",
+                "donate_now",
+            ];
+            const buttonReferences = {};
+            buttonIds.forEach((id) => {
+                const buttonRef = document.getElementById(id);
+                if (!buttonRef) {
+                    console.log(`No button found for ${id}`);
+                } else {
+                    buttonReferences[id] = buttonRef;
+                }
+            });
+            console.log(buttonReferences);
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+            configureDonations();
+        });
+
+    </script>
 </head>
 
 <body>
@@ -535,6 +561,8 @@
         <button id="donate_100">donate 100</button>
         <button id="donate_500">donate 500</button>
         <button id="donate_other">donate other</button>
+        <br>
+        <button id="donate_now">donate now</button>
     </div>
 </body>
 
