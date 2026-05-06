@@ -522,25 +522,46 @@
             configureVolunteersForm();
         });
     </script>
+    <style>
+        .selected_donation {
+            background-color: black !important;
+            color: white !important;
+        }
+    </style>
     <script>
         function configureDonations() {
-            const buttonIds = [
+            const buttonAmountIds = [
                 "donate_25",
                 "donate_50",
                 "donate_100",
                 "donate_500",
                 "donate_other",
-                "donate_now",
             ];
             const buttonReferences = {};
-            buttonIds.forEach((id) => {
+            let currentSelection = null;
+            const updateSelectedColors = () => {
+                Object.keys(buttonReferences).forEach((id) => {
+                    const ref = buttonReferences[id];
+                    if (id == currentSelection) {
+                        ref.classList.add("selected_donation");
+                    } else {
+                        ref.classList.remove("selected_donation");
+                    }
+                });
+            }
+            buttonAmountIds.forEach((id) => {
                 const buttonRef = document.getElementById(id);
                 if (!buttonRef) {
                     console.log(`No button found for ${id}`);
                 } else {
                     buttonReferences[id] = buttonRef;
+                    buttonRef.addEventListener('click', () => {
+                        currentSelection = id;
+                        updateSelectedColors();
+                    });
                 }
             });
+
             console.log(buttonReferences);
         }
         document.addEventListener("DOMContentLoaded", () => {
