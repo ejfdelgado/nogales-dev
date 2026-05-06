@@ -562,12 +562,36 @@
                 }
             });
 
-            console.log(buttonReferences);
+            const donateNowButton = document.getElementById("donate_now");
+            donateNowButton.addEventListener('click', async () => {
+                if (!currentSelection) {
+                    const selected = await showSuccessPopUp({
+                        "en-us": {
+                            title: "Oops",
+                            message: "Please select an option.",
+                            accept: "Got it",
+                        },
+                        "es-mx": {
+                            title: "Ups",
+                            message: "Por favor selecciona una opción.",
+                            accept: "Aceptar",
+                        }
+                    });
+                } else {
+                    //grab the url from the button
+                    const referenceButton = buttonReferences[currentSelection];
+                    const destination = referenceButton.getAttribute("data-url");
+                    if (destination) {
+                        window.open(destination, "_blank");
+                        currentSelection = null;
+                        updateSelectedColors();
+                    }
+                }
+            });
         }
         document.addEventListener("DOMContentLoaded", () => {
             configureDonations();
         });
-
     </script>
 </head>
 
@@ -577,11 +601,11 @@
     </form>
 
     <div style="display: flex; flex-direction: column;">
-        <button id="donate_25">donate 25</button>
-        <button id="donate_50">donate 50</button>
-        <button id="donate_100">donate 100</button>
-        <button id="donate_500">donate 500</button>
-        <button id="donate_other">donate other</button>
+        <button id="donate_25" data-url="https://www.google.com">donate 25</button>
+        <button id="donate_50" data-url="https://www.google.com">donate 50</button>
+        <button id="donate_100" data-url="https://www.google.com">donate 100</button>
+        <button id="donate_500" data-url="https://www.google.com">donate 500</button>
+        <button id="donate_other" data-url="https://www.google.com">donate other</button>
         <br>
         <button id="donate_now">donate now</button>
     </div>
