@@ -71,7 +71,7 @@ resource "google_compute_instance" "n8n_master" {
     goog-ec-src  = "vm_add-tf"
     environment  = var.environment
     application  = "nogales"
-    service      = "n8n"
+    service      = "${var.environment}-n8n"
     managed-by   = "terraform"
   }
 

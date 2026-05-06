@@ -9,6 +9,7 @@ videocall_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales
 turn_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_turn:1.3.0"
 wordpress_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/wordpress:3.0.8"
 n8n_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/n8n:2.17.5.3"
+chatbot_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_chatbot:1.0.0"
 
 #############################################
 # ASSESSMENT

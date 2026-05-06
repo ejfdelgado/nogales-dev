@@ -221,3 +221,8 @@ variable "videocall_memory_limit" {
   description = "videocall_memory_limit"
   type        = string
 }
+
+variable "chatbot_image" {
+  description = "chatbot_image"
+  type        = string
+}

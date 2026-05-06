@@ -27,7 +27,7 @@ resource "google_compute_instance" "single_vpn" {
   labels = {
     environment  = var.environment
     application  = "nogales"
-    service      = "vpn"
+    service      = "${var.environment}-vpn"
     managed-by   = "terraform"
   }
 

@@ -43,6 +43,21 @@ resource "google_project_iam_member" "n8n_instance_sa_roles" {
   member  = "serviceAccount:${google_service_account.n8n.email}"
 }
 
+# chatbot
+
+resource "google_service_account" "chatbot" {
+  account_id   = "${var.environment}-chatbot-sa"
+  display_name = "chatbot Service Account"
+}
+
+resource "google_project_iam_member" "chatbot_instance_sa_roles" {
+  for_each = toset(local.chatbot_sa_roles)
+
+  project = var.project_name
+  role    = each.value
+  member  = "serviceAccount:${google_service_account.chatbot.email}"
+}
+
 # github
 
 resource "google_service_account" "github" {

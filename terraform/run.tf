@@ -6,7 +6,7 @@ resource "google_cloud_run_v2_service" "assessment" {
   labels = {
     environment = var.environment
     application = "nogales"
-    service     = "assessment"
+    service     = "${var.environment}-assessment"
     managed-by  = "terraform"
   }
 

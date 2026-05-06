@@ -29,7 +29,7 @@ resource "google_compute_instance" "videocall" {
     goog-ec-src  = "vm_add-tf"
     environment  = var.environment
     application  = "nogales"
-    service      = "videocall"
+    service      = "${var.environment}-videocall"
     managed-by   = "terraform"
   }
 
