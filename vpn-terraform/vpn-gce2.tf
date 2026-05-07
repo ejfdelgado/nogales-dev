@@ -1,6 +1,9 @@
 
 #ssh-keygen -f '/home/ejfdelgado/.ssh/known_hosts' -R '34.74.215.84'
+#stage:
 #ssh -i ~/.ssh/id_ed25519 ejfdelgado@34.74.215.84
+#pro:
+#ssh -i ~/.ssh/id_ed25519 ejfdelgado@34.139.191.241
 #docker ps
 #docker exec -it 58427691c63d /bin/bash
 
@@ -32,7 +35,6 @@ resource "google_compute_instance" "single_vpn" {
   }
 
   network_interface {
-    #access_config {}
     access_config {
       nat_ip       = google_compute_address.vpn_ip.address
       network_tier = "PREMIUM"
@@ -99,6 +101,8 @@ YAML
 
       mkdir -p $MNT_DIR/vpn_config
       chmod 777 "$MNT_DIR/vpn_config
+
+      gcloud storage cp -r /mnt/stateful_partition/persisten_disk/vpn_config/* gs://${var.environment}-nogales-github-credentials/vpn-config/
 EOT
     google-logging-enabled    = "true"
     # Help keep the image disk space free

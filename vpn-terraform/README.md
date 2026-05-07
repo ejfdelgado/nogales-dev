@@ -20,12 +20,17 @@ nmap -sU -p 51820 34.171.61.38
 ```
 
 ```
+# stage:
+ssh ejfdelgado@104.196.21.132
+# pro:
 ssh ejfdelgado@34.139.191.241
 docker ps
 docker exec -it 8c032cc8e6a6 /bin/bash
 docker logs c2eaf988af42
 zip -r all.zip /config
 ```
+
+gcloud storage cp -r /config/* gs://stg-nogales-github-credentials/vpn-config/
 
 Also can login via gcp console web page
 

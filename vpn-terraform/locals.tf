@@ -7,5 +7,6 @@ locals {
     "roles/monitoring.metricWriter",       # monitoring.write
     "roles/serviceusage.serviceUsageConsumer", # servicecontrol
     "roles/cloudtrace.agent",             # trace.append
+    "roles/storage.objectAdmin",           # devstorage.read and write
   ]
 }
