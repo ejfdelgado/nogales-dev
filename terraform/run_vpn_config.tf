@@ -13,7 +13,36 @@ resource "google_cloud_run_v2_service" "vpn_config" {
     service_account = google_service_account.vpn_config.email
 
     containers {
-      image = "gcr.io/cloudrun/placeholder"
+      image = "us-central1-docker.pkg.dev/local-volt-431316-m2/cloud-run-source-deploy/stg-nogales-vpn-config:1.0.0"
+      env {
+        name  = "ENV"
+        value = "pro"
+      }
+      env {
+        name  = "POSTGRES_HOST"
+        #value = local.secrets.postgress.host
+        value = "/cloudsql/${google_sql_database_instance.general.connection_name}"
+      }
+      env {
+        name  = "POSTGRES_PORT"
+        value = local.secrets.postgress.port
+      }
+      env {
+        name  = "POSTGRES_DB"
+        value = local.secrets.postgress.db
+      }
+      env {
+        name  = "POSTGRES_USER"
+        value = local.secrets.postgress.user
+      }
+      env {
+        name  = "POSTGRES_PASSWORD"
+        value = local.secrets.postgress.pass
+      }
+      env {
+        name  = "CONFIG_BUCKET"
+        value = "${var.environment}-nogales-github-credentials"
+      }
     }
 
     volumes {
@@ -24,10 +53,6 @@ resource "google_cloud_run_v2_service" "vpn_config" {
         ]
       }
     }
-  }
-
-  lifecycle {
-    ignore_changes = [template[0].containers]
   }
 
   depends_on = [
