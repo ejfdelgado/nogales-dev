@@ -43,4 +43,12 @@ locals {
     "roles/storage.objectAdmin",           # devstorage.read and write
     "roles/compute.loadBalancerAdmin",     # Allows invalidate cache
   ]
+  vpn_config_sa_roles = [
+    "roles/logging.logWriter",
+    "roles/monitoring.metricWriter",
+    "roles/serviceusage.serviceUsageConsumer",
+    "roles/cloudtrace.agent",
+    "roles/cloudsql.client",
+    "roles/storage.objectViewer",
+  ]
 }

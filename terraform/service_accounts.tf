@@ -78,3 +78,18 @@ resource "google_storage_bucket_iam_member" "github_credentials_access" {
   role   = "roles/storage.objectViewer"
   member = "serviceAccount:${google_service_account.github.email}"
 }
+
+# vpn_config
+
+resource "google_service_account" "vpn_config" {
+  account_id   = "${var.environment}-vpn-config-sa"
+  display_name = "vpn-config Service Account"
+}
+
+resource "google_project_iam_member" "vpn_config_instance_sa_roles" {
+  for_each = toset(local.vpn_config_sa_roles)
+
+  project = var.project_name
+  role    = each.value
+  member  = "serviceAccount:${google_service_account.vpn_config.email}"
+}
