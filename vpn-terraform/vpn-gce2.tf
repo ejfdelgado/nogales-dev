@@ -100,9 +100,12 @@ YAML
       chmod 777 $MNT_DIR
 
       mkdir -p $MNT_DIR/vpn_config
-      chmod 777 "$MNT_DIR/vpn_config
+      chmod 777 $MNT_DIR/vpn_config
 
-      gcloud storage cp -r /mnt/stateful_partition/persisten_disk/vpn_config/* gs://${var.environment}-nogales-github-credentials/vpn-config/
+      docker run --rm \
+        -v /mnt/stateful_partition/persisten_disk/vpn_config:/data \
+        gcr.io/google.com/cloudsdktool/google-cloud-cli:slim \
+        gsutil -m cp -r /data/. gs://${var.environment}-nogales-github-credentials/vpn-config/
 EOT
     google-logging-enabled    = "true"
     # Help keep the image disk space free
