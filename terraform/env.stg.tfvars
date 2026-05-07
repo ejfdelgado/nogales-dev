@@ -14,7 +14,7 @@ chatbot_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_c
 #############################################
 # ASSESSMENT
 #############################################
-assessment_cors="https://test.solvista.me;https://stg-assessment-284609972807.us-central1.run.app;https://apps.solvista.me;https://casa-de-la-familia-3c766f.design.webflow.com;https://casa-de-la-familia-3c766f.webflow.io"
+assessment_cors="https://test.solvista.me;https://stg-assessment-284609972807.us-central1.run.app;https://apps.solvista.me;https://casa-de-la-familia-3c766f.design.webflow.com;https://casa-de-la-familia-3c766f.webflow.io;https://stg-nogales-assets.storage.googleapis.com;https://apps-stg.solvista.me"
 assessment_domain="https://stg-assessment-284609972807.us-central1.run.app"
 
 #############################################

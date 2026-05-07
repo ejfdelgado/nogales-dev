@@ -36,9 +36,11 @@ locals {
     "roles/logging.logWriter",             # logging.write
     "roles/monitoring.metricWriter",       # monitoring.write
     "roles/serviceusage.serviceUsageConsumer", # servicecontrol
-    "roles/cloudtrace.agent",             # trace.append
+    "roles/cloudtrace.agent",              # trace.append
   ]
   github_sa_roles = [
-    "roles/artifactregistry.writer",          # push and pull docker images
+    "roles/artifactregistry.writer",       # push and pull docker images
+    "roles/storage.objectAdmin",           # devstorage.read and write
+    "roles/compute.loadBalancerAdmin",     # Allows invalidate cache
   ]
 }
