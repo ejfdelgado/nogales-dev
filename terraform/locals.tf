@@ -48,6 +48,10 @@ locals {
     "roles/run.admin",
     "roles/iam.serviceAccountUser",
     "roles/storage.admin",
+    "roles/viewer",
+    "roles/storage.objectViewer",
+    "roles/logging.viewer",
+    "roles/logging.logWriter",
   ]
   vpn_config_sa_roles = [
     "roles/logging.logWriter",
