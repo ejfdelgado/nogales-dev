@@ -42,6 +42,12 @@ locals {
     "roles/artifactregistry.writer",       # push and pull docker images
     "roles/storage.objectAdmin",           # devstorage.read and write
     "roles/compute.loadBalancerAdmin",     # Allows invalidate cache
+    "roles/cloudbuild.builds.editor",      # submit builds and access cloudbuild bucket
+    "roles/serviceusage.serviceUsageAdmin", 
+    "roles/serviceusage.serviceUsageConsumer", # servicecontrol
+    "roles/run.admin",
+    "roles/iam.serviceAccountUser",
+    "roles/storage.admin",
   ]
   vpn_config_sa_roles = [
     "roles/logging.logWriter",

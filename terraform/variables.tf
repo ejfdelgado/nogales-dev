@@ -220,3 +220,8 @@ variable "chatbot_image" {
   description = "chatbot_image"
   type        = string
 }
+
+variable "vpn_config_image" {
+  description = "vpn_config_image"
+  type        = string
+}

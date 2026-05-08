@@ -13,7 +13,7 @@ resource "google_cloud_run_v2_service" "vpn_config" {
     service_account = google_service_account.vpn_config.email
 
     containers {
-      image = "us-central1-docker.pkg.dev/local-volt-431316-m2/cloud-run-source-deploy/stg-nogales-vpn-config:1.0.0"
+      image = var.vpn_config_image
       env {
         name  = "ENV"
         value = "pro"
