@@ -2,6 +2,10 @@ resource "google_cloud_run_v2_service" "vpn_config" {
   name     = "${var.environment}-nogales-vpn-config"
   location = var.region
 
+  scaling {
+    min_instance_count = 0
+  }
+
   labels = {
     environment = var.environment
     application = "nogales"
@@ -14,9 +18,29 @@ resource "google_cloud_run_v2_service" "vpn_config" {
 
     containers {
       image = var.vpn_config_image
+      volume_mounts {
+        mount_path = "/cloudsql"
+        name       = "cloudsql"
+      }
       env {
         name  = "ENV"
-        value = "pro"
+        value = var.environment
+      }
+      env {
+        name  = "AUTH_GROUP_ID_MAP"
+        value = var.auth_group_id_map
+      }
+      env {
+        name  = "AUTH_PROVIDER"
+        value = local.secrets.authentication.AUTH_PROVIDER
+      }
+      env {
+        name  = "MICROSOFT_CLIENT_ID"
+        value = local.secrets.authentication.MICROSOFT_CLIENT_ID
+      }
+      env {
+        name  = "MICROSOFT_TENANT"
+        value = local.secrets.authentication.MICROSOFT_TENANT
       }
       env {
         name  = "POSTGRES_HOST"
@@ -42,6 +66,10 @@ resource "google_cloud_run_v2_service" "vpn_config" {
       env {
         name  = "CONFIG_BUCKET"
         value = "${var.environment}-nogales-github-credentials"
+      }
+      env {
+        name  = "CORS_MAIN_ALLOWED_ORIGIN"
+        value = var.vpn_config_cors
       }
     }
 

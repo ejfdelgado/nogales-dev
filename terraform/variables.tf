@@ -225,3 +225,9 @@ variable "vpn_config_image" {
   description = "vpn_config_image"
   type        = string
 }
+
+variable "vpn_config_cors" {
+  description = "CORS domains for vpn config"
+  type        = string
+  default     = ""
+}

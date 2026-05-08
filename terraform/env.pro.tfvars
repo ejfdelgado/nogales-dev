@@ -85,3 +85,8 @@ sql_type="db-custom-2-3840"
 # OTHERS
 #############################################
 heymarket_end_point="https://api.heymarket.com"
+
+#############################################
+# VPN config
+#############################################
+vpn_config_cors="https://apps.solvista.me"
