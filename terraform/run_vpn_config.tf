@@ -2,6 +2,8 @@ resource "google_cloud_run_v2_service" "vpn_config" {
   name     = "${var.environment}-nogales-vpn-config"
   location = var.region
 
+  deletion_protection = false
+
   scaling {
     min_instance_count = 0
   }
@@ -70,6 +72,13 @@ resource "google_cloud_run_v2_service" "vpn_config" {
       env {
         name  = "CORS_MAIN_ALLOWED_ORIGIN"
         value = var.vpn_config_cors
+      }
+      env {
+        name  = "FIREBASE_SERVICE_ACCOUNT_PATH"
+        # Yes, now use only stg, even for pro
+        # because the docker image is built only on stg, not in pro.
+        # pro just uses the docker image generated for stg.
+        value = "./credentials/stg-token-auth.json"
       }
     }
 

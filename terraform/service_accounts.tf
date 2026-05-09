@@ -93,3 +93,18 @@ resource "google_project_iam_member" "vpn_config_instance_sa_roles" {
   role    = each.value
   member  = "serviceAccount:${google_service_account.vpn_config.email}"
 }
+
+# firebase token authentication
+
+resource "google_service_account" "token_authentication" {
+  account_id   = "${var.environment}-token-authentication"
+  display_name = "token-authentication Service Account"
+}
+
+resource "google_project_iam_member" "token_authentication" {
+  for_each = toset(local.token_authentication_sa_roles)
+
+  project = var.project_name
+  role    = each.value
+  member  = "serviceAccount:${google_service_account.token_authentication.email}"
+}

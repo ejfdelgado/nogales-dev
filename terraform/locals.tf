@@ -61,4 +61,8 @@ locals {
     "roles/cloudsql.client",
     "roles/storage.objectViewer",
   ]
+  token_authentication_sa_roles = [
+    "roles/firebaseauth.viewer",
+    "roles/firebaseauth.admin",
+  ]
 }
