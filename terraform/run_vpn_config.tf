@@ -2,7 +2,7 @@ resource "google_cloud_run_v2_service" "vpn_config" {
   name     = "${var.environment}-nogales-vpn-config"
   location = var.region
 
-  deletion_protection = false
+  deletion_protection = true
 
   scaling {
     min_instance_count = 0
