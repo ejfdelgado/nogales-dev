@@ -231,3 +231,14 @@ variable "vpn_config_cors" {
   type        = string
   default     = ""
 }
+
+variable "web_flow_image" {
+  description = "web_flow_image"
+  type        = string
+}
+
+variable "web_flow_cors" {
+  description = "CORS domains for web flow"
+  type        = string
+  default     = ""
+}

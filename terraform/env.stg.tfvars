@@ -11,6 +11,7 @@ wordpress_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/wordpre
 n8n_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/n8n:2.17.5.3"
 chatbot_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_chatbot:1.0.0"
 vpn_config_image="us-central1-docker.pkg.dev/local-volt-431316-m2/cloud-run-source-deploy/stg-nogales-vpn-config:1.3.0"
+web_flow_image="us-central1-docker.pkg.dev/local-volt-431316-m2/cloud-run-source-deploy/stg-nogales-vpn-config:1.3.0"
 
 #############################################
 # ASSESSMENT
@@ -80,3 +81,8 @@ heymarket_end_point="https://api.heymarket.com"
 # VPN config
 #############################################
 vpn_config_cors="https://apps-stg.solvista.me"
+
+#############################################
+# Web Flow
+#############################################
+web_flow_cors="https://casa-de-la-familia-3c766f.design.webflow.com;https://casa-de-la-familia-3c766f.webflow.io"

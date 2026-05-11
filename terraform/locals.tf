@@ -65,4 +65,12 @@ locals {
     "roles/firebaseauth.viewer",
     "roles/firebaseauth.admin",
   ]
+  web_flow_sa_roles = [
+    "roles/logging.logWriter",
+    "roles/monitoring.metricWriter",
+    "roles/serviceusage.serviceUsageConsumer",
+    "roles/cloudtrace.agent",
+    "roles/cloudsql.client",
+    "roles/storage.objectViewer",
+  ]
 }

@@ -108,3 +108,18 @@ resource "google_project_iam_member" "token_authentication" {
   role    = each.value
   member  = "serviceAccount:${google_service_account.token_authentication.email}"
 }
+
+# web_flow
+
+resource "google_service_account" "web_flow" {
+  account_id   = "${var.environment}-web-flow-sa"
+  display_name = "vpn-config Service Account"
+}
+
+resource "google_project_iam_member" "web_flow_instance_sa_roles" {
+  for_each = toset(local.web_flow_sa_roles)
+
+  project = var.project_name
+  role    = each.value
+  member  = "serviceAccount:${google_service_account.web_flow.email}"
+}
