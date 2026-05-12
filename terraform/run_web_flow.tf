@@ -2,7 +2,7 @@ resource "google_cloud_run_v2_service" "web_flow" {
   name     = "${var.environment}-nogales-web-flow"
   location = var.region
 
-  deletion_protection = true
+  deletion_protection = false
 
   scaling {
     min_instance_count = 0
@@ -88,6 +88,26 @@ resource "google_cloud_run_v2_service" "web_flow" {
       env {
         name  = "PROJECT_REGION"
         value = var.region
+      }
+      env {
+        name  = "SEND_GRID_VARIABLE"
+        value = local.secrets.sendgrid_apikey
+      }
+      env {
+        name  = "EMAIL_SENDER"
+        value = var.email_sender
+      }
+      env {
+        name  = "EMAIL_CONTACT_US"
+        value = var.email_sender
+      }
+      env {
+        name  = "MAILCHIMP_API_KEY"
+        value = var.mailchimp_api_key
+      }
+      env {
+        name  = "EMAIL_CONTACT_US"
+        value = var.mailchimp_subscription_list
       }
     }
 

@@ -82,6 +82,24 @@ variable "email_sender" {
   default     = "no_reply@nogalespsychological.com"
 }
 
+variable "email_recipient" {
+  description = "email_recipient"
+  type        = string
+  default     = ""
+}
+
+variable "mailchimp_api_key" {
+  description = "mailchimp_api_key"
+  type        = string
+  default     = ""
+}
+
+variable "mailchimp_subscription_list" {
+  description = "mailchimp_subscription_list"
+  type        = string
+  default     = ""
+}
+
 variable "sql_type" {
   description = "sql_type"
   type        = string
