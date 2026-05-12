@@ -11,7 +11,7 @@ wordpress_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/wordpre
 n8n_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/n8n:2.17.5.3"
 chatbot_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_chatbot:1.0.0"
 vpn_config_image="us-central1-docker.pkg.dev/local-volt-431316-m2/cloud-run-source-deploy/stg-nogales-vpn-config:1.3.0"
-web_flow_image="us-central1-docker.pkg.dev/local-volt-431316-m2/cloud-run-source-deploy/stg-nogales-web-flow:1.1.1"
+web_flow_image="us-central1-docker.pkg.dev/local-volt-431316-m2/cloud-run-source-deploy/stg-nogales-web-flow:1.1.2"
 
 #############################################
 # ASSESSMENT
@@ -99,4 +99,4 @@ email_recipient="info@casadelafamilia.org"
 email_sender="no_reply@nogalespsychological.com"
 mailchimp_api_key=""
 mailchimp_subscription_list=""
-web_flow_cors="https://casa-de-la-familia-3c766f.design.webflow.com;https://casa-de-la-familia-3c766f.webflow.io"
+web_flow_cors="https://casadelafamilia.org;https://www.casadelafamilia.org;https://casa-de-la-familia-3c766f.design.webflow.com;https://casa-de-la-familia-3c766f.webflow.io"
