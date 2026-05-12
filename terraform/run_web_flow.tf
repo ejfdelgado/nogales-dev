@@ -99,14 +99,14 @@ resource "google_cloud_run_v2_service" "web_flow" {
       }
       env {
         name  = "EMAIL_CONTACT_US"
-        value = var.email_sender
+        value = var.email_recipient
       }
       env {
         name  = "MAILCHIMP_API_KEY"
         value = var.mailchimp_api_key
       }
       env {
-        name  = "EMAIL_CONTACT_US"
+        name  = "MAILCHIMP_LIST"
         value = var.mailchimp_subscription_list
       }
     }
