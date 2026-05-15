@@ -4,13 +4,13 @@ environment = "stg"
 # DOCKER IMAGES
 #############################################
 docker_image_speedmeter = "us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_speedmeter:1.0.0"
-assessment_image = "us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_assessment_front_back:1.48.1"
+assessment_image = "us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_assessment_front_back:1.48.2"
 videocall_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_videocall_front_back:2.19.2"
 turn_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_turn:1.3.0"
 wordpress_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/wordpress:3.0.8"
 n8n_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/n8n:2.17.5.3"
 chatbot_image="us-central1-docker.pkg.dev/local-volt-431316-m2/nogales/nogales_chatbot:1.0.0"
-vpn_config_image="us-central1-docker.pkg.dev/local-volt-431316-m2/cloud-run-source-deploy/stg-nogales-vpn-config:1.3.0"
+vpn_config_image="us-central1-docker.pkg.dev/local-volt-431316-m2/cloud-run-source-deploy/stg-nogales-vpn-config:1.3.1"
 web_flow_image="us-central1-docker.pkg.dev/local-volt-431316-m2/cloud-run-source-deploy/stg-nogales-web-flow:1.1.2"
 
 #############################################
