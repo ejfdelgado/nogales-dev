@@ -128,13 +128,3 @@ EOT
 
   tags = ["ssh", "allow-ssh"]
 }
-
-
-resource "google_compute_managed_ssl_certificate" "vpn_certificate" {
-  name    = "${var.environment}-vpn-cert"
-  managed {
-    domains = [
-      var.environment == "pro" ? "vpn.solvista.me." : "vpn-stg.solvista.me."
-      ]
-  }
-}
