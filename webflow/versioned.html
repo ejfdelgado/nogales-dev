@@ -522,6 +522,88 @@
             configureVolunteersForm();
         });
     </script>
+    <style>
+        .selected_donation {
+            background-color: black !important;
+            color: white !important;
+        }
+    </style>
+    <script>
+        function configureDonations() {
+            const buttonAmountIds = [
+                "donate_25",
+                "donate_50",
+                "donate_100",
+                "donate_500",
+                "donate_other",
+            ];
+            const buttonReferences = {};
+            let currentSelection = null;
+            const updateSelectedColors = () => {
+                Object.keys(buttonReferences).forEach((id) => {
+                    const ref = buttonReferences[id];
+                    if (id == currentSelection) {
+                        ref.classList.add("selected_donation");
+                    } else {
+                        ref.classList.remove("selected_donation");
+                    }
+                });
+            }
+            buttonAmountIds.forEach((id) => {
+                const buttonRef = document.getElementById(id);
+                if (!buttonRef) {
+                    console.log(`No button found for ${id}`);
+                } else {
+                    buttonReferences[id] = buttonRef;
+                    buttonRef.addEventListener('click', () => {
+                        currentSelection = id;
+                        updateSelectedColors();
+                    });
+                }
+            });
+
+            const donateNowButton = document.getElementById("donate_now");
+            if (donateNowButton) {
+                donateNowButton.addEventListener('click', async () => {
+                    if (!currentSelection) {
+                        const selected = await showSuccessPopUp({
+                            "en-us": {
+                                title: "Oops",
+                                message: "Please select an option.",
+                                accept: "Got it",
+                            },
+                            "es-mx": {
+                                title: "Ups",
+                                message: "Por favor selecciona una opción.",
+                                accept: "Aceptar",
+                            }
+                        });
+                    } else {
+                        //grab the url from the button
+                        const referenceButton = buttonReferences[currentSelection];
+                        const destination = referenceButton.getAttribute("data-url");
+                        if (destination) {
+                            window.open(destination, "_blank");
+                            currentSelection = null;
+                            updateSelectedColors();
+                        }
+                    }
+                });
+            }
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+            configureDonations();
+        });
+    </script>
+    <style>
+        .tab-button:hover .tab-line {
+        opacity: 100%;
+        }
+
+        .tab-button:hover .tab-text {
+        color: #FFE852;
+        }
+    </style>
 </head>
 
 <body>
