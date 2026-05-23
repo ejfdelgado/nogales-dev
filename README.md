@@ -9,6 +9,12 @@ Hello team ❤️. First install the development tools, then, configure, finally
 
 ## Configurations
 
+
+```
+gcloud config set project local-volt-431316-m2
+```
+
+
 ```
 nano ~/.ssh/config
 ```
