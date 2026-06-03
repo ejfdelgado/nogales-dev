@@ -8,6 +8,14 @@ Check free disk space
 4. Check the path **/mnt/stateful_partition**, if it is full, then prune all docker images using the next step.
 5. Prune all docker images with ``` docker rmi -f $(docker images -aq) ```
 
+Note: as an alternative to ssh into the instances:
+```
+# For production server videocall
+ssh ejfdelgado@34.171.61.38
+# For stage server videocall
+ssh ejfdelgado@104.197.163.219
+```
+
 
 ## Database
 
