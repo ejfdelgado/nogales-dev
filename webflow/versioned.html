@@ -324,10 +324,10 @@
                     const selected = await showSuccessPopUp(successMessage);
                     console.log(`selected = ${selected}`);
                 } catch (err) {
-                    const selected = await showErrorPopUp(errorMessage);
+                    console.log(err);
+                    const selected = await showErrorPopUp(errorMessage, err);
                     console.log(`selected = ${selected}`);
                     parentForm.querySelector(".w-form-fail").style.display = "block";
-                    console.error(err);
                 }
             };
             form.addEventListener("submit", eventFunction);
@@ -377,14 +377,18 @@
             });
         }
 
-        function mapPopUpContent(id, payloadMulti) {
+        function mapPopUpContent(id, payloadMulti, err) {
             const lang = getLanguage();
             const payload = payloadMulti[lang];
             const reference = document.getElementById(id);
             reference.querySelectorAll('[popup-content]').forEach(element => {
                 const label = element.getAttribute('popup-content');
                 if (label in payload) {
-                    element.innerHTML = payload[label];
+                    if (err && label == "message") {
+                        element.innerHTML = payload[label] + " Detail: " + err.message;
+                    } else {
+                        element.innerHTML = payload[label];
+                    }
                 }
             });
         }
@@ -400,11 +404,11 @@
             return activatePopUp(POPUP_IDS.alert);
         }
 
-        async function showErrorPopUp(payload) {
+        async function showErrorPopUp(payload, err) {
             setLoadingIndicator(false);
             setElementVisibility(POPUP_IDS.back, true);
             // map content
-            mapPopUpContent(POPUP_IDS.alert, payload);
+            mapPopUpContent(POPUP_IDS.alert, payload, err);
             // make it visible
             setElementVisibility(POPUP_IDS.alert, true);
             // attach event listeners for buttons
@@ -517,9 +521,18 @@
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify(payload),
+                    body: JSON.stringify(formDataFields),
                 });
-                if (!res.ok) throw new Error("Request failed");
+                let errorMessage = "Request failed";
+                if (!res.ok || res.status == 500) {
+                    try {
+                        const errorData = await res.json();
+                        if (errorData.message) {
+                            errorMessage = errorData.message;
+                        }
+                    } catch (err) { }
+                    throw new Error(errorMessage);
+                }
                 return {};
             }, {
                 "en-us": {
@@ -627,11 +640,11 @@
     </script>
     <style>
         .tab-button:hover .tab-line {
-        opacity: 100%;
+            opacity: 100%;
         }
 
         .tab-button:hover .tab-text {
-        color: #FFE852;
+            color: #FFE852;
         }
     </style>
 </head>
