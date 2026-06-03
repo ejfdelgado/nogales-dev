@@ -21,3 +21,13 @@ gcloud sql backups list --instance=pro-general
 gcloud sql backups restore 1780448400000 --restore-instance=stg-general --backup-instance=pro-general
 # Take into account the password is also inherited on the backup
 ```
+
+## Delete manually a user
+
+```
+SELECT destroy_user( 
+    'psoto@nogalespsychological.com', --User to be deleted
+	'aquintana@nogalespsychological.com', --Who will be replaced if needed
+    10
+);
+```
