@@ -507,9 +507,49 @@
             });
         }
 
+        function subscribeNewsLatter() {
+            activateForm('subscribe-form', async (formDataFields) => {
+                const payload = {
+                    form: formDataFields,
+                };
+                const res = await fetch(`${env.endpoint}/srv/subscribe`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(payload),
+                });
+                if (!res.ok) throw new Error("Request failed");
+                return {};
+            }, {
+                "en-us": {
+                    title: "Subscription successful",
+                    message: "Thanks for your subscription.",
+                    accept: "Got it",
+                },
+                "es-mx": {
+                    title: "Suscripción exitosa",
+                    message: "Gracias por suscribirse.",
+                    accept: "Cerrar",
+                }
+            }, {
+                "en-us": {
+                    title: "Oops!",
+                    message: "Please try later.",
+                    accept: "Got it",
+                },
+                "es-mx": {
+                    title: "Ups!",
+                    message: "Por favor reintenta más tarde.",
+                    accept: "Cerrar",
+                }
+            });
+        }
+
         document.addEventListener("DOMContentLoaded", () => {
             configureContactUsForm();
             configureVolunteersForm();
+            subscribeNewsLatter();
         });
     </script>
     <style>
@@ -585,6 +625,15 @@
             configureDonations();
         });
     </script>
+    <style>
+        .tab-button:hover .tab-line {
+        opacity: 100%;
+        }
+
+        .tab-button:hover .tab-text {
+        color: #FFE852;
+        }
+    </style>
 </head>
 
 <body>
