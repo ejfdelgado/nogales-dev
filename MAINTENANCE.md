@@ -16,6 +16,11 @@ ssh ejfdelgado@34.171.61.38
 ssh ejfdelgado@104.197.163.219
 ```
 
+```
+docker ps
+docker exec -it d5f514056573 /bin/bash
+docker logs -f d5f514056573
+```
 
 ## Database
 
