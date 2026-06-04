@@ -4,8 +4,22 @@ Check free disk space
 
 1. Go to [VM instances](https://console.cloud.google.com/compute/instances?project=local-volt-431316-m2).
 2. Use ssh -> Open in browser window.
-3. Run the command ``` df -h ```
-4. Check the path **/mnt/stateful_partition**, if it is full, then prune all docker images using the next step.
+3. Run the command ``` df -h ```, the response is something like:
+```
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root       2.0G  1.2G  769M  62% /
+devtmpfs        7.0G     0  7.0G   0% /dev
+tmpfs           7.1G     0  7.1G   0% /dev/shm
+tmpfs           2.9G  516K  2.9G   1% /run
+tmpfs           7.1G   88K  7.1G   1% /etc/machine-id
+tmpfs           256K     0  256K   0% /mnt/disks
+tmpfs           7.1G     0  7.1G   0% /tmp
+overlayfs       7.1G   88K  7.1G   1% /etc
+/dev/sda8        11M   24K   11M   1% /usr/share/oem
+/dev/sda1        46G   12G   34G  26% /mnt/stateful_partition
+tmpfs           2.0M  112K  1.9M   6% /var/lib/cloud
+```
+4. Check the Use% of the path **/mnt/stateful_partition**, if it is higher than 50%, then prune all docker images using the next step.
 5. Prune all docker images with ``` docker rmi -f $(docker images -aq) ```
 
 Note: as an alternative to ssh into the instances:
