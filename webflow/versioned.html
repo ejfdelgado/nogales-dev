@@ -381,11 +381,29 @@
             const lang = getLanguage();
             const payload = payloadMulti[lang];
             const reference = document.getElementById(id);
+            const errorContainer = reference.querySelector('[popup-container]="error"');
+            const detailLink = reference.querySelector('[popup-action]="see-detail"');
+            const errorParagraph = reference.querySelector('[popup-content]="error"');
+            //
+            if (err) {
+                // popup-container=error o -> display flex / none
+                errorContainer.style.display = "flex";
+                detailLink.addEventListener('click', () => {
+                    if (errorParagraph.style.display == "none") {
+                        errorParagraph.style.display = "block";
+                    } else {
+                        errorParagraph.style.display = "none";
+                    }
+                });
+            } else {
+                errorContainer.style.display = "none";
+            }
+
             reference.querySelectorAll('[popup-content]').forEach(element => {
                 const label = element.getAttribute('popup-content');
                 if (label in payload) {
-                    if (err && label == "message") {
-                        element.innerHTML = payload[label] + " Detail: " + err.message;
+                    if (err && label == "error") {
+                        element.innerHTML = `${err.message}`;
                     } else {
                         element.innerHTML = payload[label];
                     }
@@ -451,7 +469,7 @@
                 "en-us": {
                     title: "Message sent",
                     message: "Thanks for your message.",
-                    accept: "Got it",
+                    accept: "Ok",
                 },
                 "es-mx": {
                     title: "Mensaje enviado",
@@ -462,7 +480,7 @@
                 "en-us": {
                     title: "Oops!",
                     message: "Please try later.",
-                    accept: "Got it",
+                    accept: "Ok",
                 },
                 "es-mx": {
                     title: "Ups!",
@@ -490,7 +508,7 @@
                 "en-us": {
                     title: "Message sent",
                     message: "Thanks for register in our talent pool.",
-                    accept: "Got it",
+                    accept: "Ok",
                 },
                 "es-mx": {
                     title: "Mensaje enviado",
@@ -501,7 +519,7 @@
                 "en-us": {
                     title: "Oops!",
                     message: "Please try later.",
-                    accept: "Got it",
+                    accept: "Ok",
                 },
                 "es-mx": {
                     title: "Ups!",
@@ -538,7 +556,7 @@
                 "en-us": {
                     title: "Subscription successful",
                     message: "Thanks for your subscription.",
-                    accept: "Got it",
+                    accept: "Ok",
                 },
                 "es-mx": {
                     title: "Suscripción exitosa",
@@ -549,7 +567,7 @@
                 "en-us": {
                     title: "Oops!",
                     message: "Please try later.",
-                    accept: "Got it",
+                    accept: "Ok",
                 },
                 "es-mx": {
                     title: "Ups!",
@@ -613,7 +631,7 @@
                             "en-us": {
                                 title: "Oops",
                                 message: "Please select an option.",
-                                accept: "Got it",
+                                accept: "Ok",
                             },
                             "es-mx": {
                                 title: "Ups",
