@@ -355,12 +355,25 @@
             setElementVisibility(POPUP_IDS.loading, val);
         }
 
-        async function activatePopUp(id) {
+        async function activatePopUp(id, err) {
             const reference = document.getElementById(id);
             // Clean previous
             const copyChildren = true;
             const newEl = reference.cloneNode(copyChildren);
             reference.parentNode.replaceChild(newEl, reference);
+
+            if (err) {
+                const detailLink = newEl.querySelector("[popup-action='see-detail']");
+                const errorParagraph = newEl.querySelector("[popup-content='error']");
+                errorParagraph.style.display = "none";
+                detailLink.addEventListener('click', () => {
+                    if (errorParagraph.style.display == "none") {
+                        errorParagraph.style.display = "block";
+                    } else {
+                        errorParagraph.style.display = "none";
+                    }
+                });
+            }
             return new Promise((resolve) => {
                 newEl.querySelectorAll('[popup-action]').forEach(element => {
                     const handler = (event) => {
@@ -377,34 +390,34 @@
             });
         }
 
+        function clearAllListeners(el) {
+            const clone = el.cloneNode(true);
+            el.parentNode.replaceChild(clone, el);
+            return clone;
+        }
+
         function mapPopUpContent(id, payloadMulti, err) {
             const lang = getLanguage();
             const payload = payloadMulti[lang];
             const reference = document.getElementById(id);
-            const errorContainer = reference.querySelector('[popup-container]="error"');
-            const detailLink = reference.querySelector('[popup-action]="see-detail"');
-            const errorParagraph = reference.querySelector('[popup-content]="error"');
+            const errorContainer = reference.querySelector("[popup-container='error']");
             //
-            if (err) {
-                // popup-container=error o -> display flex / none
-                errorContainer.style.display = "flex";
-                detailLink.addEventListener('click', () => {
-                    if (errorParagraph.style.display == "none") {
-                        errorParagraph.style.display = "block";
-                    } else {
-                        errorParagraph.style.display = "none";
-                    }
-                });
-            } else {
-                errorContainer.style.display = "none";
+            try {
+                if (err) {
+                    errorContainer.style.display = "flex";
+                } else {
+                    errorContainer.style.display = "none";
+                }
+            } catch (err2) {
+                console.log(err2);
             }
 
             reference.querySelectorAll('[popup-content]').forEach(element => {
                 const label = element.getAttribute('popup-content');
-                if (label in payload) {
-                    if (err && label == "error") {
-                        element.innerHTML = `${err.message}`;
-                    } else {
+                if (err && label == "error") {
+                    element.innerHTML = `${err.message}`;
+                } else {
+                    if (label in payload) {
                         element.innerHTML = payload[label];
                     }
                 }
@@ -430,7 +443,7 @@
             // make it visible
             setElementVisibility(POPUP_IDS.alert, true);
             // attach event listeners for buttons
-            return activatePopUp(POPUP_IDS.alert);
+            return activatePopUp(POPUP_IDS.alert, err);
         }
 
         async function showConfirmPopUp(payload) {
