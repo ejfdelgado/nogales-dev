@@ -25,14 +25,15 @@ tmpfs           2.0M  112K  1.9M   6% /var/lib/cloud
 Note: as an alternative to ssh into the instances:
 ```
 # For production server videocall
-ssh ejfdelgado@34.171.61.38
+ssh -v -i ~/.ssh/id_ed25519 ejfdelgado@34.171.61.38
 # For stage server videocall
-ssh ejfdelgado@104.197.163.219
+ssh -v -i ~/.ssh/id_ed25519 ejfdelgado@104.197.163.219
+ssh -i ~/.ssh/id_ed25519 ejfdelgado@104.197.163.219
 ```
 
 ```
 docker ps
-docker exec -it d5f514056573 /bin/bash
+docker exec -it 5f4b17f9e0ac /bin/bash
 docker logs -f d5f514056573
 ```
 
@@ -57,4 +58,18 @@ SELECT destroy_user(
 	'aquintana@nogalespsychological.com', --Who will be replaced if needed
     10
 );
+```
+
+
+### Inside docker image:
+Sais which process is using the 80 port
+```
+sudo netstat -tulpn | grep :80
+
+ps -p 1431 -o cmd=
+ps -p 1431 -o args=
+ls -l /proc/1431/cwd
+pgrep -a node
+
+docker ps --no-trunc
 ```
