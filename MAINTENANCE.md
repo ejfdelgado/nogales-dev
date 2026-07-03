@@ -29,12 +29,16 @@ ssh -v -i ~/.ssh/id_ed25519 ejfdelgado@34.171.61.38
 # For stage server videocall
 ssh -v -i ~/.ssh/id_ed25519 ejfdelgado@104.197.163.219
 ssh -i ~/.ssh/id_ed25519 ejfdelgado@104.197.163.219
+
+ssh -i ~/.ssh/id_ed25519 ejfdelgado@136.114.91.139
+ssh -i ~/.ssh/id_ed25519 ejfdelgado@104.196.21.132
 ```
 
 ```
 docker ps
-docker exec -it 5f4b17f9e0ac /bin/bash
-docker logs -f d5f514056573
+docker exec -it 8ecd9de77392 /bin/bash
+docker exec -it 8ecd9de77392 /bin/sh
+docker logs -f 1b4aa77d22ee
 ```
 
 ## Database
