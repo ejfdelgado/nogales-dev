@@ -41,6 +41,11 @@ docker exec -it 8ecd9de77392 /bin/sh
 docker logs -f 1b4aa77d22ee
 ```
 
+## VideoCall check on UDP receive buffer max/default
+```
+cat /proc/sys/net/core/rmem_max /proc/sys/net/core/rmem_default
+```
+
 ## Database
 
 If you need to place on stage the production database:
